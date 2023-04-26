@@ -2,9 +2,14 @@ const express = require('express')
 const router = express.Router();
 
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
+const { GoogleMapsAPI } = require('../../config');
 
 const { User } = require('../../db/models');
 
+
+router.get('/googleMapApi', (req, res) => {
+  return res.json(GoogleMapsAPI);
+});
 
 // Log in
 const { validateLogin } = require('./validations');

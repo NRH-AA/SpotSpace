@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import GoogleMapComponent from '../GoogleMaps';
+import { getGoogleAPIThunk } from '../../store/session';
 
 import './Spots.css';
 
@@ -11,6 +12,19 @@ const CreateSpot = () => {
     const history = useHistory();
     
     const redirect = useSelector(spotActions.getSpotRedirect);
+    
+    const [googleAPI, setGoogleAPI] = useState('');
+    
+    const getGoogleAPI = async () => {
+        const api = await dispatch(getGoogleAPIThunk());
+        if (api) {
+            setGoogleAPI(api);
+        }
+    }
+    
+    useEffect(() => {
+        if (!googleAPI) getGoogleAPI();
+    }, [googleAPI])
     
     const [country, setCountry] = useState('');
     const [address, setAddress] = useState('');
@@ -255,8 +269,9 @@ const CreateSpot = () => {
                     <button className="create-spot-button" type="button" onClick={() => history.goBack()}>Back</button>
                 </div>
                 
-                
-                <GoogleMapComponent latt={latt} lngt={lngt} height={400} width={400}/>
+                {googleAPI && 
+                    <GoogleMapComponent latt={latt} lngt={lngt} height={400} width={400} api={googleAPI}/>
+                }
                 
             </form>
         </div>

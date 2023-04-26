@@ -59,6 +59,15 @@ export const logout = () => async (dispatch) => {
     return response;
 };
 
+export const getGoogleAPIThunk = () => async () => {
+    const res = await csrfFetch('/api/session/googleMapApi');
+    if (res.ok) {
+        const data = await res.json();
+        return data;
+    }
+    return false;
+}
+
 
 export const getUserState = (state) => state.session.user;
 

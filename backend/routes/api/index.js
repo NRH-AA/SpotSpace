@@ -13,8 +13,10 @@ const reviewsRouter = require('./review.js');
 const reviewImagesRouter = require('./reviewimage.js');
 const spotImagesRouter = require('./spotimage.js');
 const bookings = require('./bookings.js');
+const external = require('./external.js');
 
 router.use('/session', sessionRouter);
+router.use('/external', external);
 router.use('/users', usersRouter);
 router.use('/spots', spotsRouter);
 router.use('/reviews', reviewsRouter);

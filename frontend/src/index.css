@@ -38,6 +38,11 @@ body {
     cursor: not-allowed;
 }
 
+.main-button-empty {
+    background: none;
+    border: none;
+}
+
 
 /* Input */
 .main-input-style {

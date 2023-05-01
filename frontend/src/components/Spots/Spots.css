@@ -68,16 +68,22 @@
     margin-right: 5px;
 }
 
-.allSpots-button {
+.allSpots-update-button {
+    font-size: 20px;
+    margin-left: 140px;
+    color: rgb(202, 202, 202);
     cursor: pointer;
-    text-decoration: none;
-    color: black;
-    width: 60px;
-    margin-right: 10px;
-    text-align: center;
+}
+.allSpots-update-button:hover {
+    color: rgb(0, 219, 18);
 }
 
-
-.allSpots-update-button {
-    margin-left: 70px;
+.allSpots-delete-button {
+    font-size: 20px;
+    margin-right: 10px;
+    color: rgb(202, 202, 202);
+    cursor: pointer;
+}
+.allSpots-delete-button:hover {
+    color: red;
 }

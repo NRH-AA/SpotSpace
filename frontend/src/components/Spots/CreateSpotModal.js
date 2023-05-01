@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useModal } from "../../context/Modal";
 import * as spotActions from '../../store/spots';
 import GoogleMapComponent from '../GoogleMaps';
+import Select from 'react-select';
+import countryList from 'react-select-country-list';
+import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
 import './CreateSpotModal.css';
 
 const CreateSpotModal = () => {
@@ -14,6 +17,7 @@ const CreateSpotModal = () => {
     const redirect = useSelector(spotActions.getSpotRedirect);
     
     const [country, setCountry] = useState('');
+    const countryOptions = useMemo(() => countryList().getData(), [])
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
@@ -27,6 +31,7 @@ const CreateSpotModal = () => {
     const [image5, setImage5] = useState('');
     const [errors, setErrors] = useState([]);
     const [formErrors, setFormErrors] = useState({});
+    const [locateMe, setLocateMe] = useState(false);
     
     const lat = '0.00';
     const lng = '0.00';
@@ -141,6 +146,7 @@ const CreateSpotModal = () => {
     
     return (
         <div className="create-spot-wrapper">
+            <div id='create-spot-inner-div'>
             <h2>Create a new Spot</h2>
             <h3>Where's your place located?</h3>
             <p id="where-p">Guests will only get your exact address once they booked a reservation.</p>
@@ -157,9 +163,10 @@ const CreateSpotModal = () => {
                 <div id="create-spot-top">
                     <div className="create-spot-input-div">
                         <label>Country <span className="error-msg">{formErrors.country ? formErrors.country : ''}</span></label>
-                        <input className="create-spot-input" type="text" placeholder='Country' value={country}
-                            onChange={(e) => setCountry(e.target.value)}
-                        ></input>
+                        <CountryDropdown className="create-spot-input"
+                            value={country}
+                            onChange={(e) => setCountry(e)} 
+                        />
                     </div>
                     
                     <div className="create-spot-input-div">
@@ -167,20 +174,31 @@ const CreateSpotModal = () => {
                         <input className="create-spot-input" type="text" placeholder='Address' value={address}
                             onChange={(e) => setAddress(e.target.value)}
                         ></input>
+                        <button style={{width: "120px", marginTop: "5px"}}
+                            onClick={() => setLocateMe(!locateMe)}
+                        >Locate Me</button>
                     </div>
+                    
+                    {locateMe && 
+                        <GoogleMapComponent latt={latt} lngt={lngt} heightt={300} widtht={'100%'}/>
+                    }
                     
                     <div id="city-state-div">
                         <div id="create-spot-input-city-div">
                             <label>City <span className="error-msg">{formErrors.city ? formErrors.city : ''}</span></label>
-                            <input className="create-spot-input" type="text" placeholder='City' value={city}
+                            <input className="create-spot-input" type="text" 
+                                placeholder='City' 
+                                value={city}
                                 onChange={(e) => setCity(e.target.value)}
                             ></input>
                         </div>
                         <div id="create-spot-input-state-div">
                             <label>State <span className="error-msg">{formErrors.state ? formErrors.state : ''}</span></label>
-                            <input className="create-spot-input" type="text" placeholder='State' value={state}
-                                onChange={(e) => setState(e.target.value)}
-                            ></input>
+                            <RegionDropdown className="create-spot-input"
+                                country={country}
+                                value={state}
+                                onChange={(e) => setState(e.target.value)} 
+                            />
                         </div>
                     </div>
                 </div>
@@ -258,11 +276,8 @@ const CreateSpotModal = () => {
                     <button className="create-spot-button" type="button" onClick={() => history.goBack()}>Back</button>
                 </div>
                 
-
-                <GoogleMapComponent latt={latt} lngt={lngt} height={400} width={400}/>
-
-                
             </form>
+            </div>
         </div>
     );
 };

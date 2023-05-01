@@ -39,11 +39,13 @@
     color: black;
     font-size: 14px;
     margin-right: 20px;
+    background-color: white;
     height: 28px;
     width: 180px;
-    padding-top: 14px;
+    border: none;
     border-radius: 30px;
 }
+
 .create-spot:hover {
     background-color: rgb(233, 233, 233);
 }

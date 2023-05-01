@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ProfileButton from './ProfileButton';
+import OpenModalButton from "../OpenModalButton";
+import CreateSpotModal from '../Spots/CreateSpotModal';
 import './Navigation.css';
 import Logo from './images/logo.png';
 
@@ -25,7 +27,11 @@ function Navigation({ isLoaded }){
           
           <div className="topbar-profile">
             {sessionUser && (
-              <NavLink to="/spots/new" className="create-spot">SpotSpace your home</NavLink>
+                <OpenModalButton
+                  className="create-spot"
+                  buttonText='SpotSpace your home'
+                  modalComponent={<CreateSpotModal />}
+                />
             )}
             
             {isLoaded && (

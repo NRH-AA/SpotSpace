@@ -97,7 +97,7 @@ function ProfileButton({ user }) {
           <div className='profile-menu-inner-div'>
             <div>
               <OpenModalButton
-                className="signup-button"
+                className="main-button-style profile-dropdown-button"
                 buttonText="Sign Up"
                 modalComponent={<SignupFormModal />}
                 onButtonClick={() => setShowMenu(false)}
@@ -105,7 +105,7 @@ function ProfileButton({ user }) {
               </div>
             <div>
               <OpenModalButton
-                className="signup-button"
+                className="main-button-style profile-dropdown-button"
                 buttonText="Log In"
                 modalComponent={<LoginFormModal />}
                 onButtonClick={() => setShowMenu(false)}

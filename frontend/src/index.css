@@ -1,6 +1,60 @@
 /* TODO Add site wide styles */
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+}
+
 body {
     background-color: rgb(241, 241, 241);
     padding: 0px;
     margin: 0px;
+}
+
+/* Button */
+.main-button-style {
+    background: linear-gradient(#b3b3b3, #f5f5f5);
+    border: 1px solid rgb(180, 180, 180);
+    box-shadow: 1px 1px 2px 2px rgb(160, 160, 160);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.main-button-style:hover {
+    background: linear-gradient(#c9c9c9, #ffffff);
+    border: 1px solid rgb(212, 212, 212);
+    box-shadow: 1px 1px 2px 2px rgb(207, 207, 207);
+}
+
+.main-button-style:active {
+    background: linear-gradient(#a7a7a7, #d3d3d3);
+    border: 1px solid rgb(212, 212, 212);
+    box-shadow: 1px 1px 2px 2px rgb(226, 226, 226);
+}
+
+.main-button-style:disabled {
+    background: linear-gradient(#a7a7a7, #d3d3d3);
+    border: 1px solid rgb(168, 168, 168);
+    box-shadow: 1px 1px 2px 2px rgb(133, 133, 133);
+    cursor: not-allowed;
+}
+
+
+/* Input */
+.main-input-style {
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0px 0px 4px 2px rgb(77, 77, 77);
+    border: 2px solid rgb(87, 87, 87);
+    background-color: rgb(230, 230, 230);
+}
+
+
+/* Errors */
+.main-error-li {
+    font-size: 14px;
+    color: red;
+}
+
+.main-error-ul {
+    margin-top: -15px;
 }

@@ -37,15 +37,16 @@ function SignupFormModal() {
     <>
       <div id="signup-wrapper">
         <h2>Sign Up</h2>
+        
         <form id="signup-form" onSubmit={handleSubmit}>
-          
           <div id="form-wrapper">
             <ul>
-              {errors.map((error, idx) => <li key={idx} className="error-li">{error}</li>)}
+              {errors.map((error, idx) => <li key={idx} className="main-error-li">{error}</li>)}
             </ul>
+            
             <label>
               <input
-                className="form-input"
+                className="main-input-style form-input"
                 type="text"
                 value={firstName}
                 placeholder="First Name"
@@ -53,9 +54,10 @@ function SignupFormModal() {
                 required
               />
             </label>
+            
             <label>
               <input
-                className="form-input"
+                className="main-input-style form-input"
                 type="text"
                 value={lastName}
                 placeholder="Last Name"
@@ -63,9 +65,10 @@ function SignupFormModal() {
                 required
               />
             </label>
+            
             <label>
               <input
-                className="form-input"
+                className="main-input-style form-input"
                 type="text"
                 value={email}
                 placeholder="Email"
@@ -73,9 +76,10 @@ function SignupFormModal() {
                 required
               />
             </label>
+            
             <label>
               <input
-                className="form-input"
+                className="main-input-style form-input"
                 type="text"
                 value={username}
                 placeholder="Username"
@@ -83,9 +87,10 @@ function SignupFormModal() {
                 required
               />
             </label>
+            
             <label>
               <input
-                className="form-input"
+                className="main-input-style form-input"
                 type="password"
                 value={password}
                 placeholder="Password"
@@ -93,9 +98,10 @@ function SignupFormModal() {
                 required
               />
             </label>
+            
             <label>
               <input
-                className="form-input"
+                className="main-input-style form-input"
                 type="password"
                 value={confirmPassword}
                 placeholder="Confirm Password"
@@ -103,7 +109,9 @@ function SignupFormModal() {
                 required
               />
             </label>
-            <button id="signup-button" type="submit" disabled={buttonDisabled()}>Sign Up</button>
+            
+            <button id="signup-button" className='main-button-style' type="submit" disabled={buttonDisabled()}>Sign Up</button>
+            
           </div>
         </form>
       </div>

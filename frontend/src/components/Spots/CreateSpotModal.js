@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useModal } from "../../context/Modal";
 import * as spotActions from '../../store/spots';
 import GoogleMapComponent from '../GoogleMaps';
-import './Spots.css';
+import './CreateSpotModal.css';
 
 const CreateSpotModal = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const { closeModal, modalSpot } = useModal();
     
     const redirect = useSelector(spotActions.getSpotRedirect);
     
@@ -99,11 +101,13 @@ const CreateSpotModal = () => {
         if (image4) imageData.push({url: image4, preview: false});
         if (image5) imageData.push({url: image5, preview: false});
         
-        return dispatch(spotActions.createSpot(spotData, imageData))
+        dispatch(spotActions.createSpot(spotData, imageData))
         .catch(async (res) => {
             const data = await res.json();
-            if (data && data.errors) setErrors(data.errors);
+            if (data && data.errors) return setErrors(data.errors);
         });
+        
+        return closeModal();
     };
     
     const createDemoSpot = (e) => {
@@ -124,16 +128,16 @@ const CreateSpotModal = () => {
         const imageData = [];
         imageData.push({url: 'https://static.planetminecraft.com/files/resource_media/screenshot/1408/family_guy_griffin_house.jpg', preview: true})
         
-        return dispatch(spotActions.createSpot(spotData, imageData))
+        dispatch(spotActions.createSpot(spotData, imageData))
         .catch(async (res) => {
             const data = await res.json();
-            if (data && data.errors) setErrors(data.errors);
+            if (data && data.errors) return setErrors(data.errors);
         });
+        
+        return closeModal();
     }
     
-    if (redirect) {
-        return history.push(`/spots/${redirect}`);
-    }
+    if (redirect) return history.push(`/spots/${redirect}`);
     
     return (
         <div className="create-spot-wrapper">
@@ -141,11 +145,11 @@ const CreateSpotModal = () => {
             <h3>Where's your place located?</h3>
             <p id="where-p">Guests will only get your exact address once they booked a reservation.</p>
             
-            <button className="create-spot-button" onClick={createDemoSpot}>Demo Create</button>
+            <button className="main-button-style create-spot-button" onClick={createDemoSpot}>Demo Create</button>
             
             <div>
                 <ul>
-                    {errors?.map(e => <li className="error-msg" key={e}>{e}</li>)}
+                    {errors?.map(e => <li className="main-error-li" key={e}>{e}</li>)}
                 </ul>
             </div>
             

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
@@ -25,21 +25,6 @@ const CreateSpot = () => {
     const [image5, setImage5] = useState('');
     const [errors, setErrors] = useState([]);
     const [formErrors, setFormErrors] = useState({});
-    const [googleAPI, setGoogleAPI] = useState(null);
-    
-    const loadGoogleMapAPI = async () => {
-        const res = await fetch('/api/external/googleMap', {
-            method: 'GET'
-        });
-        if (res.ok) {
-            const data = await res.json();
-            setGoogleAPI(data.api);
-        }
-    }
-    
-    useEffect(() => {
-        if (!googleAPI) loadGoogleMapAPI()
-    }, [googleAPI])
     
     const lat = '0.00';
     const lng = '0.00';
@@ -269,9 +254,9 @@ const CreateSpot = () => {
                     <button className="create-spot-button" type="button" onClick={() => history.goBack()}>Back</button>
                 </div>
                 
-                {googleAPI &&
-                    <GoogleMapComponent api={googleAPI} latt={latt} lngt={lngt} height={400} width={400}/>
-                }
+
+                <GoogleMapComponent latt={latt} lngt={lngt} height={400} width={400}/>
+
                 
             </form>
         </div>

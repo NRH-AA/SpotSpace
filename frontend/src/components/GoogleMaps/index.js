@@ -1,8 +1,8 @@
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-const GoogleMapComponent = ({api, latt, lngt, heightt, widtht}) => {
+const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
     const dispatch = useDispatch();
     const [lat, setLat] = useState(latt || -3.745);
     const [lng, setLng] = useState(lngt || -38.523);
@@ -13,7 +13,7 @@ const GoogleMapComponent = ({api, latt, lngt, heightt, widtht}) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         // googleMapsApiKey: api
-        googleMapsApiKey: ''
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API
     });
     
     const containerStyle = {
@@ -31,8 +31,6 @@ const GoogleMapComponent = ({api, latt, lngt, heightt, widtht}) => {
     const onUnmount = useCallback(map => {
         setMap(null);
     }, [])
-    
-    if (!api) return null;
     
     return isLoaded ? 
         <GoogleMap

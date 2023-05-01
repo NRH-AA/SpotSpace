@@ -1,0 +1,137 @@
+#singleSpot-wrapper {
+    width: 100%;
+}
+
+#singleSpot-inner-div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 900px;
+    margin: auto;
+}
+
+#singleSpot-title-div {
+    display: flex;
+    align-items: center;
+}
+
+.singleSpot-h2 {
+    margin-bottom: -15px;
+    font-size: 30px;
+    text-decoration: underline;
+}
+
+.spot-images-div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.previewImg-div {
+    min-height: 100%;
+    max-height: 100%;
+    min-width: 48%;
+    max-width: 48%;
+}
+
+.previewImg {
+    height: 280px;
+    width: 430px;
+    border: 2px solid black;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.images-div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    width: 50%;
+}
+
+.images-a {
+    min-height: 100px;
+    min-width: 200px;
+    max-height: 134px;
+    max-width: 200px;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-right: 4px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+#singleSpot-edit-buttons-div {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.singleSpots-edit-button {
+    border: none;
+    background: none;
+}
+.singleSpot-edit-square {
+    font-size: 24px;
+    color: rgb(170, 170, 170);
+}
+.singleSpot-edit-square:hover {
+    color: rgb(0, 201, 0);
+}
+
+.singleSpots-delete-button {
+    margin-right: 20px;
+    background: none;
+    border: none;
+}
+.singleSpot-delete-trash {
+    font-size: 22px;
+    color: rgb(170, 170, 170);
+}
+.singleSpot-delete-trash:hover {
+    color: red;
+}
+
+.spot-desc-div {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    text-align: justify;
+}
+
+#singleSpot-owner-h2 {
+    font-size: 22px;
+    text-decoration: underline;
+}
+
+.spot-reserve {
+    border: 2px solid black;
+    height: 110px;
+    min-width: 320px;
+    max-width: 320px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+#spot-reserve-div {
+    margin-left: 20px;
+}
+
+#spot-reserve-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
+#spot-reserve-span {
+    font-size: 18px;
+    font-weight: 900;
+}
+
+#spot-reserve-button {
+    width: 280px;
+    height: 35px;
+}

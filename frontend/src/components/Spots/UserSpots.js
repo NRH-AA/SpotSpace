@@ -41,14 +41,14 @@ const UserSpotsComponent = () => {
                         
                         <OpenModalButton
                             spotId={spot.id}
-                            className="allSpots-button allSpots-update-button"
+                            className="main-button-style allSpots-button allSpots-update-button"
                             buttonText="Update"
                             modalComponent={<UpdateSpotModal />}
                         />
                             
                         <OpenModalButton
                             spotId={spot.id}
-                            className="allSpots-button"
+                            className="main-button-style allSpots-button"
                             buttonText="Delete"
                             modalComponent={<DeleteSpotModal />}
                         />

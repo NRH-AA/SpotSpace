@@ -1,6 +1,6 @@
-.profile-dropdown {
+/* .profile-dropdown {
     
-}
+} */
 
 .profile-dropdown-flex {
     display: flex;
@@ -17,7 +17,7 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     font-weight: 600;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 .profile-menu-inner-div {
@@ -69,4 +69,10 @@
 .user-spots-link {
     text-decoration: none;
     color: black;
+}
+
+.profile-dropdown-button {
+    width: 90%;
+    height: 25px;
+    margin-top: 10px;
 }

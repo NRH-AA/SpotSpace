@@ -175,8 +175,8 @@ const UpdateSpotModal = () => {
                 </div>
                 
                 <div id="update-spot-button-div">
-                    <button className="update-spot-button" type="submit">Update</button>
-                    <button type="button" className="update-spot-button" onClick={closeModal}>Cancel</button>
+                    <button className="main-button-style update-spot-button" type="submit">Update</button>
+                    <button type="button" className="main-button-style update-spot-button" onClick={closeModal}>Cancel</button>
                 </div>
                 
             </form>

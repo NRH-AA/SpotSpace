@@ -6,7 +6,7 @@ import ReviewsComponent from "../Reviews";
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "../DeleteSpotModal";
 import UpdateSpotModal from "../UpdateSpotModal";
-import './Spots.css';
+import './SingleSpot.css';
 
 const SingleSpot = () => {
     const dispatch = useDispatch();
@@ -122,7 +122,7 @@ const SingleSpot = () => {
                       <b>⭐{getStarReviewsText()}</b>
                     </div>
                     
-                    <button id="spot-reserve-button" onClick={() => alert('Feature not implimented.')}>Reserve</button>
+                    <button id="spot-reserve-button" className='main-button-style' onClick={() => alert('Feature not implimented.')}>Reserve</button>
                   </div>
                 </div>
               }

@@ -4,12 +4,13 @@ import { useHistory } from 'react-router-dom';
 import { useModal } from "../../context/Modal";
 import * as spotActions from '../../store/spots';
 import GoogleMapComponent from '../GoogleMaps';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import './CreateSpotModal.css';
 
 const CreateSpotModal = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { closeModal, modalSpot } = useModal();
+    const { closeModal } = useModal();
     
     const redirect = useSelector(spotActions.getSpotRedirect);
     
@@ -24,9 +25,9 @@ const CreateSpotModal = () => {
     const [image2, setImage2] = useState('');
     const [image3, setImage3] = useState('');
     const [image4, setImage4] = useState('');
-    const [image5, setImage5] = useState('');
     const [errors, setErrors] = useState([]);
     const [formErrors, setFormErrors] = useState({});
+    const [locateMe, setLocateMe] = useState(false);
     
     const lat = '0.00';
     const lng = '0.00';
@@ -38,13 +39,13 @@ const CreateSpotModal = () => {
         const err = {};
         
         if (!country) err.country = "Country is required";
-        if (country.length < 5 || country.length > 20) err.country = "Country length must be 5-20 characters";
+        if (country && (country.length < 5 || country.length > 20)) err.country = "Country length must be 5-20 characters";
         if (!address) err.address = "Address is required";
         if (address.length < 5 || address.length > 20) err.address = "Address length must be 5-20 characters";
         if (!city) err.city = "City is required"
         if (city.length < 5 || city.length > 15) err.city = "City length must be 5-15 characters";
         if (!state) err.state = "State is required";
-        if (state.length < 5 || state.length > 15) err.state = "State length must be 5-15 characters";
+        if (state && (state.length < 5 || state.length > 15)) err.state = "State length must be 5-15 characters";
         if (description.length < 30) err.desc = "Description needs a minimum of 30 characters";
         if (description.length > 250) err.desc = "Description needs a maximum of 250 characters";
         if (!name) err.name = "Name is required";
@@ -62,9 +63,6 @@ const CreateSpotModal = () => {
             err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
         }
         if (image4 && !image4.endsWith('.png') && !image4.endsWith('.jpg') && !image4.endsWith('.jpeg')) {
-            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        if (image5 && !image5.endsWith('.png') && !image5.endsWith('.jpg') && !image5.endsWith('.jpeg')) {
             err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
         }
         
@@ -99,7 +97,6 @@ const CreateSpotModal = () => {
         if (image2) imageData.push({url: image2, preview: false});
         if (image3) imageData.push({url: image3, preview: false});
         if (image4) imageData.push({url: image4, preview: false});
-        if (image5) imageData.push({url: image5, preview: false});
         
         dispatch(spotActions.createSpot(spotData, imageData))
         .catch(async (res) => {
@@ -141,7 +138,8 @@ const CreateSpotModal = () => {
     
     return (
         <div className="create-spot-wrapper">
-            <h2>Create a new Spot</h2>
+            <div id='create-spot-inner-div'>
+            <h2><u>Create a new Spot</u></h2>
             <h3>Where's your place located?</h3>
             <p id="where-p">Guests will only get your exact address once they booked a reservation.</p>
             
@@ -156,48 +154,64 @@ const CreateSpotModal = () => {
             <form onSubmit={handleSubmit}>
                 <div id="create-spot-top">
                     <div className="create-spot-input-div">
-                        <label>Country <span className="error-msg">{formErrors.country ? formErrors.country : ''}</span></label>
-                        <input className="create-spot-input" type="text" placeholder='Country' value={country}
-                            onChange={(e) => setCountry(e.target.value)}
+                        <label>Street Address <span className="main-error-li">{formErrors.address ? formErrors.address : ''}</span></label>
+                        <input className="main-input-style create-spot-input" type="text" placeholder='Address' value={address}
+                            onChange={(e) => setAddress(e.target.value)}
                         ></input>
+                        <button 
+                            type='button'
+                            style={{width: "120px", marginTop: "5px"}}
+                            onClick={() => setLocateMe(!locateMe)}
+                        >Locate Me</button>
+                    </div>
+                    
+                    {locateMe && 
+                        <GoogleMapComponent latt={latt} lngt={lngt} heightt={300} widtht={'100%'}/>
+                    }
+                    
+                    <div className="create-spot-input-div">
+                        <label>Country <span className="main-error-li">{formErrors.country ? formErrors.country : ''}</span></label>
+                        <CountryDropdown className="main-input-style create-spot-input"
+                            value={country}
+                            onChange={(e) => setCountry(e)} 
+                        />
+                    </div>
+                        
+                    <div className="create-spot-input-div">
+                        <label>State <span className="main-error-li">{formErrors.state ? formErrors.state : ''}</span></label>
+                        <RegionDropdown className="main-input-style create-spot-input"
+                            country={country}
+                            value={state}
+                            onChange={(e) => setState(e.target.value)} 
+                        />
                     </div>
                     
                     <div className="create-spot-input-div">
-                        <label>Street Address <span className="error-msg">{formErrors.address ? formErrors.address : ''}</span></label>
-                        <input className="create-spot-input" type="text" placeholder='Address' value={address}
-                            onChange={(e) => setAddress(e.target.value)}
+                        <label>City <span className="main-error-li">{formErrors.city ? formErrors.city : ''}</span></label>
+                        <input className="main-input-style create-spot-input" type="text" 
+                            placeholder='City' 
+                            value={city}
+                             onChange={(e) => setCity(e.target.value)}
                         ></input>
                     </div>
-                    
-                    <div id="city-state-div">
-                        <div id="create-spot-input-city-div">
-                            <label>City <span className="error-msg">{formErrors.city ? formErrors.city : ''}</span></label>
-                            <input className="create-spot-input" type="text" placeholder='City' value={city}
-                                onChange={(e) => setCity(e.target.value)}
-                            ></input>
-                        </div>
-                        <div id="create-spot-input-state-div">
-                            <label>State <span className="error-msg">{formErrors.state ? formErrors.state : ''}</span></label>
-                            <input className="create-spot-input" type="text" placeholder='State' value={state}
-                                onChange={(e) => setState(e.target.value)}
-                            ></input>
-                        </div>
-                    </div>
+
                 </div>
                 
-                <div>
+                <div id='create-spot-description-div'>
                     <h3>Describe your place to guests</h3>
                     <p className="desc-p">Mention the best features of your space, any special amentities
                         like fast wifi or parking, and what you love about the neighborhood.
                     </p>
                     
                     <div id="desc-div">
-                        <textarea id="desc-textarea" name="description" value={description}
+                        <span className="main-error-li">{formErrors.desc ? formErrors.desc : ''}</span>
+                        <textarea id="desc-textarea" 
+                            name="description" 
+                            value={description}
                             placeholder='Please write at least 30 characters'
                             onChange={(e) => setDescription(e.target.value)}
                         > 
                         </textarea>
-                        <span className="error-msg">{formErrors.desc ? formErrors.desc : ''}</span>
                     </div>
                 </div>
                 
@@ -208,61 +222,56 @@ const CreateSpotModal = () => {
                     </p>
                     
                     <div>
-                        <input className="create-spot-input create-spot-input2" type='text' value={name}
+                        <span className="main-error-li">{formErrors.name ? formErrors.name : ''}</span>
+                        <input className="main-input-style create-spot-input create-spot-input2" type='text' value={name}
                             placeholder='Name of your spot'
                             onChange={(e) => setName(e.target.value)}
-                        ></input>
-                        <span className="error-msg">{formErrors.name ? formErrors.name : ''}</span>
+                        />
                     </div>
                 </div>
                 
                 <div id="price-div">
-                    <span>$ </span><input id="price-input" type="text" value={price}
-                        className="create-spot-input"
+                    {formErrors.price && <><span className="main-error-li">{formErrors.price}</span><br></br></>}
+                    <span>$ </span>
+                    <input id="price-input" type="number" value={price}
+                        className="main-input-style create-spot-input"
                         placeholder='Price per night (USD)'
+                        min={10}
+                        max={1000}
                         onChange={(e) => setPrice(e.target.value)}
-                        ></input>
-                    <span className="error-msg">{formErrors.price ? formErrors.price : ''}</span>
+                    />
                 </div>
                 
                 <div id="images-div">
-                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Preview Image URL' value={image1}
+                    <span className="main-error-li">{formErrors.image1 ? formErrors.image1 : ''}</span>
+                    <input className="main-input-style create-spot-input imageUrl-input" type="text" placeholder='Preview Image URL' value={image1}
                         onChange={(e) => setImage1(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image1 ? formErrors.image1 : ''}</span>
+                    />
                     
-                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image2}
+                    <span className="main-error-li">{formErrors.image2 ? formErrors.image2 : ''}</span>
+                    <input className="main-input-style create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image2}
                         onChange={(e) => setImage2(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image2 ? formErrors.image2 : ''}</span>
+                    />
                     
-                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image3}
+                    <span className="main-error-li">{formErrors.image3 ? formErrors.image3 : ''}</span>
+                    <input className="main-input-style create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image3}
                         onChange={(e) => setImage3(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image3 ? formErrors.image3 : ''}</span>
+                    />
                     
-                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image4}
+                    <span className="main-error-li">{formErrors.image4 ? formErrors.image4 : ''}</span>
+                    <input className="main-input-style create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image4}
                         onChange={(e) => setImage4(e.target.value)}
                     ></input>
-                    <span className="error-msg">{formErrors.image4 ? formErrors.image4 : ''}</span>
-                    
-                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image5}
-                        onChange={(e) => setImage5(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image5 ? formErrors.image5 : ''}</span>
                     
                 </div>
                 
                 <div id="create-spot-button-div">
-                    <button className="create-spot-button" type="submit">Create</button>
-                    <button className="create-spot-button" type="button" onClick={() => history.goBack()}>Back</button>
+                    <button className="main-button-style create-spot-button" type="button" onClick={closeModal}>Cancel</button>
+                    <button className="main-button-style create-spot-button" type="submit">Create</button>
                 </div>
                 
-
-                <GoogleMapComponent latt={latt} lngt={lngt} height={400} width={400}/>
-
-                
             </form>
+            </div>
         </div>
     );
 };

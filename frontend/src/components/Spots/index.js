@@ -14,6 +14,14 @@ const SpotComponent = () => {
         if (!spotsState) dispatch(getAllSpots());
     }, [dispatch, spotsState]);
     
+    const getStateAbb = (state) => {
+        const split = state.split(' ');
+        if (split[1]) {
+            return `${split[0][0]}${split[1][0]}`.toUpperCase();
+        }
+        return state.slice(0, 2).toUpperCase();
+    }
+    
     return (
         <div id="allSpots-wrapper">
             {spotsState?.map((spot, i) => 
@@ -21,7 +29,7 @@ const SpotComponent = () => {
                     <img className="allSpots-img" src={spot.previewImage} alt={spot.name}></img>
                     
                     <div className="allSpots-info-div">
-                        <p className="allSpots-p">{spot.city + ", " + spot.state}</p>
+                        <p className="allSpots-p">{spot.city.slice(0, 25) + ", " + getStateAbb(spot.state)}</p>
                         <p className="allSpots-p-2">⭐ {spot?.avgRating > 0 ? spot.avgRating : 'New'}</p>
                     </div>
                     

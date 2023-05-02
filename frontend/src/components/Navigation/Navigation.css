@@ -1,12 +1,16 @@
+#navbar-sticky {
+    display: sticky;
+    top: 0px;
+}
+
 .topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     padding: 5px;
-    background-color: rgb(252, 252, 252);
+    background-color: white;
     border: 1px solid rgb(177, 177, 177);
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 700;
 }
 
 .logoImg {
@@ -47,5 +51,5 @@
 }
 
 .create-spot:hover {
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(241, 241, 241);
 }

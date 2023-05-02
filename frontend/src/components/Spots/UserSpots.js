@@ -20,6 +20,14 @@ const UserSpotsComponent = () => {
         dispatch(getUserSpots());
     }, [dispatch])
     
+    const getStateAbb = (state) => {
+        const split = state.split(' ');
+        if (split[1]) {
+            return `${split[0][0]}${split[1][0]}`.toUpperCase();
+        }
+        return state.slice(0, 2).toUpperCase();
+    }
+    
     return (
         <>
         <h2 style={{marginLeft: 20}}>Manage Spots</h2>
@@ -30,7 +38,7 @@ const UserSpotsComponent = () => {
                     <img className="allSpots-img" src={spot.previewImage} alt={spot.name}></img>
                     
                     <div className="allSpots-info-div">
-                        <p className="allSpots-p">{spot.city + ", " + spot.state}</p>
+                        <p className="allSpots-p">{spot.city.slice(0, 25) + ", " + getStateAbb(spot.state)}</p>
                         <p className="allSpots-p-2">{'⭐' + spot.avgRating}</p>
                     </div>
                     
@@ -41,15 +49,15 @@ const UserSpotsComponent = () => {
                         
                         <OpenModalButton
                             spotId={spot.id}
-                            className="main-button-style allSpots-button allSpots-update-button"
-                            buttonText="Update"
+                            className="main-button-empty"
+                            buttonText={<i className="fas fa-edit allSpots-update-button"/>}
                             modalComponent={<UpdateSpotModal />}
                         />
-                            
+
                         <OpenModalButton
                             spotId={spot.id}
-                            className="main-button-style allSpots-button"
-                            buttonText="Delete"
+                            className="main-button-empty"
+                            buttonText={<i className="fa fa-trash allSpots-delete-button"/>}
                             modalComponent={<DeleteSpotModal />}
                         />
                     </div>

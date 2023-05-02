@@ -13,31 +13,33 @@ function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-      <div className="topbar">
-          <div className="topbar-home">
-              <img className="logoImg" src={Logo} alt="logo"
-                onClick={() => history.push('/')}
-              />
-              
-              {/* <input id='nav-searchbar'
-                placeholder='Search Spots'
-              /> */}
-            
-          </div>
-          
-          <div className="topbar-profile">
-            {sessionUser && (
-                <OpenModalButton
-                  className="create-spot"
-                  buttonText='SpotSpace your home'
-                  modalComponent={<CreateSpotModal />}
+      <div id='navbar-sticky'>
+        <div className="topbar">
+            <div className="topbar-home">
+                <img className="logoImg" src={Logo} alt="logo"
+                  onClick={() => history.push('/')}
                 />
-            )}
+                
+                {/* <input id='nav-searchbar'
+                  placeholder='Search Spots'
+                /> */}
+              
+            </div>
             
-            {isLoaded && (
-                <ProfileButton user={sessionUser} />
-            )}
-          </div>
+            <div className="topbar-profile">
+              {sessionUser && (
+                  <OpenModalButton
+                    className="create-spot"
+                    buttonText='SpotSpace your home'
+                    modalComponent={<CreateSpotModal />}
+                  />
+              )}
+              
+              {isLoaded && (
+                  <ProfileButton user={sessionUser} />
+              )}
+            </div>
+        </div>
       </div>
   );
 }

@@ -1,12 +1,13 @@
 .create-spot-wrapper {
     margin: auto;
-    width: 96%;
+    width: 100%;
     padding: 20px;
 }
 
 #create-spot-inner-div {
     height: 800px;
     width: 90%;
+    padding-left: 5px;
     margin: auto;
     overflow-y: auto;
 }
@@ -18,18 +19,19 @@
 }
 
 .create-spot-button {
-    width: 100%;
+    width: 25%;
     height: 25px;
 }
 
 #create-spot-top {
+    width: 80%;
     border-bottom: 2px solid black;
 }
 
 .create-spot-input-div {
     display: flex;
     flex-direction: column;
-    width: 380px;
+    width: 65%;
     margin-bottom: 5px;
 }
 
@@ -43,26 +45,13 @@
     margin-bottom: 10px;
 }
 
-.city-state-div {
-    display: flex;
-}
-
-#create-spot-input-city-div {
-    display: inline-flex;
-    flex-direction: column;
-    width: 220px;
-}
-
-#create-spot-input-state-div {
-    display: inline-flex;
-    flex-direction: column;
-    width: 160px;
-    margin-bottom: 20px;
-}
-
 .desc-p {
     font-size: 13px;
     margin-top: -14px;
+}
+
+#create-spot-description-div {
+    width: 80%;
 }
 
 #desc-div {
@@ -70,19 +59,22 @@
 }
 
 #desc-textarea {
-    width: 372px;
+    width: 100%;
     height: 150px;
     resize: none;
+    outline: none;
     margin-bottom: 10px;
     border: 2px solid black;
     box-shadow: 0px 0px 4px 1px rgb(102, 102, 102);
 }
 
 #title-div {
+    width: 80%;
     border-bottom: 2px solid black;
 }
 
 #price-div {
+    width: 80%;
     border-bottom: 2px solid black;
 }
 
@@ -93,6 +85,7 @@
 }
 
 #images-div {
+    width: 80%;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -105,6 +98,8 @@
 #create-spot-button-div {
     display: flex;
     justify-content: space-between;
+    width: 80%;
     margin-top: 10px;
+    padding-bottom: 20px;
     gap: 10px;
 }

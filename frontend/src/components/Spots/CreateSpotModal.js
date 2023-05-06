@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useModal } from "../../context/Modal";
 import * as spotActions from '../../store/spots';
 import GoogleMapComponent from '../GoogleMaps';
+import { csrfFetch } from '../../store/csrf';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import './CreateSpotModal.css';
 
@@ -21,10 +22,13 @@ const CreateSpotModal = () => {
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
-    const [image1, setImage1] = useState('');
-    const [image2, setImage2] = useState('');
-    const [image3, setImage3] = useState('');
-    const [image4, setImage4] = useState('');
+    const [image1, setImage1] = useState({});
+    const [image2, setImage2] = useState({});
+    const [showImage2, setShowImage2] = useState(false);
+    const [image3, setImage3] = useState({});
+    const [showImage3, setShowImage3] = useState(false);
+    const [image4, setImage4] = useState({});
+    const [showImage4, setShowImage4] = useState(false);
     const [errors, setErrors] = useState([]);
     const [formErrors, setFormErrors] = useState({});
     const [locateMe, setLocateMe] = useState(false);
@@ -35,15 +39,17 @@ const CreateSpotModal = () => {
     const [latt, setLatt] = useState(0.0);
     const [lngt, setLngt] = useState(0.0);
     
+    const allowedImages = ['.png', '.jpg', '.jpeg', '.gif'];
+    
     const validateForm = () => {
         const err = {};
         
         if (!country) err.country = "Country is required";
         if (country && (country.length < 5 || country.length > 20)) err.country = "Country length must be 5-20 characters";
         if (!address) err.address = "Address is required";
-        if (address.length < 5 || address.length > 20) err.address = "Address length must be 5-20 characters";
+        if (address.length < 5 || address.length > 30) err.address = "Address length must be 5-30 characters";
         if (!city) err.city = "City is required"
-        if (city.length < 5 || city.length > 15) err.city = "City length must be 5-15 characters";
+        if (city.length < 5 || city.length > 20) err.city = "City length must be 5-20 characters";
         if (!state) err.state = "State is required";
         if (state && (state.length < 5 || state.length > 15)) err.state = "State length must be 5-15 characters";
         if (description.length < 30) err.desc = "Description needs a minimum of 30 characters";
@@ -52,19 +58,8 @@ const CreateSpotModal = () => {
         if (name.length < 5 || name.length > 20) err.name = "Title length must be 5-20 characters";
         if (!price) err.price = "Price is required";
         if (price === 0) err.price = "Price cannot be zero" 
-        if (!image1) err.image1 = "Preview image is required";
-        if (image1 && !image1.endsWith('.png') && !image1.endsWith('.jpg') && !image1.endsWith('.jpeg')) {
-            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        if (image2 && !image2.endsWith('.png') && !image2.endsWith('.jpg') && !image2.endsWith('.jpeg')) {
-            err.image2 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        if (image3 && !image3.endsWith('.png') && !image3.endsWith('.jpg') && !image3.endsWith('.jpeg')) {
-            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        if (image4 && !image4.endsWith('.png') && !image4.endsWith('.jpg') && !image4.endsWith('.jpeg')) {
-            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
+        
+        if (!image1.url) err.image1 = "Preview image is required";
         
         return err;
     }
@@ -73,9 +68,8 @@ const CreateSpotModal = () => {
         e.preventDefault();
         
         const validateErrors = validateForm();
-        if (Object.values(validateErrors).length > 0) {
-            setFormErrors(validateErrors);
-            return;
+        if (Object.keys(validateErrors).length > 0) {
+            return setFormErrors(validateErrors);
         };
         
         setErrors([]);
@@ -93,11 +87,11 @@ const CreateSpotModal = () => {
         };
         
         const imageData = [];
-        imageData.push({url: image1, preview: true});
-        if (image2) imageData.push({url: image2, preview: false});
-        if (image3) imageData.push({url: image3, preview: false});
-        if (image4) imageData.push({url: image4, preview: false});
-        
+        imageData.push({url: image1.url, preview: true});
+        if (image2.url) imageData.push({url: image2.url, preview: false});
+        if (image3.url) imageData.push({url: image3.url, preview: false});
+        if (image4.url) imageData.push({url: image4.url, preview: false});
+
         dispatch(spotActions.createSpot(spotData, imageData))
         .catch(async (res) => {
             const data = await res.json();
@@ -109,7 +103,7 @@ const CreateSpotModal = () => {
     
     const createDemoSpot = (e) => {
         e.preventDefault();
-        
+
         const spotData = {
             address: new Date(),
             city: 'DemoCity',
@@ -133,6 +127,68 @@ const CreateSpotModal = () => {
         
         return closeModal();
     }
+    
+    
+    const updateImageFile = (e, i) => {
+        const file = e.target.files[0];
+        handleImageUpload(file, i);
+    }
+    
+    const handleImageUpload = async (file, index) => {
+        const formData = new FormData();
+        formData.append("image", file);
+        
+        const imageData = await handleFetch(formData)
+        if (!imageData) return setErrors(['Failed to get image url']);
+        
+        if (index === 1) return setImage1(imageData);
+        if (index === 2) return setImage2(imageData);
+        if (index === 3) return setImage3(imageData);
+        if (index === 4) return setImage4(imageData);
+    };
+    
+    const handleFetch = async (formData) => {
+        const res = await csrfFetch('/api/upload', {
+            method: "POST",
+            ignore: true,
+            body: formData,
+        });
+        
+        if (res.ok) {
+            const data = await res.json();
+            if (!data) return setErrors(["Failed to upload image. Please try again."]);
+            return data;
+        };
+    };
+    
+    const removePicture = (index) => {
+        if (!index || index < 1 || index > 3) return;
+        
+        if (index === 1) return setImage1({});
+        if (index === 2) return setImage2({});
+        if (index === 3) return setImage3({});
+        if (index === 4) return setImage4({});
+    }
+    
+    const handleShowImage = () => {
+        if (!showImage2) return setShowImage2(true);
+        if (!showImage3) return setShowImage3(true);
+        if (!showImage4) return setShowImage4(true);
+    }
+    
+    const getUserAddress = () => {
+        if (locateMe) return setLocateMe(false);
+        if (address) return;
+        
+        navigator.geolocation.getCurrentPosition((position) => {
+            const {latitude, longitude} = position.coords
+            
+            setLatt(latitude);
+            setLngt(longitude);
+            setLocateMe(true);
+        });
+    };
+    
     
     if (redirect) return history.push(`/spots/${redirect}`);
     
@@ -158,10 +214,10 @@ const CreateSpotModal = () => {
                         <input className="main-input-style create-spot-input" type="text" placeholder='Address' value={address}
                             onChange={(e) => setAddress(e.target.value)}
                         ></input>
-                        <button 
+                        <button className='main-button-style'
                             type='button'
                             style={{width: "120px", marginTop: "5px"}}
-                            onClick={() => setLocateMe(!locateMe)}
+                            onClick={() => getUserAddress()}
                         >Locate Me</button>
                     </div>
                     
@@ -182,7 +238,7 @@ const CreateSpotModal = () => {
                         <RegionDropdown className="main-input-style create-spot-input"
                             country={country}
                             value={state}
-                            onChange={(e) => setState(e.target.value)} 
+                            onChange={(e) => setState(e)} 
                         />
                     </div>
                     
@@ -243,31 +299,121 @@ const CreateSpotModal = () => {
                 </div>
                 
                 <div id="images-div">
-                    <span className="main-error-li">{formErrors.image1 ? formErrors.image1 : ''}</span>
-                    <input className="main-input-style create-spot-input imageUrl-input" type="text" placeholder='Preview Image URL' value={image1}
-                        onChange={(e) => setImage1(e.target.value)}
-                    />
+                    {formErrors.image1 && <span>Preview image required.</span>}
+                    {image1.url ? <div className='images-inner-div'>
+                        <img className="create-post-image"
+                            src={image1.url} 
+                            alt="PostImage1"
+                        />
+                            
+                        <button className="create-post-remove-image-button"
+                            onClick={() => removePicture(1)}
+                        >X</button>
+                        </div>
+                    :
+                    <div className='images-inner-div'>
+                        <input
+                            className="create-post-image-input"
+                            name='image'
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => updateImageFile(e, 1)}
+                        />
+                    </div>
+                    }
                     
-                    <span className="main-error-li">{formErrors.image2 ? formErrors.image2 : ''}</span>
-                    <input className="main-input-style create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image2}
-                        onChange={(e) => setImage2(e.target.value)}
-                    />
+                    {showImage2 && <>
+                        {image2.url ? <div className='images-inner-div'>
+                            <img className="create-post-image"
+                                src={image2.url} 
+                                alt="PostImage1"
+                            />
+                                
+                            <button className="create-post-remove-image-button"
+                                onClick={() => removePicture(2)}
+                            >X</button>
+                            </div>
+                        :
+                        <div className='images-inner-div'>
+                            <input
+                                className="create-post-image-input"
+                                name='image'
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => updateImageFile(e, 2)}
+                            />
+                        </div>
+                        }
+                    </>}
                     
-                    <span className="main-error-li">{formErrors.image3 ? formErrors.image3 : ''}</span>
-                    <input className="main-input-style create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image3}
-                        onChange={(e) => setImage3(e.target.value)}
-                    />
+                    {showImage3 && <>
+                        {image3.url ? <div className='images-inner-div'>
+                            <img className="create-post-image"
+                                src={image3.url} 
+                                alt="PostImage1"
+                            />
+                                
+                            <button className="create-post-remove-image-button"
+                                onClick={() => removePicture(3)}
+                            >X</button>
+                            </div>
+                        :
+                        <div className='images-inner-div'>
+                            <input
+                                className="create-post-image-input"
+                                name='image'
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => updateImageFile(e, 3)}
+                            />
+                        </div>
+                        }
+                    </>}
                     
-                    <span className="main-error-li">{formErrors.image4 ? formErrors.image4 : ''}</span>
-                    <input className="main-input-style create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image4}
-                        onChange={(e) => setImage4(e.target.value)}
-                    ></input>
+                    {showImage4 && <>
+                        {image4.url ? <div className='images-inner-div'>
+                            <img className="create-post-image"
+                                src={image4.url} 
+                                alt="PostImage1"
+                            />
+                                
+                            <button className="create-post-remove-image-button"
+                                onClick={() => removePicture(4)}
+                            >X</button>
+                            </div>
+                        :
+                        <div className='images-inner-div'>
+                            <input
+                                className="create-post-image-input"
+                                name='image'
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => updateImageFile(e, 4)}
+                            />
+                        </div>
+                        }
+                    </>}
+                    
+                    
+                    
+                    
+                    {!showImage4 && 
+                    <div>
+                        <button type='button'
+                            style={{border: "none", background: "none"}}
+                            onClick={(e) => handleShowImage()}
+                        ><i className="fa-solid fa-plus create-spot-image-add"/></button>
+                    </div>
+                    }
+
                     
                 </div>
                 
                 <div id="create-spot-button-div">
                     <button className="main-button-style create-spot-button" type="button" onClick={closeModal}>Cancel</button>
-                    <button className="main-button-style create-spot-button" type="submit">Create</button>
+                    <button className="main-button-style create-spot-button" type="submit"
+                        
+                    >Create</button>
                 </div>
                 
             </form>

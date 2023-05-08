@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useModal } from "../../context/Modal";
 import * as spotActions from '../../store/spots';
 import GoogleMapComponent from '../GoogleMaps';
 import { csrfFetch } from '../../store/csrf';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+// import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import Geocode from "react-geocode";
 import './CreateSpotModal.css';
+
+
+Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API);
+Geocode.setLanguage("en");
+Geocode.setRegion("us");
+
+if (process.env.NODE_ENV !== 'production') {
+    Geocode.enableDebug();
+}
 
 const CreateSpotModal = () => {
     const dispatch = useDispatch();
@@ -16,9 +26,11 @@ const CreateSpotModal = () => {
     const redirect = useSelector(spotActions.getSpotRedirect);
     
     const [country, setCountry] = useState('');
+    const [fullAddress, setFullAddress] = useState('');
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    const [zipcode, setZipcode] = useState('');
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
@@ -38,8 +50,6 @@ const CreateSpotModal = () => {
     
     const [latt, setLatt] = useState(0.0);
     const [lngt, setLngt] = useState(0.0);
-    
-    const allowedImages = ['.png', '.jpg', '.jpeg', '.gif'];
     
     const validateForm = () => {
         const err = {};
@@ -82,8 +92,8 @@ const CreateSpotModal = () => {
             name,
             description,
             price,
-            lat,
-            lng
+            lat: latt || 0.0,
+            lng: lngt || 0.0
         };
         
         const imageData = [];
@@ -176,18 +186,55 @@ const CreateSpotModal = () => {
         if (!showImage4) return setShowImage4(true);
     }
     
+    
+    
+    const getAddressFromCoords = (lat, lng) => {
+        Geocode.fromLatLng(lat, lng).then(
+            response => {
+              const address = response.results[0].formatted_address;
+              return setFullAddress(address);
+            }, error => {
+                if (process.env.NODE_ENV !== 'production') console.log(error);
+            }
+        );
+    };
+    
+    const navigatorOptions = {
+        enableHighAccuracy: true, 
+        timeout: 5000,
+        maximumAge: 0
+    }
+    
     const getUserAddress = () => {
         if (locateMe) return setLocateMe(false);
-        if (address) return;
         
         navigator.geolocation.getCurrentPosition((position) => {
             const {latitude, longitude} = position.coords
             
             setLatt(latitude);
             setLngt(longitude);
+            getAddressFromCoords(latitude, longitude);
             setLocateMe(true);
-        });
+        }, error => {
+            if (process.env.NODE_ENV !== 'production') console.log(error);
+        }, navigatorOptions);
     };
+    
+    useEffect(() => {
+        if (fullAddress) {
+            const split = fullAddress.split(', ');
+            const streetAddress = split[0];
+            const userCity = split[1];
+            const userState = split[2].slice(0, 2);
+            const userZipCode = split[2].slice(2, split[2].length);
+            const userCountry = split[3];
+
+            setAddress(streetAddress);
+            setCountry(userCountry);
+            setState(userState);
+            setCity(userCity);
+        }
+    }, [fullAddress])
     
     
     if (redirect) return history.push(`/spots/${redirect}`);
@@ -221,25 +268,35 @@ const CreateSpotModal = () => {
                         >Locate Me</button>
                     </div>
                     
-                    {locateMe && 
+                    {(locateMe && latt && lngt) &&
                         <GoogleMapComponent latt={latt} lngt={lngt} heightt={300} widtht={'100%'}/>
                     }
                     
                     <div className="create-spot-input-div">
                         <label>Country <span className="main-error-li">{formErrors.country ? formErrors.country : ''}</span></label>
-                        <CountryDropdown className="main-input-style create-spot-input"
+                        {/* <CountryDropdown className="main-input-style create-spot-input"
                             value={country}
                             onChange={(e) => setCountry(e)} 
-                        />
+                        /> */}
+                        <input className="main-input-style create-spot-input" type="text" 
+                            placeholder='Country' 
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
+                        ></input>
                     </div>
                         
                     <div className="create-spot-input-div">
                         <label>State <span className="main-error-li">{formErrors.state ? formErrors.state : ''}</span></label>
-                        <RegionDropdown className="main-input-style create-spot-input"
+                        {/* <RegionDropdown className="main-input-style create-spot-input"
                             country={country}
                             value={state}
                             onChange={(e) => setState(e)} 
-                        />
+                        /> */}
+                        <input className="main-input-style create-spot-input" type="text" 
+                            placeholder='State' 
+                            value={state}
+                            onChange={(e) => setState(e.target.value)}
+                        ></input>
                     </div>
                     
                     <div className="create-spot-input-div">
@@ -247,7 +304,16 @@ const CreateSpotModal = () => {
                         <input className="main-input-style create-spot-input" type="text" 
                             placeholder='City' 
                             value={city}
-                             onChange={(e) => setCity(e.target.value)}
+                            onChange={(e) => setCity(e.target.value)}
+                        ></input>
+                    </div>
+                    
+                    <div className="create-spot-input-div">
+                        <label>Zipcode <span className="main-error-li">{formErrors.zipcode ? formErrors.zipcode : ''}</span></label>
+                        <input className="main-input-style create-spot-input" type="text" 
+                            placeholder='Zipcode' 
+                            value={zipcode}
+                            onChange={(e) => setZipcode(e.target.value)}
                         ></input>
                     </div>
 

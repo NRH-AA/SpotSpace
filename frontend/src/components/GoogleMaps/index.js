@@ -1,4 +1,4 @@
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -24,7 +24,7 @@ const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
     const onLoad = useCallback(map => {
         const bounds = new window.google.maps.LatLngBounds({lat, lng});
         map.fitBounds(bounds);
-    
+        map.setZoom(10);
         setMap(map);
     }, [])
     
@@ -36,12 +36,18 @@ const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={{lat, lng}}
-            zoom={20}
+            zoom={10}
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            { /* Child components, such as markers, info windows, etc. */ }
-            <></>
+            <Marker 
+                key="marker_1"
+                position={{
+                    lat: lat,
+                    lng: lng
+                }}
+            >
+            </Marker>
       </GoogleMap>
     
     : null

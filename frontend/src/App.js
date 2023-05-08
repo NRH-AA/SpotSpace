@@ -6,7 +6,6 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SpotComponent from './components/Spots';
 import SingleSpot from './components/Spots/SingleSpot';
-import CreateSpot from './components/Spots/SpotCreate';
 import UserSpotsComponent from './components/Spots/UserSpots';
 import UserReviews from './components/Reviews/UserReviews';
 
@@ -25,10 +24,6 @@ function App() {
         <Switch>
           <Route exact path="/">
             <SpotComponent />
-          </Route>
-          
-          <Route path="/spots/new">
-            <CreateSpot />
           </Route>
           
           <Route path="/spots/current">

@@ -33,7 +33,8 @@ const seedSpots = num => {
             lng: faker.address.longitude(),
             name: faker.word.adjective() + ' ' + faker.word.noun({length: { min: 5, max: 8}}),
             description: faker.lorem.paragraph(),
-            price: faker.datatype.number({ min: 50, max: 300})
+            price: faker.datatype.number({ min: 50, max: 300}),
+            zipcode: faker.datatype.number({min: 91000, max: 98900})
         };
         id++;
     };

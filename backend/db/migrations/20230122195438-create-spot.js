@@ -45,6 +45,10 @@ module.exports = {
         type: Sequelize.FLOAT,
         defaultValue: 0
       },
+      zipcode: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false

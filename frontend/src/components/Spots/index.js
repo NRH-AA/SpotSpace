@@ -9,6 +9,7 @@ const SpotComponent = () => {
     const dispatch = useDispatch();
     const spotsState = useSelector(state => state.spots.allSpots);
     const [offset, setOffset] = useState(0);
+    const [isUpdating, setIsUpdating] = useState(false);
     
     useEffect(() => {
         if (!spotsState) dispatch(getAllSpots({offset}));
@@ -22,14 +23,17 @@ const SpotComponent = () => {
         return state.slice(0, 2).toUpperCase();
     }
     
-    const handleScroll = () => {
+    const handleScroll = async () => {
+        if (isUpdating) return;
         const scollable = document.documentElement.scrollHeight - window.innerHeight;
         const scrolled = window.scrollY;
 
         if (Math.ceil(scrolled) >= Math.ceil(scollable)) {
-            const newOffset = offset + 20;
-            dispatch(getAllSpots({offset: newOffset}));
+            const newOffset = offset + 1;
+            setIsUpdating(true);
+            await dispatch(getAllSpots({offset: newOffset}));
             setOffset(newOffset);
+            setIsUpdating(false);
         };
     };
     
@@ -44,7 +48,7 @@ const SpotComponent = () => {
                     <img className="allSpots-img" src={spot.previewImage} alt={spot.name}></img>
                     
                     <div className="allSpots-info-div">
-                        <p className="allSpots-p">{spot.city.slice(0, 25) + ", " + getStateAbb(spot.state)}</p>
+                        <p className="allSpots-p">{spot.city + ", " + getStateAbb(spot.state)}</p>
                         <p className="allSpots-p-2">⭐ {spot?.avgRating > 0 ? spot.avgRating : 'New'}</p>
                     </div>
                     

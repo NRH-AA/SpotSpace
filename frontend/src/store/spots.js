@@ -37,7 +37,7 @@ const deleteUserSpot = (spotId) => ({
 export const getAllSpots = (data) => async dispatch => {
     let url = '/api/spots';
     
-    if (data.offset) url += `?offset=${data.offset}`;
+    if (data.offset) url += `?page=${data.offset}`;
     
     const res = await csrfFetch(url);
     

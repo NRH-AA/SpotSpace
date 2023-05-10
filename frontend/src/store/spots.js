@@ -34,8 +34,12 @@ const deleteUserSpot = (spotId) => ({
 
 
 
-export const getAllSpots = () => async dispatch => {
-    const res = await csrfFetch('/api/spots');
+export const getAllSpots = (data) => async dispatch => {
+    let url = '/api/spots';
+    
+    if (data.offset) url += `?offset=${data.offset}`;
+    
+    const res = await csrfFetch(url);
     
     if (res.ok) {
         const data = await res.json();
@@ -75,7 +79,7 @@ export const createSpot = (data, images) => async dispatch => {
         const spotData = await res.json();
         dispatch(createSpotAction(spotData));
         
-        images.forEach(async image => {
+        await images.forEach(async image => {
             await csrfFetch(`/api/spots/${spotData.id}/images`, {
                 method: 'POST',
                 body: JSON.stringify({url: image.url, preview: image.preview})
@@ -132,12 +136,18 @@ export const getSingleSpotState = (state) => state.spots.singleSpot;
 export const getSpotRedirect = (state) => state.spots.redirect;
 export const getUserSpotsState = (state) => state.spots.userSpots;
 
-const initialState = {}
+const initialState = {
+    allSpots: null,
+    singleSpot: null,
+    userSpots: null,
+    redirect: null
+}
 const spotsReducer = (state = initialState, action) => {
     const newState = { ...state }
     switch (action.type) {
         case SET_ALL_SPOTS:
-            newState.allSpots = [...action.spots];
+            if (newState.allSpots) newState.allSpots = [...newState.allSpots, ...action.spots];
+            else newState.allSpots = [...action.spots];
             newState.redirect = null;
             return newState;
             

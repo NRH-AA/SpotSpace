@@ -1,17 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllSpotsState, getAllSpots } from '../../store/spots';
+import { getAllSpots } from '../../store/spots';
+import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import './Spots.css';
 
 const SpotComponent = () => {
     const dispatch = useDispatch();
-    const spotsState = useSelector(getAllSpotsState);
-    
-    if (!spotsState) dispatch(getAllSpots());
+    const spotsState = useSelector(state => state.spots.allSpots);
+    const [offset, setOffset] = useState(0);
     
     useEffect(() => {
-        if (!spotsState) dispatch(getAllSpots());
+        if (!spotsState) dispatch(getAllSpots({offset}));
     }, [dispatch, spotsState]);
     
     const getStateAbb = (state) => {
@@ -21,6 +21,21 @@ const SpotComponent = () => {
         }
         return state.slice(0, 2).toUpperCase();
     }
+    
+    const handleScroll = () => {
+        const scollable = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = window.scrollY;
+
+        if (Math.ceil(scrolled) >= Math.ceil(scollable)) {
+            const newOffset = offset + 20;
+            dispatch(getAllSpots({offset: newOffset}));
+            setOffset(newOffset);
+        };
+    };
+    
+    useBottomScrollListener(handleScroll);
+    
+    if (!spotsState) return null;
     
     return (
         <div id="allSpots-wrapper">

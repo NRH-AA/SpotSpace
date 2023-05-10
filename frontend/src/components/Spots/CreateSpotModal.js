@@ -44,6 +44,7 @@ const CreateSpotModal = () => {
     const [errors, setErrors] = useState([]);
     const [formErrors, setFormErrors] = useState({});
     const [locateMe, setLocateMe] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
     
     const lat = '0.00';
     const lng = '0.00';
@@ -55,18 +56,17 @@ const CreateSpotModal = () => {
         const err = {};
         
         if (!country) err.country = "Country is required";
-        if (country && (country.length < 5 || country.length > 20)) err.country = "Country length must be 5-20 characters";
         if (!address) err.address = "Address is required";
-        if (address.length < 5 || address.length > 30) err.address = "Address length must be 5-30 characters";
         if (!city) err.city = "City is required"
-        if (city.length < 5 || city.length > 20) err.city = "City length must be 5-20 characters";
         if (!state) err.state = "State is required";
-        if (state && (state.length < 5 || state.length > 15)) err.state = "State length must be 5-15 characters";
-        if (description.length < 30) err.desc = "Description needs a minimum of 30 characters";
-        if (description.length > 250) err.desc = "Description needs a maximum of 250 characters";
         if (!name) err.name = "Name is required";
-        if (name.length < 5 || name.length > 20) err.name = "Title length must be 5-20 characters";
         if (!price) err.price = "Price is required";
+        
+        if (address.length < 5 || address.length > 30) err.address = "Address (5-30) Characters";
+        if (city.length < 5 || city.length > 20) err.city = "City (5-20) Characters";
+        if (description.length < 10 || description.length > 250) err.desc = "Description (10-250) Characters";
+        if (name.length < 5 || name.length > 20) err.name = "Title (5-20) Characters";
+        
         if (price === 0) err.price = "Price cannot be zero" 
         
         if (!image1.url) err.image1 = "Preview image is required";
@@ -74,8 +74,14 @@ const CreateSpotModal = () => {
         return err;
     }
     
+    useEffect(() => {
+        if (isSubmitted) setFormErrors(validateForm());
+    }, [isSubmitted, country, address, state, city, zipcode, description, name, price, image1]);
+    
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        setIsSubmitted(true);
         
         const validateErrors = validateForm();
         if (Object.keys(validateErrors).length > 0) {
@@ -93,7 +99,8 @@ const CreateSpotModal = () => {
             description,
             price,
             lat: latt || 0.0,
-            lng: lngt || 0.0
+            lng: lngt || 0.0,
+            zipcode
         };
         
         const imageData = [];
@@ -233,6 +240,7 @@ const CreateSpotModal = () => {
             setCountry(userCountry);
             setState(userState);
             setCity(userCity);
+            setZipcode(userZipCode);
         }
     }, [fullAddress])
     
@@ -286,14 +294,14 @@ const CreateSpotModal = () => {
                     </div>
                         
                     <div className="create-spot-input-div">
-                        <label>State <span className="main-error-li">{formErrors.state ? formErrors.state : ''}</span></label>
+                        <label>Region <span className="main-error-li">{formErrors.state ? formErrors.state : ''}</span></label>
                         {/* <RegionDropdown className="main-input-style create-spot-input"
                             country={country}
                             value={state}
                             onChange={(e) => setState(e)} 
                         /> */}
                         <input className="main-input-style create-spot-input" type="text" 
-                            placeholder='State' 
+                            placeholder='Region/State' 
                             value={state}
                             onChange={(e) => setState(e.target.value)}
                         ></input>
@@ -344,7 +352,7 @@ const CreateSpotModal = () => {
                     </p>
                     
                     <div>
-                        <span className="main-error-li">{formErrors.name ? formErrors.name : ''}</span>
+                        <span className="main-error-li">{formErrors.name ? formErrors.name : ''}</span><br></br>
                         <input className="main-input-style create-spot-input create-spot-input2" type='text' value={name}
                             placeholder='Name of your spot'
                             onChange={(e) => setName(e.target.value)}
@@ -364,8 +372,10 @@ const CreateSpotModal = () => {
                     />
                 </div>
                 
+                
+                <h3>Show off your space with some images</h3>
+                {formErrors.image1 && <><span className='main-error-li'>* Preview image required.</span><br></br></>}
                 <div id="images-div">
-                    {formErrors.image1 && <span>Preview image required.</span>}
                     {image1.url ? <div className='images-inner-div'>
                         <img className="create-post-image"
                             src={image1.url} 

@@ -67,7 +67,7 @@ const CreateSpotModal = () => {
         if (description.length < 10 || description.length > 250) err.desc = "Description (10-250) Characters";
         if (name.length < 5 || name.length > 20) err.name = "Title (5-20) Characters";
         
-        if (price === 0) err.price = "Price cannot be zero" 
+        if (price === 0) err.price = "Price cannot be zero";
         
         if (!image1.url) err.image1 = "Preview image is required";
         

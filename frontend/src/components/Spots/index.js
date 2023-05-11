@@ -13,7 +13,7 @@ const SpotComponent = () => {
     
     useEffect(() => {
         if (!spotsState) dispatch(getAllSpots({offset}));
-    }, [dispatch, spotsState]);
+    }, [dispatch, spotsState, offset]);
     
     // const getStateAbb = (state) => {
     //     const split = state.split(' ');

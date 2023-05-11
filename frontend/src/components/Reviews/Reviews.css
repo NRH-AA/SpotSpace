@@ -12,10 +12,12 @@
 .reviews-name-p {
     font-size: 18px;
     font-weight: 900;
+    margin-bottom: 5px;
 }
 
 #reviews-stars-div {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 2px;
     border-bottom: 2px dotted rgb(209, 209, 209);
@@ -36,12 +38,12 @@
 .reviews-star-date-div {
     display: flex;
     align-items: center;
+    margin-bottom: -15px;
 }
 
 .reviews-button-div {
     display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+    gap: 20px;
 }
 
 .reviews-button {

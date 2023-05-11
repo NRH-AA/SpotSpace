@@ -1,12 +1,14 @@
 .create-spot-wrapper {
+    width: auto;
     margin: auto;
-    width: 100%;
     padding: 20px;
+    background-color: white;
+    border-radius: 15px;
 }
 
 #create-spot-inner-div {
     height: 800px;
-    width: 90%;
+    width: 900px;
     padding-left: 5px;
     margin: auto;
     overflow-y: auto;

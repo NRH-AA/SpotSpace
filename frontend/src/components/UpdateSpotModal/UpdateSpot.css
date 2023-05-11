@@ -1,3 +1,11 @@
+#update-spot-wrapper {
+    height: 800px;
+    width: 600px;
+    padding-left: 15px;
+    margin: auto;
+    overflow-y: auto;
+}
+
 #price-h3 {
     margin-bottom: -5px;
 }
@@ -11,4 +19,44 @@
 .update-spot-button {
     width: 120px;
     height: 25px;
+}
+
+#update-spot-top {
+    width: 80%;
+    border-bottom: 2px solid black;
+}
+
+.update-spot-input-div {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    margin-bottom: 5px;
+}
+
+#update-desc-div {
+    width: 81%;
+    border-bottom: 2px solid black;
+}
+
+#update-desc-textarea {
+    width: 98%;
+    height: 150px;
+    resize: none;
+    outline: none;
+    margin-bottom: 10px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 4px 1px rgb(102, 102, 102);
+}
+
+#update-title-div {
+    width: 80%;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+}
+
+.update-spot-input {
+    box-shadow: 0px 0px 2px 1px rgb(146, 146, 146);
+    border: 2px solid rgb(87, 87, 87);
+    background-color: rgb(230, 230, 230);
+    width: 370px;
 }

@@ -73,7 +73,7 @@ const ReviewsComponent = ({ spotId }) => {
                         </>
                     : <p>Log in to post a review</p>}
                 </>
-            :<p>Your spot has no reviews yet</p>}
+            :(!reviewData?.length) && <p>Your spot has no reviews yet</p>}
             
             </h3>
             

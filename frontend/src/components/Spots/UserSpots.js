@@ -47,19 +47,21 @@ const UserSpotsComponent = () => {
                         {" " + "night"}
                         </p>
                         
-                        <OpenModalButton
-                            spotId={spot.id}
-                            className="main-button-empty"
-                            buttonText={<i className="fas fa-edit allSpots-update-button"/>}
-                            modalComponent={<UpdateSpotModal />}
-                        />
+                        <div className='userSpots-update-buttons-div'>
+                            <OpenModalButton
+                                spotId={spot.id}
+                                className="main-button-empty"
+                                buttonText={<i className="fas fa-edit allSpots-update-button"/>}
+                                modalComponent={<UpdateSpotModal />}
+                            />
 
-                        <OpenModalButton
-                            spotId={spot.id}
-                            className="main-button-empty"
-                            buttonText={<i className="fa fa-trash allSpots-delete-button"/>}
-                            modalComponent={<DeleteSpotModal />}
-                        />
+                            <OpenModalButton
+                                spotId={spot.id}
+                                className="main-button-empty"
+                                buttonText={<i className="fa fa-trash allSpots-delete-button"/>}
+                                modalComponent={<DeleteSpotModal />}
+                            />
+                        </div>
                     </div>
             </Link>
             )}

@@ -22,7 +22,7 @@ const ReviewsComponent = ({ spotId }) => {
     if (!spotId || !reviewData) return null;
     if (reviewData && reviewData[0]?.spotId !== parseInt(spotId)) return null;
     
-    const formatDate = (date) => date.slice(0, 9).split('-').reverse().join('-');
+    const formatDate = (date) => date.slice(0, 10).split('-').reverse().join('-');
     
     const getStarReviewsText = () => {
         if (!spotData) return ('');
@@ -34,7 +34,7 @@ const ReviewsComponent = ({ spotId }) => {
     function getStars(num) {
         const starImgs = [];
         for (let i = 1; i <= num; i++) {
-            starImgs.push(<img key={i} src={Star}/>)
+            starImgs.push(<img className='review-star-img' key={i} src={Star} alt='star'/>)
         }
         return starImgs;
     };
@@ -86,9 +86,14 @@ const ReviewsComponent = ({ spotId }) => {
                                 {el.User?.firstName}
                             </p>
                             
-                            {el.stars ? 
-                                getStars(el.stars)
-                            : ''}
+                            <div className='reviews-star-date-div'>
+                                {el.stars && getStars(el.stars)}
+                                <span className="reviews-date-p">
+                                    <ul>
+                                        <li>{formatDate(el.updatedAt)}</li>
+                                    </ul>
+                                </span>
+                            </div>
                         </div>
                         
                         {el?.userId === userData?.id ?
@@ -109,10 +114,6 @@ const ReviewsComponent = ({ spotId }) => {
                         : ''}
                         
                     </div>
-                    
-                    <p className="reviews-date-p">
-                        {formatDate(el.updatedAt)}
-                    </p>
                 
                     <p className="reviews-review-p" key={el.id}>{el.review}</p>
                     

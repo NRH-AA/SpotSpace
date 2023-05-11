@@ -102,7 +102,7 @@ const seedReviews = num => {
     for (let i in reviews) {
         reviews[i] = {
             spotId: id,
-            userId: rNum(5),
+            userId: rNum(100),
             review: faker.lorem.paragraph(),
             stars: rNum(5)
         };

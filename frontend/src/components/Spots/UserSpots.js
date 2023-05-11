@@ -11,12 +11,9 @@ const UserSpotsComponent = () => {
     const dispatch = useDispatch();
     const userSpots = useSelector(state => state.spots.userSpots);
     
-    const spots = userSpots ? userSpots : null;
-    
-    
     useEffect(() => {
         if (!userSpots) dispatch(getUserSpots());
-    }, [dispatch])
+    }, [dispatch, userSpots]);
     
     // const getStateAbb = (state) => {
     //     const split = state.split(' ');
@@ -42,7 +39,7 @@ const UserSpotsComponent = () => {
                     
                     <div className="allSpots-price-div">   
                         <p className="allSpots-p"><b>{"$" + spot.price}</b> 
-                        {" " + "night"}
+                        {` night`}
                         </p>
                         
                         <div className='userSpots-update-buttons-div'>

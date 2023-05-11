@@ -5,7 +5,8 @@
 .reviews-review-p {
     width: 60%;
     text-align: justify;
-    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14.5px;
+    font-weight: 500;
 }
 
 .reviews-name-p {
@@ -16,7 +17,6 @@
 #reviews-stars-div {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 2px;
     border-bottom: 2px dotted rgb(209, 209, 209);
 }
@@ -24,12 +24,18 @@
 #reviews-stars-flex {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 5px;
 }
 
 .reviews-date-p {
-    margin-top: -20px;
+    margin-left: -15px;
+    text-indent: -5px;
     color: rgb(177, 177, 177);
+}
+
+.reviews-star-date-div {
+    display: flex;
+    align-items: center;
 }
 
 .reviews-button-div {
@@ -41,6 +47,10 @@
 .reviews-button {
     background: none;
     border: none;
+}
+
+.review-star-img {
+    mix-blend-mode: multiply;
 }
 
 .create-review-button {

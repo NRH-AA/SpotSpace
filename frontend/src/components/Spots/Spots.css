@@ -80,6 +80,11 @@
     color: red;
 }
 
+.userSpots-update-buttons-div {
+    display: flex;
+    gap: 10px;
+}
+
 @media (max-width: 799px) {
     #allSpots-wrapper {
         flex-direction: column;

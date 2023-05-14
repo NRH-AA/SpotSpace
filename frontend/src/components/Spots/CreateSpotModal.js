@@ -332,6 +332,9 @@ const CreateSpotModal = () => {
                     <p className="desc-p">Mention the best features of your space, any special amentities
                         like fast wifi or parking, and what you love about the neighborhood.
                     </p>
+                    <p>
+                        Markdown Language Supported!
+                    </p>
                     
                     <div id="desc-div">
                         <span className="main-error-li">{formErrors.desc ? formErrors.desc : ''}</span>

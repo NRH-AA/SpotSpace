@@ -6,6 +6,7 @@ import ReviewsComponent from "../Reviews";
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "../DeleteSpotModal";
 import UpdateSpotModal from "../UpdateSpotModal";
+import MarkDownComponant from "../MarkdownComponent";
 import './SingleSpot.css';
 
 const SingleSpot = () => {
@@ -110,7 +111,8 @@ const SingleSpot = () => {
             <div className="spot-desc-div">
               <div>
               <h2 id="singleSpot-owner-h2">{'Hosted by ' + spotOwner?.firstName + ' ' + spotOwner?.lastName}</h2>
-                <p>{spotsState?.description}</p>
+                {/* <p>{spotsState?.description}</p> */}
+                <MarkDownComponant text={spotsState?.description}/>
               </div>
               
               {spotsState?.ownerId !== userState?.id &&

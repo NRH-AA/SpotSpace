@@ -51,7 +51,7 @@ const UpdateSpotModal = () => {
         
         if (address.length < 5 || address.length > 30) err.address = "Address (5-30) Characters";
         if (city.length < 5 || city.length > 20) err.city = "City (5-20) Characters";
-        if (description.length < 10 || description.length > 250) err.desc = "Description (10-250) Characters";
+        if (description.length < 10 || description.length > 500) err.desc = "Description (10-500) Characters";
         if (name.length < 5 || name.length > 20) err.name = "Title (5-20) Characters";
         
         if (price === 0) err.price = "Price cannot be zero";

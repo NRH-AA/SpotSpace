@@ -152,7 +152,9 @@ router.get('/:id', async (req, res) => {
         attributes: ['id', 'firstName', 'lastName']
     });
     
-    return res.json(spotData);
+    console.log("***********************", spotData);
+    
+    return res.status(200).json(spotData);
 })
 
 // Create Spot

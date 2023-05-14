@@ -10,52 +10,55 @@ import MarkDownComponant from "../MarkdownComponent";
 import './SingleSpot.css';
 
 const SingleSpot = () => {
-    const dispatch = useDispatch();
-    const { spotId } = useParams();
-    const spotsState = useSelector(state => state.spots.singleSpot);
-    const userState = useSelector(state => state.session.user);
-    
-    
-    const spotImages = spotsState?.SpotImages ? [...spotsState?.SpotImages] : null;
-    const spotOwner = spotsState?.Owner || null;
-    
-    useEffect(() => {
-      if (spotsState?.id !== parseInt(spotId)) dispatch(getSpot(parseInt(spotId)));
-    }, [dispatch, spotId, spotsState])
-    
-    
-    function getPreviewImage() {
+      const dispatch = useDispatch();
+      const { spotId } = useParams();
+      const spotsState = useSelector(state => state.spots.singleSpot);
+      const userState = useSelector(state => state.session.user);
+      
+      const [spot, setSpot] = useState(spotsState?.id ? spotsState : null);
+      const [spotImages, setSpotImages] = useState(spot?.SpotImages || null);
+      const [spotOwner, setSpotOwner] = useState(spot?.Owner || null);
+      
+      useEffect(() => {
+        if (!spotsState) dispatch(getSpot(parseInt(spotId)));
+        if (!spot) setSpot(spotsState);
+        if (!spotImages) setSpotImages(spot?.SpotImages || null);
+        if (!spotOwner) setSpotOwner(spot?.Owner || null);
+      }, [dispatch, spotId, spot, spotsState, spotImages, spotOwner]);
+      
+      
+      function getPreviewImage() {
+          if (spotImages) {
+          for (let img of spotImages) {
+            if (img.preview) return img;
+          }
+          }
+          return null;
+      }
+      
+      function isSpotImage(url) {
         if (spotImages) {
         for (let img of spotImages) {
-          if (img.preview) return img;
+          if (url === img.url) return true;
         }
         }
-        return null;
-    }
-    
-    function isSpotImage(url) {
-      if (spotImages) {
-      for (let img of spotImages) {
-        if (url === img.url) return true;
+        return false;
       }
+      
+      const [preview, setPreview] = useState(null);
+      
+      useEffect(() => {
+        if (!preview?.url || !isSpotImage(preview?.url)) setPreview(getPreviewImage());
+      }, [preview, spotImages]);
+      
+      const getStarReviewsText = () => {
+          if (!spot) return ('');
+          if (spot.numReviews === 1) return `${spot?.avgStarRating + ' ·'}  ${spot?.numReviews} Review`;
+          if (spot.numReviews === 0) return ` New`;
+          return `${spot?.avgStarRating + ' ·'}  ${spot?.numReviews} Reviews`
       }
-      return false;
-    }
-    
-    const [preview, setPreview] = useState(null);
-    
-    useEffect(() => {
-      if (!preview?.url || !isSpotImage(preview?.url)) setPreview(getPreviewImage());
-    }, [preview, spotImages]);
-    
-    if (!spotsState || spotsState?.id !== parseInt(spotId)) return null;
-    
-  const getStarReviewsText = () => {
-      if (!spotsState) return ('');
-      if (spotsState.numReviews === 1) return `${spotsState?.avgStarRating + ' ·'}  ${spotsState?.numReviews} Review`;
-      if (spotsState.numReviews === 0) return ` New`;
-      return `${spotsState?.avgStarRating + ' ·'}  ${spotsState?.numReviews} Reviews`
-  }
+      
+      if (!spot) return null;
     
     return (
         <div id="singleSpot-wrapper">
@@ -63,8 +66,8 @@ const SingleSpot = () => {
             
             <div id="singleSpot-title-div">
               <div>
-                <h2 className="singleSpot-h2">{spotsState?.name?.toUpperCase()}</h2>
-                <p>{spotsState?.city?.toUpperCase() + ", " + spotsState?.state?.toUpperCase() + ", " + spotsState?.country?.toUpperCase()}</p>
+                <h2 className="singleSpot-h2">{spot?.name?.toUpperCase()}</h2>
+                <p>{spot?.city?.toUpperCase() + ", " + spot?.state?.toUpperCase() + ", " + spot?.country?.toUpperCase()}</p>
               </div>
               
             </div>
@@ -90,17 +93,17 @@ const SingleSpot = () => {
             </div>
             
             
-            {(spotsState?.ownerId === userState?.id) &&
+            {(spot?.ownerId === userState?.id) &&
               <div id="singleSpot-edit-buttons-div">
                 <OpenModalButton
-                    spotId={spotsState?.id}
+                    spotId={spot?.id}
                     className="singleSpots-edit-button"
                     buttonText={<i className="fa-solid fa-pen-to-square singleSpot-edit-square"/>}
                     modalComponent={<UpdateSpotModal />}
                 />
 
                 <OpenModalButton
-                    spotId={spotsState?.id}
+                    spotId={spot?.id}
                     className="singleSpots-delete-button"
                     buttonText={<i className="fa fa-trash singleSpot-delete-trash"/>}
                     modalComponent={<DeleteSpotModal />}
@@ -112,15 +115,15 @@ const SingleSpot = () => {
               <div>
               <h2 id="singleSpot-owner-h2">{'Hosted by ' + spotOwner?.firstName + ' ' + spotOwner?.lastName}</h2>
                 {/* <p>{spotsState?.description}</p> */}
-                <MarkDownComponant text={spotsState?.description}/>
+                <MarkDownComponant text={spot?.description}/>
               </div>
               
-              {spotsState?.ownerId !== userState?.id &&
+              {spot?.ownerId !== userState?.id &&
                 <div className="spot-reserve">
                   <div id="spot-reserve-div">
                     
                     <div id="spot-reserve-text">
-                      <p><span id="spot-reserve-span">{"$" + spotsState?.price}</span> {' night'}</p>
+                      <p><span id="spot-reserve-span">{"$" + spot?.price}</span> {' night'}</p>
                       <b>⭐{getStarReviewsText()}</b>
                     </div>
                     

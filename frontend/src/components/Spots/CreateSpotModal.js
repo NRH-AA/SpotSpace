@@ -23,8 +23,6 @@ const CreateSpotModal = () => {
     const history = useHistory();
     const { closeModal } = useModal();
     
-    const redirect = useSelector(spotActions.getSpotRedirect);
-    
     const [country, setCountry] = useState('');
     const [fullAddress, setFullAddress] = useState('');
     const [address, setAddress] = useState('');
@@ -78,13 +76,14 @@ const CreateSpotModal = () => {
         if (isSubmitted) setFormErrors(validateForm());
     }, [isSubmitted, country, address, state, city, zipcode, description, name, price, image1]);
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
         setIsSubmitted(true);
         
         const validateErrors = validateForm();
         if (Object.keys(validateErrors).length > 0) {
+            alert('Please Fix Form Errors.');
             return setFormErrors(validateErrors);
         };
         
@@ -98,8 +97,8 @@ const CreateSpotModal = () => {
             name,
             description,
             price,
-            lat: latt || 0.0,
-            lng: lngt || 0.0,
+            lat: `${latt}` || lat,
+            lng: `${lngt}` || lat,
             zipcode
         };
         
@@ -109,16 +108,17 @@ const CreateSpotModal = () => {
         if (image3.url) imageData.push({url: image3.url, preview: false});
         if (image4.url) imageData.push({url: image4.url, preview: false});
 
-        dispatch(spotActions.createSpot(spotData, imageData))
+        await dispatch(spotActions.createSpot(spotData, imageData))
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) return setErrors(data.errors);
         });
         
-        return closeModal();
+        closeModal();
+        return history.push(`/spots/current`);
     };
     
-    const createDemoSpot = (e) => {
+    const createDemoSpot = async (e) => {
         e.preventDefault();
 
         const spotData = {
@@ -136,13 +136,14 @@ const CreateSpotModal = () => {
         const imageData = [];
         imageData.push({url: 'https://static.planetminecraft.com/files/resource_media/screenshot/1408/family_guy_griffin_house.jpg', preview: true})
         
-        dispatch(spotActions.createSpot(spotData, imageData))
+        await dispatch(spotActions.createSpot(spotData, imageData))
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) return setErrors(data.errors);
         });
         
-        return closeModal();
+        closeModal();
+        return history.push(`/spots/current`);
     }
     
     
@@ -243,9 +244,6 @@ const CreateSpotModal = () => {
             setZipcode(userZipCode);
         }
     }, [fullAddress])
-    
-    
-    if (redirect) return history.push(`/spots/${redirect}`);
     
     return (
         <div className="create-spot-wrapper">

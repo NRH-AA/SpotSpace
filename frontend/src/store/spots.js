@@ -3,7 +3,6 @@ import { csrfFetch } from './csrf';
 const SET_ALL_SPOTS = 'spots/SET';
 const SET_SPOT = 'spot/SET';
 const SET_USER_SPOTS = 'spots/SET_USER';
-const CREATE_SPOT = 'spot/CREATE';
 const UPDATE_SPOT = 'spot/UPDATE';
 const DELETE_SPOT = 'spot/DELETE';
 
@@ -14,11 +13,6 @@ const setAllSpots = (spots) => ({
 
 const setSingleSpot = (spot) => ({
     type: SET_SPOT,
-    spot
-});
-
-const createSpotAction = (spot) => ({
-    type: CREATE_SPOT,
     spot
 });
 
@@ -77,7 +71,6 @@ export const createSpot = (data, images) => async dispatch => {
     
     if (res.ok) {
         const spotData = await res.json();
-        dispatch(createSpotAction(spotData));
         
         await images.forEach(async image => {
             await csrfFetch(`/api/spots/${spotData.id}/images`, {
@@ -87,6 +80,8 @@ export const createSpot = (data, images) => async dispatch => {
         });
         
         dispatch(getSpot(spotData.id));
+        dispatch(getUserSpots());
+        return spotData;
     };
     
     return res;
@@ -148,17 +143,11 @@ const spotsReducer = (state = initialState, action) => {
         case SET_ALL_SPOTS:
             if (newState.allSpots) newState.allSpots = [...newState.allSpots, ...action.spots];
             else newState.allSpots = [...action.spots];
-            newState.redirect = null;
             return newState;
             
         case SET_SPOT:
             newState.singleSpot = {...action.spot};
-            newState.redirect = null;
-            return newState;
-            
-        case CREATE_SPOT:
-            newState.singleSpot = null;
-            newState.redirect = action.spot.id;
+            newState.allSpots = null;
             return newState;
             
         case SET_USER_SPOTS:

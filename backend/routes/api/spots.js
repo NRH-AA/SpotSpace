@@ -152,8 +152,6 @@ router.get('/:id', async (req, res) => {
         attributes: ['id', 'firstName', 'lastName']
     });
     
-    console.log("***********************", spotData);
-    
     return res.status(200).json(spotData);
 })
 

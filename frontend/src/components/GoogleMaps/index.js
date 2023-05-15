@@ -12,7 +12,6 @@ const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
     
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        // googleMapsApiKey: api
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API
     });
     

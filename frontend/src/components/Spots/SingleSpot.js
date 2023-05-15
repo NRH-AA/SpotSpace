@@ -7,6 +7,7 @@ import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "../DeleteSpotModal";
 import UpdateSpotModal from "../UpdateSpotModal";
 import MarkDownComponant from "../MarkdownComponent";
+import BookingsModal from "../BookingsModal";
 import './SingleSpot.css';
 
 const SingleSpot = () => {
@@ -127,7 +128,14 @@ const SingleSpot = () => {
                       <b>⭐{getStarReviewsText()}</b>
                     </div>
                     
-                    <button id="spot-reserve-button" className='main-button-style' onClick={() => alert('Feature not implimented.')}>Reserve</button>
+                    {/* <button id="spot-reserve-button" className='main-button-style' onClick={() => alert('Feature not implimented.')}>Reserve</button> */}
+                    <OpenModalButton
+                      className="spot-reserve-button main-button-style"
+                      buttonText='Reserve'
+                      modalComponent={<BookingsModal spotId={spot?.id}/>}
+                    />
+                  
+                  
                   </div>
                 </div>
               }

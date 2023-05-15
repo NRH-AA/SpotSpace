@@ -411,7 +411,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
             "message": "Spot couldn't be found",
             "statusCode": 404
         });
-    }
+    };
     
     let attributes;
     const include = {};

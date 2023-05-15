@@ -120,7 +120,19 @@ export const deleteSpot = (spotId) => async dispatch => {
     return false;
 };
 
-
+export const createBooking = (spotId, data) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${spotId}/bookings`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+    
+    if (res.ok) {
+        dispatch(getSpot(spotId));
+        return true;
+    }
+    
+    return false;
+};
 
 
 

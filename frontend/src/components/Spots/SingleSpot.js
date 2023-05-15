@@ -132,7 +132,7 @@ const SingleSpot = () => {
                     <OpenModalButton
                       className="spot-reserve-button main-button-style"
                       buttonText='Reserve'
-                      modalComponent={<BookingsModal spotId={spot?.id}/>}
+                      modalComponent={<BookingsModal spot={spot}/>}
                     />
                   
                   

@@ -21,8 +21,8 @@ const SingleSpot = () => {
       const [spotOwner, setSpotOwner] = useState(spot?.Owner || null);
       
       useEffect(() => {
-        if (!spotsState) dispatch(getSpot(parseInt(spotId)));
-        if (!spot) setSpot(spotsState);
+        if (!spotsState || spotsState.id !== parseInt(spotId)) dispatch(getSpot(parseInt(spotId)));
+        if (!spot || spot.id !== parseInt(spotId)) setSpot(spotsState);
         if (!spotImages) setSpotImages(spot?.SpotImages || null);
         if (!spotOwner) setSpotOwner(spot?.Owner || null);
       }, [dispatch, spotId, spot, spotsState, spotImages, spotOwner]);
@@ -59,7 +59,7 @@ const SingleSpot = () => {
           return `${spot?.avgStarRating + ' ·'}  ${spot?.numReviews} Reviews`
       }
       
-      if (!spot) return null;
+    if (!spot || spot.id !== parseInt(spotId)) return null;
     
     return (
         <div id="singleSpot-wrapper">

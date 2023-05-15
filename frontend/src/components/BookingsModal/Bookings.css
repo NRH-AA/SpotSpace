@@ -1,10 +1,40 @@
 #bookings-modal-container {
-    width: 100%;
+    width: 420px;
     height: auto;
     padding: 50px;
 }
 
+#bookings-modal-div {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
 
+#bookings-total-div {
+    width: 80%;
+    height: 50px;
+    background-color: rgb(224, 224, 224);
+    border-radius: 15px;
+}
+
+#bookings-total-p {
+    text-align: center;
+}
+
+#bookings-button-div {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.bookings-button {
+    width: 150px;
+    height: 25px;
+    font-weight: 700;
+    font-size: 16px;
+}
 
 
 

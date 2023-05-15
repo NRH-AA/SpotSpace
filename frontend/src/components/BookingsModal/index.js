@@ -13,16 +13,30 @@ const BookingsModal = ({spot}) => {
     const { closeModal } = useModal();
     const [startDate, setStartDate] = useState(new Date());
     const [filledDates, setFilledDates] = useState(null);
-    const [getBookings, setGetBookings] = useState(true);
     const [days, setDays] = useState(0);
     const [errors, setErrors] = useState('');
+    const [hasData, setHasData] = useState(false);
     
+    
+    
+    const addDays = (date, days) => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
     
     const getDaysArray = (start, end) => {
-        for(var arr=[], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate()+1)) {
-            arr.push(new Date(dt));
+        const array = [];
+        
+        let currDate = start;
+        if (!start) return;
+        
+        while (currDate.getDate() <= end.getDate()) {
+            array.push(currDate);
+            currDate = addDays(currDate, 1);
         }
-        return arr;
+        
+        return array;
     };
     
     const getSpotBookings = async () => {
@@ -32,12 +46,13 @@ const BookingsModal = ({spot}) => {
             
             if (data) {
                 let newFilledDates = [];
+                
                 for (let i = 0; i < data.Bookings.length - 1; i++) {
                     const booking = data.Bookings[i];
-                    const bookingDays = getDaysArray(new Date(booking.startDate), new Date(booking.endDate));
+                    const bookingDays = getDaysArray(new Date(booking.startDate), new Date(booking.endDate || booking.startDate));
                     newFilledDates = [...newFilledDates, ...bookingDays];
-                }
-                console.log(newFilledDates);
+                };
+
                 setFilledDates(newFilledDates);
             } else {
                 setFilledDates([]);
@@ -46,16 +61,18 @@ const BookingsModal = ({spot}) => {
     };
     
     useEffect(() => {
-        if (getBookings) {
-            getSpotBookings();
-            setGetBookings(false);
-        };
-    }, [getBookings]);
+        const getSpots = async () => {
+            setHasData(false);
+            await getSpotBookings();
+            setHasData(true);
+        }
+        getSpots();
+    }, []);
     
     useEffect(() => {
         const daysCount = getDaysArray(startDate[0], startDate[1]);
-        setDays(daysCount.length);
-    }, [startDate])
+        setDays(daysCount?.length);
+    }, [startDate]);
     
     function isSameDay(a, b) {
         return differenceInCalendarDays(a, b) === 0;
@@ -65,7 +82,7 @@ const BookingsModal = ({spot}) => {
         return filledDates.find(dDate => isSameDay(dDate, date));
     }
     
-    if (!filledDates || !spot?.id) return null;
+    if (!filledDates || !spot?.id || !hasData) return null;
     
     const handleBookSpot = async () => {
         for (let i = 0; i < startDate.length - 1; i++) {
@@ -81,7 +98,11 @@ const BookingsModal = ({spot}) => {
         
         const ret = await dispatch(createBooking(spot.id, data));
         if (!ret) return setErrors('Failed to create booking. Try again.');
-        alert('Booking created sucessfully!');
+        
+        setFilledDates(null);
+        setDays(0);
+        setHasData(false);
+        
         return closeModal();
     }
     

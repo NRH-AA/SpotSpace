@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf';
 
 const SET_ALL_SPOTS = 'spots/SET';
 const SET_SPOT = 'spot/SET';
+const SET_SPOT_BOOKINGS = 'spot/SET_SPOT_BOOKINGS';
 const SET_USER_SPOTS = 'spots/SET_USER';
 const UPDATE_SPOT = 'spot/UPDATE';
 const DELETE_SPOT = 'spot/DELETE';
@@ -14,6 +15,11 @@ const setAllSpots = (spots) => ({
 const setSingleSpot = (spot) => ({
     type: SET_SPOT,
     spot
+});
+
+const setSpotBookings = (bookings) => ({
+   type: SET_SPOT_BOOKINGS,
+   bookings
 });
 
 const setUserSpots = (spots) => ({
@@ -128,6 +134,7 @@ export const createBooking = (spotId, data) => async dispatch => {
     
     if (res.ok) {
         dispatch(getSpot(spotId));
+        dispatch(getAllSpots());
         return true;
     }
     
@@ -146,6 +153,7 @@ export const getUserSpotsState = (state) => state.spots.userSpots;
 const initialState = {
     allSpots: null,
     singleSpot: null,
+    bookings: null,
     userSpots: null,
     redirect: null
 }

@@ -1,76 +1,81 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useModal } from "../../context/Modal";
 import { csrfFetch } from '../../store/csrf';
 import Calendar from 'react-calendar';
 import { differenceInCalendarDays } from 'date-fns';
+import { getSpotBookings } from '../../store/spots';
 import { createBooking } from '../../store/spots';
 import './Bookings.css';
 
 const BookingsModal = ({spot}) => {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
-    const [startDate, setStartDate] = useState(new Date());
+    const bookings = useSelector(state => state.spots.bookings);
+    const singleSpot = useSelector(state => state.spots.singleSpot);
+    
+    const [startDate, setStartDate] = useState(0);
     const [filledDates, setFilledDates] = useState(null);
     const [days, setDays] = useState(0);
     const [errors, setErrors] = useState('');
-    const [hasData, setHasData] = useState(false);
     
     
-    
-    const addDays = (date, days) => {
-        const result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-    }
-    
-    const getDaysArray = (start, end) => {
+    const getDaysArray = (start, end, isCount) => {
         const array = [];
         
-        let currDate = start;
-        if (!start) return;
+        if (isCount && startDate === 0) return [];
         
-        while (currDate.getDate() <= end.getDate()) {
+        start = new Date(start);
+        start = new Date(start.setDate(start.getDate() - 1));
+        end = new Date(end);
+        
+        if (isSameDay(start, end)) return [start];
+        
+        let currDate = start;
+        while (currDate.getDate() < end.getDate()) {
             array.push(currDate);
-            currDate = addDays(currDate, 1);
+            const nextDate = currDate.setDate(currDate.getDate() + 1);
+            currDate = new Date(nextDate);
         }
         
         return array;
     };
     
-    const getSpotBookings = async () => {
-        const res = await csrfFetch(`/api/spots/${spot.id}/bookings`);
-        if (res.ok) {
-            const data = await res.json();
-            
-            if (data) {
-                let newFilledDates = [];
-                
-                for (let i = 0; i < data.Bookings.length - 1; i++) {
-                    const booking = data.Bookings[i];
-                    const bookingDays = getDaysArray(new Date(booking.startDate), new Date(booking.endDate || booking.startDate));
+    const getSpotFilledDates = () => {
+        let newFilledDates = [];
+        
+        if (bookings?.length) {
+            console.log(bookings)
+            for (let i = 0; i < bookings.length; i++) {
+                const booking = bookings[i];
+                const bookingDays = getDaysArray(booking.startDate, booking.endDate);
+                if (Array.isArray(bookingDays)) {
                     newFilledDates = [...newFilledDates, ...bookingDays];
-                };
-
-                setFilledDates(newFilledDates);
-            } else {
-                setFilledDates([]);
+                }
             };
-        };
+            console.log(newFilledDates);
+            setFilledDates(newFilledDates);
+        } else {
+            setFilledDates([]);
+        }
     };
     
     useEffect(() => {
-        const getSpots = async () => {
-            setHasData(false);
-            await getSpotBookings();
-            setHasData(true);
-        }
-        getSpots();
-    }, []);
+        const getBookings = async () => await dispatch(getSpotBookings(spot.id));
+        getBookings();
+    }, [spot, singleSpot, startDate]);
     
     useEffect(() => {
-        const daysCount = getDaysArray(startDate[0], startDate[1]);
+        getSpotFilledDates();
+    }, [bookings, spot, singleSpot, startDate]);
+    
+    useEffect(() => {
+        setErrors('');
+    }, [startDate])
+    
+    useEffect(() => {
+        const daysCount = getDaysArray(startDate[0], startDate[1], true);
         setDays(daysCount?.length);
     }, [startDate]);
     
@@ -79,10 +84,11 @@ const BookingsModal = ({spot}) => {
     }
     
     const tileDisabled = ({date, view}) => {
+        if (!filledDates) return false;
         return filledDates.find(dDate => isSameDay(dDate, date));
     }
     
-    if (!filledDates || !spot?.id || !hasData) return null;
+    if (!spot?.id || spot?.id !== singleSpot?.id) return null;
     
     const handleBookSpot = async () => {
         for (let i = 0; i < startDate.length - 1; i++) {
@@ -91,22 +97,26 @@ const BookingsModal = ({spot}) => {
             };
         }
         
-        const data = {
-            startDate: startDate[0],
-            endDate: startDate[startDate.length - 1]
-        };
+        console.log(startDate);
+        
+        const data = {};
+        
+        if (days === 1) data.startDate = startDate[0];
+        else data.startDate = startDate[0];
+        
+        if (days === 1) data.endDate = startDate[0];
+        else data.endDate = startDate[1];
         
         const ret = await dispatch(createBooking(spot.id, data));
         if (!ret) return setErrors('Failed to create booking. Try again.');
         
-        setFilledDates(null);
+        setFilledDates([]);
         setDays(0);
-        setHasData(false);
         
         return closeModal();
     }
     
-    return <div id='bookings-modal-container'>
+    return (<div id='bookings-modal-container'>
         <div id='bookings-modal-div'>
             <h2>Book {spot?.name}</h2>
             
@@ -116,7 +126,7 @@ const BookingsModal = ({spot}) => {
             
             <Calendar 
                 onChange={setStartDate} 
-                value={startDate}
+                value={startDate || null}
                 minDate={new Date()}
                 minDetail='decade'
                 calendarType='US'
@@ -125,7 +135,7 @@ const BookingsModal = ({spot}) => {
             ></Calendar>
             
             {days ? <div id='bookings-total-div'>
-                <p id='bookings-total-p'>{`Book ${days} nights for $${days * spot.price}.00`}</p>
+                <p id='bookings-total-p'>{`Book ${days} ${days > 1 ? 'nights' : 'night'} for $${days * spot.price}.00`}</p>
             </div>
             : ''}
             
@@ -140,7 +150,7 @@ const BookingsModal = ({spot}) => {
             </div>: ''}
             
         </div>
-    </div>
+    </div>)
 };
 
 export default BookingsModal;

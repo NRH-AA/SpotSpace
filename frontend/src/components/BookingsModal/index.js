@@ -46,7 +46,7 @@ const BookingsModal = ({spot}) => {
         let newFilledDates = [];
         
         if (bookings?.length) {
-            console.log(bookings)
+
             for (let i = 0; i < bookings.length; i++) {
                 const booking = bookings[i];
                 const bookingDays = getDaysArray(booking.startDate, booking.endDate);
@@ -54,7 +54,7 @@ const BookingsModal = ({spot}) => {
                     newFilledDates = [...newFilledDates, ...bookingDays];
                 }
             };
-            console.log(newFilledDates);
+
             setFilledDates(newFilledDates);
         } else {
             setFilledDates([]);
@@ -96,8 +96,6 @@ const BookingsModal = ({spot}) => {
                 return setErrors('You have selected a booked date.');
             };
         }
-        
-        console.log(startDate);
         
         const data = {};
         

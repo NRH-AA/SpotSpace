@@ -447,7 +447,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
         });
     };
     
-    if (startDate >= endDate) {
+    if (startDate > endDate) {
         return res.status(400).json({
             "message": "Validation error",
             "statusCode": 400,

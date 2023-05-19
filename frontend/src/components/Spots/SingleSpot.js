@@ -22,10 +22,10 @@ const SingleSpot = () => {
     const [showStartCalendar, setShowStartCalendar] = useState(false);
     const [endDate, setEndDate] = useState(new Date());
     const [showEndCalendar, setShowEndCalendar] = useState(false);
-    const [guests, setGuests] = useState(1);
     const [adults, setAdults] = useState(1);
     const [children, setChildren] = useState(0);
     const [infants, setInfants] = useState(0);
+    const [guests, setGuests] = useState(1);
     const [showGuests, setShowGuests] = useState(false);
     const [filledDates, setFilledDates] = useState([]);
     const [days, setDays] = useState(0);
@@ -47,6 +47,11 @@ const SingleSpot = () => {
     useEffect(() => {
       getSpotFilledDates();
     }, [bookings, spot, startDate]);
+    
+    // Update guests whenever adult,children,infant state is changed.
+    useEffect(() => {
+      setGuests(adults + children + infants);
+    }, [adults, children, infants])
     
     // We don't have the spot data or it is the wrong spot data. Don't render the componant.
     if (!spot || spot.id !== parseInt(spotId)) return null;

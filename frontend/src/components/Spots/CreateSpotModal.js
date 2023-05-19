@@ -156,7 +156,7 @@ const CreateSpotModal = () => {
         const formData = new FormData();
         formData.append("image", file);
         
-        const imageData = await handleFetch(formData)
+        const imageData = await handleFetch(formData);
         if (!imageData) return setErrors(['Failed to get image url']);
         
         if (index === 1) return setImage1(imageData);

@@ -1,147 +1,167 @@
 import { useParams, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getSpot } from "../../store/spots";
+import Calendar from 'react-calendar';
+import { getSpot, getSpotBookings } from "../../store/spots";
+import { getSpotFilledDates, isSameDay, getDaysArray } from "./utils";
 import ReviewsComponent from "../Reviews";
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "../DeleteSpotModal";
 import UpdateSpotModal from "../UpdateSpotModal";
 import MarkDownComponant from "../MarkdownComponent";
-import BookingsModal from "../BookingsModal";
 import './SingleSpot.css';
 
 const SingleSpot = () => {
-      const dispatch = useDispatch();
-      const { spotId } = useParams();
-      const spotsState = useSelector(state => state.spots.singleSpot);
-      const userState = useSelector(state => state.session.user);
-      
-      const [spot, setSpot] = useState(spotsState?.id ? spotsState : null);
-      const [spotImages, setSpotImages] = useState(spot?.SpotImages || null);
-      const [spotOwner, setSpotOwner] = useState(spot?.Owner || null);
-      
-      useEffect(() => {
-        if (!spotsState || spotsState.id !== parseInt(spotId)) dispatch(getSpot(parseInt(spotId)));
-        if (!spot || spot.id !== parseInt(spotId)) setSpot(spotsState);
-        if (!spotImages) setSpotImages(spot?.SpotImages || null);
-        if (!spotOwner) setSpotOwner(spot?.Owner || null);
-      }, [dispatch, spotId, spot, spotsState, spotImages, spotOwner]);
-      
-      
-      function getPreviewImage() {
-          if (spotImages) {
-          for (let img of spotImages) {
-            if (img.preview) return img;
-          }
-          }
-          return null;
-      }
-      
-      function isSpotImage(url) {
-        if (spotImages) {
-        for (let img of spotImages) {
-          if (url === img.url) return true;
-        }
-        }
-        return false;
-      }
-      
-      const [preview, setPreview] = useState(null);
-      
-      useEffect(() => {
-        if (!preview?.url || !isSpotImage(preview?.url)) setPreview(getPreviewImage());
-      }, [preview, spotImages]);
-      
-      const getStarReviewsText = () => {
-          if (!spot) return ('');
-          if (spot.numReviews === 1) return `${spot?.avgStarRating + ' ·'}  ${spot?.numReviews} Review`;
-          if (spot.numReviews === 0) return ` New`;
-          return `${spot?.avgStarRating + ' ·'}  ${spot?.numReviews} Reviews`
-      }
-      
+    const dispatch = useDispatch();
+    const { spotId } = useParams();
+    const spot = useSelector(state => state.spots.singleSpot);
+    const bookings = useSelector(state => state.spots.bookings);
+    const userState = useSelector(state => state.session.user);
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [showStartCalendar, setShowStartCalendar] = useState(false);
+    const [endDate, setEndDate] = useState(new Date());
+    const [showEndCalendar, setShowEndCalendar] = useState(false);
+    const [filledDates, setFilledDates] = useState([]);
+    const [days, setDays] = useState(0);
+    
+    // We don't have the spot data or it is the wrong spot data.
+    // Update the store with the correct spot data.
+    useEffect(() => {
+        if (!spot || spot.id !== parseInt(spotId)) dispatch(getSpot(parseInt(spotId)));
+    }, []);
+    
+    // Get spot bookings on each mount and when spot or dates selected changes
+    // We want to get it when dates change incase someone has booked the spot
+    useEffect(() => {
+      const getBookings = async () => await dispatch(getSpotBookings(spot.id));
+      if (spot?.id) getBookings();
+    }, [spot, startDate, endDate]);
+    
+    // Get all dates booked so far and add them to our filledDates state.
+    useEffect(() => {
+      getSpotFilledDates();
+    }, [bookings, spot, startDate]);
+    
+    // We don't have the spot data or it is the wrong spot data. Don't render the componant.
     if (!spot || spot.id !== parseInt(spotId)) return null;
+    
+    const detailsText = () => {
+      let text = '';
+      text += `⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews > 1 ? 'Reviews' : 'Review'}`;
+      text += ` ·  ${spot.state}, ${spot.city}, ${spot.country}`
+      
+      return (<>
+        <p>{text}</p>
+      </>)
+    };
+    
+    const getSpotImages = () => {
+      if (spot?.SpotImages?.length === 1) return <img id='singleSpot-previewImg-only' src={spot.SpotImages[0].url}/>
+      return <></>
+    }
+    
+    const items = ['amenity1', 'amenity2', 'amenity3', 'amenity4', 'amenity5', 'amenity6'];
+  
+    const tileDisabled = ({date, view}) => {
+      return filledDates.find(dDate => isSameDay(dDate, date));
+    }
+    
+    const getDateString = (date) => `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
+    const getStartCalendarClass = () => showStartCalendar ? '' : 'react-calendar--hidden';
+    const getEndCalendarClass = () => showEndCalendar ? '' : 'react-calendar--hidden';
     
     return (
         <div id="singleSpot-wrapper">
-          <div id="singleSpot-inner-div">
-            
-            <div id="singleSpot-title-div">
-              <div>
-                <h2 className="singleSpot-h2">{spot?.name?.toUpperCase()}</h2>
-                <p>{spot?.city?.toUpperCase() + ", " + spot?.state?.toUpperCase() + ", " + spot?.country?.toUpperCase()}</p>
-              </div>
-              
+          <div id='singleSpot-main-div'>
+          
+            <div id='singleSpot-title-div'>
+                {spot?.name && <h2 className='singleSpot-h2'>{spot.name}</h2>}
+                {spot?.id && detailsText()}
             </div>
             
+            {getSpotImages()}
             
-            <div className="spot-images-div">
-              <div className="previewImg-div">
-                  <NavLink to={{pathname: preview?.url}} target="_blank">
-                    <img className="previewImg" src={preview?.url} alt={`Preview`}/>
-                  </NavLink>
-              </div>
-              
-              <div className="images-div">
-              {spotImages?.map((img, i) => 
-                  <img className="images-a" 
-                    key={img.id} 
-                    src={img.url} 
-                    alt={`Spot ${i}`}
-                    onClick={() => setPreview(img)}
-                  />
-              )}
-              </div>
-            </div>
-            
-            
-            {(spot?.ownerId === userState?.id) &&
-              <div id="singleSpot-edit-buttons-div">
-                <OpenModalButton
-                    spotId={spot?.id}
-                    className="singleSpots-edit-button"
-                    buttonText={<i className="fa-solid fa-pen-to-square singleSpot-edit-square"/>}
-                    modalComponent={<UpdateSpotModal />}
-                />
-
-                <OpenModalButton
-                    spotId={spot?.id}
-                    className="singleSpots-delete-button"
-                    buttonText={<i className="fa fa-trash singleSpot-delete-trash"/>}
-                    modalComponent={<DeleteSpotModal />}
-                />
-              </div>
-            }
-            
-            <div className="spot-desc-div">
-              <div>
-              <h2 id="singleSpot-owner-h2">{'Hosted by ' + spotOwner?.firstName + ' ' + spotOwner?.lastName}</h2>
-                {/* <p>{spotsState?.description}</p> */}
-                <MarkDownComponant text={spot?.description}/>
-              </div>
-              
-              {spot?.ownerId !== userState?.id &&
-                <div className="spot-reserve">
-                  <div id="spot-reserve-div">
-                    
-                    <div id="spot-reserve-text">
-                      <p><span id="spot-reserve-span">{"$" + spot?.price}</span> {' night'}</p>
-                      <b>⭐{getStarReviewsText()}</b>
+            <div id='singleSpot-middle-container'>
+                <div id='singleSpot-middle-div'>
+                    <div id='singleSpot-middle-amenities'>
+                        <div id='singleSpot-amenities-title'>
+                          <h2>Spot Type</h2>
+                          {spot?.Owner?.profilePicture && <img id='singleSpot-anemities-title-img'
+                              src={spot?.Owner?.profilePicture} 
+                              alt={spot?.Owner?.firstName}
+                              title={`${spot?.Owner?.firstName}'s picture`}
+                          />}
+                        </div>
+                        <div id='singleSpot-amenities-items'>
+                            {items.map((el, i) => <div key={i} className='singleSpot-amenities-item'>
+                              <p>{el}</p>
+                              
+                            </div>)}
+                        </div>
                     </div>
                     
-                    {/* <button id="spot-reserve-button" className='main-button-style' onClick={() => alert('Feature not implimented.')}>Reserve</button> */}
-                    <OpenModalButton
-                      className="spot-reserve-button main-button-style"
-                      buttonText='Reserve'
-                      modalComponent={<BookingsModal spot={spot}/>}
-                    />
-                  
-                  
-                  </div>
+                    <div id='singleSpot-middle-about-div'>
+                      <p>About this spot</p>
+                    </div>
+                    
                 </div>
-              }
+                
+                <div id='singleSpot-middle-div2'>
+                    <div id='singleSpot-booking-container'>
+                        <div id='singleSpot-booking-top-div'>
+                            <p>{`$${spot?.price} night`}</p>
+                            <p>{`⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews > 1 ? `Reviews` : `Review`}`}</p>
+                        </div>
+                        
+                        <div id='singleSpot-booking-calendar-container'>
+                              <div id='singleSpot-booking-calendar-div'>
+                                  <div className='singleSpot-booking-calendar'
+                                    onClick={() => {setShowStartCalendar(!showStartCalendar); setShowEndCalendar(false)}}
+                                  >
+                                    <p className='singleSpot-small-p'>CHECK-IN</p>
+                                    <p className='singleSpot-date-string'>{`${getDateString(startDate)}`}</p>
+                                    <Calendar className={getStartCalendarClass()}
+                                        onChange={setStartDate} 
+                                        value={startDate}
+                                        minDate={new Date()}
+                                        minDetail='decade'
+                                        calendarType='US'
+                                        tileDisabled={tileDisabled}
+                                    ></Calendar>
+                                    
+                                  </div>
+                                  
+                                  <div className='singleSpot-booking-calendar2'
+                                    onClick={() => {setShowEndCalendar(!showEndCalendar); setShowStartCalendar(false)}}
+                                  >
+                                    <p className='singleSpot-small-p'>CHECKOUT</p>
+                                    <p className='singleSpot-date-string'>{`${getDateString(endDate)}`}</p>
+                                    <Calendar className={getEndCalendarClass()}
+                                        onChange={setEndDate}
+                                        value={endDate}
+                                        minDate={new Date(startDate)}
+                                        minDetail='decade'
+                                        calendarType='US'
+                                        tileDisabled={tileDisabled}
+                                    ></Calendar>
+                                  </div>
+                              </div>
+                                  
+                              <div id='singleSpot-booking-guests'>
+                                <p className='singleSpot-small-p'>GUESTS</p>
+                              </div>
+                        </div>
+                        
+                        <div>
+                          {getDaysArray(startDate, endDate, true).length} night(s) selected
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
             
-            <div>
+            <div id='singleSpot-reviews-container'>
               <ReviewsComponent spotId={parseInt(spotId)} />
             </div>
             

@@ -2,13 +2,14 @@ import { useParams, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Calendar from 'react-calendar';
-import { getSpot, getSpotBookings } from "../../store/spots";
-import { getSpotFilledDates, isSameDay, getDaysArray } from "./utils";
-import ReviewsComponent from "../Reviews";
-import OpenModalButton from "../OpenModalButton";
-import DeleteSpotModal from "../DeleteSpotModal";
-import UpdateSpotModal from "../UpdateSpotModal";
-import MarkDownComponant from "../MarkdownComponent";
+import { getSpot, getSpotBookings } from "../../../store/spots";
+import { getSpotFilledDates, isSameDay, getDaysArray } from "../utils";
+import SingleSpotImagesComponant from "./SingleSpotImages";
+import ReviewsComponent from "../../Reviews";
+import OpenModalButton from "../../OpenModalButton";
+import DeleteSpotModal from "../../DeleteSpotModal";
+import UpdateSpotModal from "../../UpdateSpotModal";
+import MarkDownComponant from "../../MarkdownComponent";
 import './SingleSpot.css';
 
 const SingleSpot = () => {
@@ -17,10 +18,11 @@ const SingleSpot = () => {
     const spot = useSelector(state => state.spots.singleSpot);
     const bookings = useSelector(state => state.spots.bookings);
     const userState = useSelector(state => state.session.user);
-
+    
+    const [tomorrowsDate, setTomorrowsDate] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
     const [showStartCalendar, setShowStartCalendar] = useState(false);
-    const [endDate, setEndDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(null);
     const [showEndCalendar, setShowEndCalendar] = useState(false);
     const [adults, setAdults] = useState(1);
     const [children, setChildren] = useState(0);
@@ -53,12 +55,21 @@ const SingleSpot = () => {
       setGuests(adults + children + infants);
     }, [adults, children, infants])
     
+    useEffect(() => {
+      if (!tomorrowsDate) {
+        const newDate = new Date();
+        newDate.setDate(newDate.getDate() + 1);
+        setTomorrowsDate(newDate);
+        setEndDate(newDate);
+      }
+    }, [])
+    
     // We don't have the spot data or it is the wrong spot data. Don't render the componant.
     if (!spot || spot.id !== parseInt(spotId)) return null;
     
     const detailsText = () => {
       let text = '';
-      text += `⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews > 1 ? 'Reviews' : 'Review'}`;
+      text += `⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews !== 1 ? 'Reviews' : 'Review'}`;
       text += ` ·  ${spot.state}, ${spot.city}, ${spot.country}`
       
       return (<>
@@ -66,20 +77,46 @@ const SingleSpot = () => {
       </>)
     };
     
-    const getSpotImages = () => {
-      if (spot?.SpotImages?.length === 1) return <img id='singleSpot-previewImg-only' src={spot.SpotImages[0].url}/>
-      return <></>
-    }
-    
     const items = ['amenity1', 'amenity2', 'amenity3', 'amenity4', 'amenity5', 'amenity6'];
   
     const tileDisabled = ({date, view}) => {
       return filledDates.find(dDate => isSameDay(dDate, date));
     }
     
-    const getDateString = (date) => `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
+    const getDateString = (date) => {
+      if (!date) return '';
+      return `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
+    }
     const getStartCalendarClass = () => showStartCalendar ? '' : 'react-calendar--hidden';
     const getEndCalendarClass = () => showEndCalendar ? '' : 'react-calendar--hidden';
+    
+    const handleShowGuests = (e) => {
+      if (e.type === 'mouseleave') {
+        if (String(e.target.className).includes('add-sub-button')) return;
+      }
+      
+      if (e.type === 'click') {
+        if (String(e.target.className).includes('add-sub-button')) return;
+      }
+      
+      setShowGuests(!showGuests);
+    }
+    
+    const getGuestValue = (type, amount) => {
+      if (type === 1) {
+        let newAmount = adults + amount;
+        if (newAmount < 1) newAmount = 1;
+        return setAdults(newAmount);
+      } else if (type === 2) {
+        let newAmount = children + amount;
+        if (newAmount < 0) newAmount = 0;
+        return setChildren(newAmount);
+      } else if (type === 3) {
+        let newAmount = infants + amount;
+        if (newAmount < 0) newAmount = 0;
+        return setInfants(newAmount);
+      }
+    }
     
     return (
         <div id="singleSpot-wrapper">
@@ -90,7 +127,7 @@ const SingleSpot = () => {
                 {spot?.id && detailsText()}
             </div>
             
-            {getSpotImages()}
+            <SingleSpotImagesComponant />
             
             <div id='singleSpot-middle-container'>
                 <div id='singleSpot-middle-div'>
@@ -117,22 +154,24 @@ const SingleSpot = () => {
                     
                 </div>
                 
+                {(spot?.Owner?.id !== userState?.id) &&
                 <div id='singleSpot-middle-div2'>
                     <div id='singleSpot-booking-container'>
                         <div id='singleSpot-booking-top-div'>
                             <p>{`$${spot?.price} night`}</p>
-                            <p>{`⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews > 1 ? `Reviews` : `Review`}`}</p>
+                            <p>{`⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews !== 1 ? `Reviews` : `Review`}`}</p>
                         </div>
                         
                         <div id='singleSpot-booking-calendar-container'>
                               <div id='singleSpot-booking-calendar-div'>
                                   <div className='singleSpot-booking-calendar'
                                     onClick={() => {setShowStartCalendar(!showStartCalendar); setShowEndCalendar(false)}}
+                                    onMouseLeave={() => {setShowStartCalendar(false); setShowEndCalendar(false)}}
                                   >
                                     <p className='singleSpot-small-p'>CHECK-IN</p>
                                     <p className='singleSpot-date-string'>{`${getDateString(startDate)}`}</p>
                                     <Calendar className={getStartCalendarClass()}
-                                        onChange={setStartDate} 
+                                        onChange={setStartDate}
                                         value={startDate}
                                         minDate={new Date()}
                                         minDetail='decade'
@@ -144,13 +183,14 @@ const SingleSpot = () => {
                                   
                                   <div className='singleSpot-booking-calendar2'
                                     onClick={() => {setShowEndCalendar(!showEndCalendar); setShowStartCalendar(false)}}
+                                    onMouseLeave={() => {setShowEndCalendar(false); setShowStartCalendar(false)}}
                                   >
                                     <p className='singleSpot-small-p'>CHECKOUT</p>
                                     <p className='singleSpot-date-string'>{`${getDateString(endDate)}`}</p>
                                     <Calendar className={getEndCalendarClass()}
                                         onChange={setEndDate}
                                         value={endDate}
-                                        minDate={new Date(startDate)}
+                                        minDate={tomorrowsDate}
                                         minDetail='decade'
                                         calendarType='US'
                                         tileDisabled={tileDisabled}
@@ -159,7 +199,7 @@ const SingleSpot = () => {
                               </div>
                                   
                               <div id='singleSpot-booking-guests'
-                                onClick={() => setShowGuests(!showGuests)}
+                                onClick={(e) => handleShowGuests(e)}
                               >
                                 <div id='singleSpot-booking-guests-top'>
                                   <p className='singleSpot-small-p'>GUESTS</p>
@@ -172,7 +212,9 @@ const SingleSpot = () => {
                                 <p className='singleSpot-guest-string'>{`${guests} ${guests > 1 ? 'guests' : 'guest'}`}</p>
                                 
                                 {showGuests ?
-                                <div id='singleSpot-guests-dropdown'>
+                                <div id='singleSpot-guests-dropdown'
+                                  onMouseLeave={(e) => handleShowGuests(e)}
+                                >
               
                                   <div className='singleSpot-guests-dropdown-type'>
                                     <div className='singleSpot-guests-dropdown-type-left'>
@@ -182,11 +224,11 @@ const SingleSpot = () => {
                                     
                                     <div className='singleSpot-guests-dropdown-type-right'>
                                       <i className="fa fa-minus-circle add-sub-button"
-                                        onClick={() => setAdults(adults - 1)}
+                                        onClick={() => getGuestValue(1, -1)}
                                       />
                                       <p className='singleSpot-guests-p'>{adults}</p>
                                       <i className="fa fa-plus-circle add-sub-button"
-                                        onClick={() => setAdults(adults + 1)}
+                                        onClick={() => getGuestValue(1, 1)}
                                       />
                                     </div>
                                   </div>
@@ -199,11 +241,11 @@ const SingleSpot = () => {
                                     
                                     <div className='singleSpot-guests-dropdown-type-right'>
                                       <i className="fa fa-minus-circle add-sub-button"
-                                        onClick={() => setChildren(children - 1)}
+                                        onClick={() => getGuestValue(2, -1)}
                                       />
                                       <p className='singleSpot-guests-p'>{children}</p>
                                       <i className="fa fa-plus-circle add-sub-button"
-                                        onClick={() => setChildren(children + 1)}
+                                        onClick={() => getGuestValue(2, 1)}
                                       />
                                     </div>
                                   </div>
@@ -216,15 +258,14 @@ const SingleSpot = () => {
                                     
                                     <div className='singleSpot-guests-dropdown-type-right'>
                                       <i className="fa fa-minus-circle add-sub-button"
-                                        onClick={() => setInfants(infants - 1)}
+                                        onClick={() => getGuestValue(3, -1)}
                                       />
                                       <p className='singleSpot-guests-p'>{infants}</p>
                                       <i className="fa fa-plus-circle add-sub-button"
-                                        onClick={() => setInfants(infants + 1)}
+                                        onClick={() => getGuestValue(3, 1)}
                                       />
                                     </div>
                                   </div>
-                                  
                                   
                                 </div>: ''}
                                 
@@ -237,6 +278,7 @@ const SingleSpot = () => {
                         
                     </div>
                 </div>
+                }
             </div>
             
             <div id='singleSpot-reviews-container'>

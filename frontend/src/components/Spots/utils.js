@@ -8,7 +8,6 @@ export const getDaysArray = (start, end, isCount) => {
     const array = [];
     
     start = new Date(start);
-    start = new Date(start.setDate(start.getDate() - 1));
     end = new Date(end);
     
     if (isSameDay(start, end)) return [start];

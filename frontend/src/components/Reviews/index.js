@@ -22,7 +22,14 @@ const ReviewsComponent = ({ spotId }) => {
     if (!spotId || !reviewData) return null;
     if (reviewData && reviewData[0]?.spotId !== parseInt(spotId)) return null;
     
-    const formatDate = (date) => date.slice(0, 10).split('-').reverse().join('-');
+    const formatDate = (date) => {
+        let newDate = date.slice(0, 10).split('-').reverse();
+        const month = newDate[0];
+        const day = newDate[1];
+        newDate[0] = day;
+        newDate[1] = month;
+        return newDate.join('/');
+    }
     
     const getStarReviewsText = () => {
         if (!spotData) return ('');

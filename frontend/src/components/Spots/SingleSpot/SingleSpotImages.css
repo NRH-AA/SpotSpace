@@ -1,0 +1,31 @@
+#singleSpot-previewImg-only {
+    width: 100%;
+    height: 500px;
+    border-radius: 15px;
+}
+
+.singleSpot-images-container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    gap: 5px;
+}
+
+.singleSpot-duo-image {
+    flex: 45%;
+    width: 50%;
+    height: 500px;
+    border-radius: 15px;
+}
+
+.singleSpot-images-div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.singleSpot-image {
+    flex: 50%;
+    width: 50%;
+    height: 250px;
+}

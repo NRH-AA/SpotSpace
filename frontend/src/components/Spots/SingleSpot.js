@@ -22,6 +22,11 @@ const SingleSpot = () => {
     const [showStartCalendar, setShowStartCalendar] = useState(false);
     const [endDate, setEndDate] = useState(new Date());
     const [showEndCalendar, setShowEndCalendar] = useState(false);
+    const [guests, setGuests] = useState(1);
+    const [adults, setAdults] = useState(1);
+    const [children, setChildren] = useState(0);
+    const [infants, setInfants] = useState(0);
+    const [showGuests, setShowGuests] = useState(false);
     const [filledDates, setFilledDates] = useState([]);
     const [days, setDays] = useState(0);
     
@@ -148,8 +153,76 @@ const SingleSpot = () => {
                                   </div>
                               </div>
                                   
-                              <div id='singleSpot-booking-guests'>
-                                <p className='singleSpot-small-p'>GUESTS</p>
+                              <div id='singleSpot-booking-guests'
+                                onClick={() => setShowGuests(!showGuests)}
+                              >
+                                <div id='singleSpot-booking-guests-top'>
+                                  <p className='singleSpot-small-p'>GUESTS</p>
+                                  {!showGuests ?
+                                    <i className="fa fa-angle-down singleSpot-guest-arrow"/>
+                                  :
+                                    <i className="fa fa-angle-up singleSpot-guest-arrow"/>
+                                  }
+                                </div>
+                                <p className='singleSpot-guest-string'>{`${guests} ${guests > 1 ? 'guests' : 'guest'}`}</p>
+                                
+                                {showGuests ?
+                                <div id='singleSpot-guests-dropdown'>
+              
+                                  <div className='singleSpot-guests-dropdown-type'>
+                                    <div className='singleSpot-guests-dropdown-type-left'>
+                                      <p className='singleSpot-medium-p'>Adults</p>
+                                      <p className='singleSpot-date-string'>Age 13+</p>
+                                    </div>
+                                    
+                                    <div className='singleSpot-guests-dropdown-type-right'>
+                                      <i className="fa fa-minus-circle add-sub-button"
+                                        onClick={() => setAdults(adults - 1)}
+                                      />
+                                      <p className='singleSpot-guests-p'>{adults}</p>
+                                      <i className="fa fa-plus-circle add-sub-button"
+                                        onClick={() => setAdults(adults + 1)}
+                                      />
+                                    </div>
+                                  </div>
+                                  
+                                  <div className='singleSpot-guests-dropdown-type'>
+                                    <div className='singleSpot-guests-dropdown-type-left'>
+                                      <p className='singleSpot-medium-p'>Children</p>
+                                      <p className='singleSpot-date-string'>Ages 2-12</p>
+                                    </div>
+                                    
+                                    <div className='singleSpot-guests-dropdown-type-right'>
+                                      <i className="fa fa-minus-circle add-sub-button"
+                                        onClick={() => setChildren(children - 1)}
+                                      />
+                                      <p className='singleSpot-guests-p'>{children}</p>
+                                      <i className="fa fa-plus-circle add-sub-button"
+                                        onClick={() => setChildren(children + 1)}
+                                      />
+                                    </div>
+                                  </div>
+                                  
+                                  <div className='singleSpot-guests-dropdown-type'>
+                                    <div className='singleSpot-guests-dropdown-type-left'>
+                                      <p className='singleSpot-medium-p'>Infants</p>
+                                      <p className='singleSpot-date-string'>Under 2</p>
+                                    </div>
+                                    
+                                    <div className='singleSpot-guests-dropdown-type-right'>
+                                      <i className="fa fa-minus-circle add-sub-button"
+                                        onClick={() => setInfants(infants - 1)}
+                                      />
+                                      <p className='singleSpot-guests-p'>{infants}</p>
+                                      <i className="fa fa-plus-circle add-sub-button"
+                                        onClick={() => setInfants(infants + 1)}
+                                      />
+                                    </div>
+                                  </div>
+                                  
+                                  
+                                </div>: ''}
+                                
                               </div>
                         </div>
                         

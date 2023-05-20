@@ -262,11 +262,29 @@ const BookingComponant = () => {
                     </div>
                 </div>
                 
-                <div>
-                    <p>{`${days} ${days === 1 ? 'night' : 'nights'} selected`}</p>
-                    <button
-                        onClick={createSpotBooking}
-                    >Create Booking</button>
+                <button id='booking-create-button' className='main-button-style'
+                    onClick={createSpotBooking}
+                >Reserve</button>
+                <p>You won't be charged yet.</p>
+                
+                <div id='booking-costs-div'>
+                    <div className='booking-costs-item-div'>
+                        <p className='booking-costs-p'>{`$${spot?.price} x ${days} nights`}</p>
+                        <p className='booking-costs-p2'>{`$${spot?.price * days}`}</p>
+                    </div>
+                    <div className='booking-costs-item-div'>
+                        <p className='booking-costs-p'>Cleaning fee</p>
+                        <p className='booking-costs-p2'>$0</p>
+                    </div>
+                    <div className='booking-costs-item-div'>
+                        <p className='booking-costs-p'>SpotSpace service fee</p>
+                        <p className='booking-costs-p2'>$0</p>
+                    </div>
+                </div>
+                
+                <div id='booking-total-cost-div'>
+                    <p>Total before taxes</p>
+                    <p>{`$${spot?.price * days}`}</p>
                 </div>
                         
             </div>

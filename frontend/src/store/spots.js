@@ -2,7 +2,6 @@ import { csrfFetch } from './csrf';
 
 const SET_ALL_SPOTS = 'spots/SET';
 const SET_SPOT = 'spot/SET';
-const SET_SPOT_BOOKINGS = 'spot/SET_SPOT_BOOKINGS';
 const SET_USER_SPOTS = 'spots/SET_USER';
 const UPDATE_SPOT = 'spot/UPDATE';
 const DELETE_SPOT = 'spot/DELETE';
@@ -15,11 +14,6 @@ const setAllSpots = (spots) => ({
 const setSingleSpot = (spot) => ({
     type: SET_SPOT,
     spot
-});
-
-const setSpotBookings = (bookings) => ({
-   type: SET_SPOT_BOOKINGS,
-   bookings
 });
 
 const setUserSpots = (spots) => ({
@@ -126,16 +120,6 @@ export const deleteSpot = (spotId) => async dispatch => {
     return false;
 };
 
-export const getSpotBookings = (spotId) => async dispatch => {
-    const res = await csrfFetch(`/api/spots/${spotId}/bookings`);
-    
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(setSpotBookings(data.Bookings));
-    }
-    return res;
-}
-
 export const createBooking = (spotId, data) => async dispatch => {
     const res = await csrfFetch(`/api/spots/${spotId}/bookings`, {
         method: 'POST',
@@ -177,10 +161,6 @@ const spotsReducer = (state = initialState, action) => {
         case SET_SPOT:
             newState.singleSpot = {...action.spot};
             newState.allSpots = null;
-            return newState;
-            
-        case SET_SPOT_BOOKINGS:
-            newState.bookings = [...action.bookings]
             return newState;
 
         case SET_USER_SPOTS:

@@ -1,17 +1,16 @@
-
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Calendar from 'react-calendar';
-import { getSpotBookings } from "../../../store/spots";
+import { csrfFetch } from "../../../store/csrf";
 import { getSpotFilledDates, isSameDay, getDaysArray } from "../utils";
-
+import './BookingComponent.css';
 
 const BookingComponant = () => {
     const dispatch = useDispatch();
     const spot = useSelector(state => state.spots.singleSpot);
-    const bookings = useSelector(state => state.spots.bookings);
     const userState = useSelector(state => state.session.user);
     
+    const [bookings, setBookings] = useState(null);
     const [tomorrowsDate, setTomorrowsDate] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
     const [showStartCalendar, setShowStartCalendar] = useState(false);
@@ -25,10 +24,21 @@ const BookingComponant = () => {
     const [filledDates, setFilledDates] = useState([]);
     const [days, setDays] = useState(0);
     
+    
+    const getSpotBookings = async () => {
+        const res = await csrfFetch(`/api/spots/${spot.id}/bookings`);
+        
+        if (res.ok) {
+            const data = await res.json();
+            if (data) return setBookings(data);
+        }
+        setBookings({});
+    };
+    
     // Get spot bookings on each mount and when spot or dates selected changes
     // We want to get it when dates change incase someone has booked the spot
     useEffect(() => {
-        const getBookings = async () => await dispatch(getSpotBookings(spot.id));
+        const getBookings = async () => await getSpotBookings(spot.id);
         if (spot?.id) getBookings();
     }, [spot, startDate, endDate]);
       
@@ -92,7 +102,7 @@ const BookingComponant = () => {
           if (newAmount < 0) newAmount = 0;
           return setInfants(newAmount);
         }
-      }
+    }
     
     
     return (

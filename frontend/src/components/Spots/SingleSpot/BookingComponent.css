@@ -15,7 +15,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 80%;
+    width: 75%;
     margin-top: 15px;
 }
 
@@ -136,4 +136,43 @@
     margin-top: -15px;
     font-weight: 500;
     font-size: 14px;
+}
+
+#booking-create-button {
+    width: 75%;
+    height: 50px;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+#booking-costs-div {
+    width: 75%;
+    border-bottom: 1px solid rgb(211, 211, 211);
+}
+
+.booking-costs-item-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#booking-total-cost-div {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.booking-costs-p {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(59, 59, 59);
+    margin-top: 2px;
+    text-decoration: underline;
+}
+.booking-costs-p2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 2px;
+    color: rgb(59, 59, 59);
 }

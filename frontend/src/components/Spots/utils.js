@@ -12,8 +12,10 @@ export const getDaysArray = (start, end, isCount) => {
     
     if (isSameDay(start, end)) return [start];
     
+    start.setDate(start.getDate() - 1);
+    
     let currDate = start;
-    while (currDate.getDate() <= end.getDate()) {
+    while (currDate.getDate() < end.getDate()) {
         array.push(currDate);
         const nextDate = currDate.setDate(currDate.getDate() + 1);
         currDate = new Date(nextDate);

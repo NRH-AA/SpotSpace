@@ -1,4 +1,4 @@
-import * as spotActions from "../../store/spots";
+import { updateSpot } from "../../store/spots";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { useState } from "react";
@@ -9,8 +9,8 @@ import './UpdateSpot.css';
 const UpdateSpotModal = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const spotState = useSelector(spotActions.getUserSpotsState);
-    const spotStateSingle = useSelector(spotActions.getSingleSpotState);
+    const spotState = useSelector(state => state.spots.userSpots);
+    const spotStateSingle = useSelector(state => state.spots.singleSpot);
     const { closeModal, modalSpot } = useModal();
     
     let spot;
@@ -83,7 +83,7 @@ const UpdateSpotModal = () => {
             lng
         };
         
-        dispatch(spotActions.updateSpot(spotData, []))
+        dispatch(updateSpot(spotData, []))
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);

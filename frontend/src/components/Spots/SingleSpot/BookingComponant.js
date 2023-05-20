@@ -2,17 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Calendar from 'react-calendar';
 import { csrfFetch } from "../../../store/csrf";
+import { getSpot } from "../../../store/spots";
 import { getSpotFilledDates, isSameDay, getDaysArray } from "../utils";
 import './BookingComponent.css';
 
 const BookingComponant = () => {
     const dispatch = useDispatch();
     const spot = useSelector(state => state.spots.singleSpot);
-    const userState = useSelector(state => state.session.user);
     
     const [bookings, setBookings] = useState(null);
-    const [tomorrowsDate, setTomorrowsDate] = useState(null);
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(null);
     const [showStartCalendar, setShowStartCalendar] = useState(false);
     const [endDate, setEndDate] = useState(null);
     const [showEndCalendar, setShowEndCalendar] = useState(false);
@@ -23,14 +22,16 @@ const BookingComponant = () => {
     const [showGuests, setShowGuests] = useState(false);
     const [filledDates, setFilledDates] = useState([]);
     const [days, setDays] = useState(0);
+    const [error, setError] = useState(null);
     
     
+    // Fetch spot bookings from API
     const getSpotBookings = async () => {
         const res = await csrfFetch(`/api/spots/${spot.id}/bookings`);
         
         if (res.ok) {
             const data = await res.json();
-            if (data) return setBookings(data);
+            if (data) return setBookings(data.Bookings);
         }
         setBookings({});
     };
@@ -42,36 +43,32 @@ const BookingComponant = () => {
         if (spot?.id) getBookings();
     }, [spot, startDate, endDate]);
       
-      // Get all dates booked so far and add them to our filledDates state.
+    // Get all dates booked so far and add them to our filledDates state.
     useEffect(() => {
-        getSpotFilledDates();
-    }, [bookings, spot, startDate]);
+        setFilledDates(getSpotFilledDates(bookings));
+    }, [bookings]);
       
-      // Update guests whenever adult,children,infant state is changed.
+    // Update guests whenever adult,children,infant state is changed.
     useEffect(() => {
         setGuests(adults + children + infants);
-    }, [adults, children, infants])
-      
-    useEffect(() => {
-        if (!tomorrowsDate) {
-          const newDate = new Date();
-          newDate.setDate(newDate.getDate() + 1);
-          setTomorrowsDate(newDate);
-          setEndDate(newDate);
-        }
-    }, [])
+    }, [adults, children, infants]);
     
+    // Update days selected
+    useEffect(() => {
+        if (!endDate) return;
+        setDays(getDaysArray(startDate, endDate, true).length);
+    }, [startDate, endDate]);
     
     if (!spot?.id) return null;
     
     const tileDisabled = ({date, view}) => {
         return filledDates.find(dDate => isSameDay(dDate, date));
-    }
+    };
     
     const getDateString = (date) => {
         if (!date) return '';
         return `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
-    }
+    };
     
     const getStartCalendarClass = () => showStartCalendar ? '' : 'react-calendar--hidden';
     const getEndCalendarClass = () => showEndCalendar ? '' : 'react-calendar--hidden';
@@ -79,14 +76,14 @@ const BookingComponant = () => {
     const handleShowGuests = (e) => {
         if (e.type === 'mouseleave') {
           if (String(e.target.className).includes('add-sub-button')) return;
-        }
+        };
         
         if (e.type === 'click') {
           if (String(e.target.className).includes('add-sub-button')) return;
-        }
+        };
         
         setShowGuests(!showGuests);
-    }
+    };
     
     const getGuestValue = (type, amount) => {
         if (type === 1) {
@@ -101,9 +98,27 @@ const BookingComponant = () => {
           let newAmount = infants + amount;
           if (newAmount < 0) newAmount = 0;
           return setInfants(newAmount);
-        }
-    }
+        };
+    };
     
+    // Create spot booking
+    const createSpotBooking = async () => {
+        if (endDate < startDate) return setError('Checkout must be after Check-In.');
+        
+        const res = await csrfFetch(`/api/spots/${spot.id}/bookings`, {
+            method: 'POST',
+            body: JSON.stringify({
+                startDate,
+                endDate
+            })
+        });
+        
+        if (res.ok) {
+            dispatch(getSpot(spot.id));
+            return setError('You have booked the spot.');
+        }
+        else setError('Failed to create booking. Please try again.');
+    };
     
     return (
         <div id='singleSpot-middle-div2'>
@@ -112,6 +127,8 @@ const BookingComponant = () => {
                     <p>{`$${spot?.price} night`}</p>
                     <p>{`⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews !== 1 ? `Reviews` : `Review`}`}</p>
                 </div>
+                
+                {error && <p>{error}</p>}
                         
                 <div id='singleSpot-booking-calendar-container'>
                     <div id='singleSpot-booking-calendar-div'>
@@ -141,7 +158,7 @@ const BookingComponant = () => {
                             <Calendar className={getEndCalendarClass()}
                                 onChange={setEndDate}
                                 value={endDate}
-                                minDate={tomorrowsDate}
+                                minDate={startDate}
                                 minDetail='decade'
                                 calendarType='US'
                                 tileDisabled={tileDisabled}
@@ -225,9 +242,12 @@ const BookingComponant = () => {
                                 
                     </div>
                 </div>
-                        
+                
                 <div>
-                    {getDaysArray(startDate, endDate, true).length} night(s) selected
+                    <p>{`${days} ${days === 1 ? 'night' : 'nights'} selected`}</p>
+                    <button
+                        onClick={createSpotBooking}
+                    >Create Booking</button>
                 </div>
                         
             </div>

@@ -134,19 +134,9 @@ export const createBooking = (spotId, data) => async dispatch => {
     return false;
 };
 
-
-
-
-export const getSpotsState = (state) => state.spots;
-export const getAllSpotsState = (state) => state.spots.allSpots;
-export const getSingleSpotState = (state) => state.spots.singleSpot;
-export const getSpotRedirect = (state) => state.spots.redirect;
-export const getUserSpotsState = (state) => state.spots.userSpots;
-
 const initialState = {
     allSpots: null,
     singleSpot: null,
-    bookings: null,
     userSpots: null,
     redirect: null
 }

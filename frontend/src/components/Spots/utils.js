@@ -13,7 +13,7 @@ export const getDaysArray = (start, end, isCount) => {
     if (isSameDay(start, end)) return [start];
     
     let currDate = start;
-    while (currDate.getDate() < end.getDate()) {
+    while (currDate.getDate() <= end.getDate()) {
         array.push(currDate);
         const nextDate = currDate.setDate(currDate.getDate() + 1);
         currDate = new Date(nextDate);
@@ -31,9 +31,9 @@ export const getSpotFilledDates = (bookings) => {
         const booking = bookings[i];
         const bookingDays = getDaysArray(booking.startDate, booking.endDate);
         if (Array.isArray(bookingDays)) {
-             newFilledDates = [...newFilledDates, ...bookingDays];
+            newFilledDates.push(bookingDays);
         }
     };
 
-    return newFilledDates;
+    return newFilledDates.flat();
 };

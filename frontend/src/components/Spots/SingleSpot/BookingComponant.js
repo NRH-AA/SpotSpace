@@ -72,7 +72,25 @@ const BookingComponant = () => {
     
     const getStartCalendarClass = () => showStartCalendar ? '' : 'react-calendar--hidden';
     const getEndCalendarClass = () => showEndCalendar ? '' : 'react-calendar--hidden';
-      
+    
+    const handleShowStartCalendar = (e) => {
+        if (e.type === 'click') {
+            if (String(e.target.className).includes('react-calendar')) return;
+        };
+        
+        setShowStartCalendar(!showStartCalendar); 
+        setShowEndCalendar(false)
+    }
+    
+    const handleShowEndCalendar = (e) => {
+        if (e.type === 'click') {
+            if (String(e.target.className).includes('react-calendar')) return;
+        };
+        
+        setShowEndCalendar(!showEndCalendar); 
+        setShowStartCalendar(false)
+    }
+    
     const handleShowGuests = (e) => {
         if (e.type === 'mouseleave') {
           if (String(e.target.className).includes('add-sub-button')) return;
@@ -133,7 +151,7 @@ const BookingComponant = () => {
                 <div id='singleSpot-booking-calendar-container'>
                     <div id='singleSpot-booking-calendar-div'>
                         <div className='singleSpot-booking-calendar'
-                            onClick={() => {setShowStartCalendar(!showStartCalendar); setShowEndCalendar(false)}}
+                            onClick={handleShowStartCalendar}
                             onMouseLeave={() => {setShowStartCalendar(false); setShowEndCalendar(false)}}
                         >
                             <p className='singleSpot-small-p'>CHECK-IN</p>
@@ -150,7 +168,7 @@ const BookingComponant = () => {
                         </div>
                                   
                         <div className='singleSpot-booking-calendar2'
-                            onClick={() => {setShowEndCalendar(!showEndCalendar); setShowStartCalendar(false)}}
+                            onClick={handleShowEndCalendar}
                             onMouseLeave={() => {setShowEndCalendar(false); setShowStartCalendar(false)}}
                         >
                             <p className='singleSpot-small-p'>CHECKOUT</p>

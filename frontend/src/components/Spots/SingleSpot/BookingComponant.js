@@ -56,7 +56,7 @@ const BookingComponant = () => {
     // Update days selected
     useEffect(() => {
         if (!endDate) return;
-        setDays(getDaysArray(startDate, endDate, true).length);
+        setDays(getDaysArray(startDate, endDate, true).length - 1);
     }, [startDate, endDate]);
     
     if (!spot?.id) return null;
@@ -121,6 +121,7 @@ const BookingComponant = () => {
     
     // Create spot booking
     const createSpotBooking = async () => {
+        if (isSameDay(startDate, endDate)) return setError('Check-In and Checkout can not be the same day.');
         if (endDate < startDate) return setError('Checkout must be after Check-In.');
         
         const res = await csrfFetch(`/api/spots/${spot.id}/bookings`, {

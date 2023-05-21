@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useModal } from "../../context/Modal";
-import * as spotActions from '../../store/spots';
-import GoogleMapComponent from '../GoogleMaps';
-import { csrfFetch } from '../../store/csrf';
+import { useModal } from "../../../context/Modal";
+import * as spotActions from '../../../store/spots';
+import GoogleMapComponent from '../../GoogleMaps';
+import { csrfFetch } from '../../../store/csrf';
 // import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import Geocode from "react-geocode";
 import './CreateSpotModal.css';
@@ -32,6 +32,10 @@ const CreateSpotModal = () => {
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
+    const [maxGuests, setMaxGuests] = useState(1);
+    const [cleaningFee, setCleaningFee] = useState(0);
+    const [amenities, setAmenities] = useState('');
+    
     const [image1, setImage1] = useState({});
     const [image2, setImage2] = useState({});
     const [showImage2, setShowImage2] = useState(false);
@@ -39,8 +43,10 @@ const CreateSpotModal = () => {
     const [showImage3, setShowImage3] = useState(false);
     const [image4, setImage4] = useState({});
     const [showImage4, setShowImage4] = useState(false);
+    
     const [errors, setErrors] = useState([]);
     const [formErrors, setFormErrors] = useState({});
+    
     const [locateMe, setLocateMe] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     
@@ -99,7 +105,10 @@ const CreateSpotModal = () => {
             price,
             lat: `${latt}` || lat,
             lng: `${lngt}` || lat,
-            zipcode
+            zipcode,
+            maxGuests,
+            cleaningFee,
+            amenities
         };
         
         const imageData = [];
@@ -130,7 +139,11 @@ const CreateSpotModal = () => {
             description: 'Some random description',
             price: '100',
             lat,
-            lng
+            lng,
+            zipcode: '11111',
+            maxGuests,
+            cleaningFee,
+            amenities
         };
         
         const imageData = [];

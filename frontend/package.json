@@ -24,6 +24,7 @@
     "react-select-country-list": "^2.2.3",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
+    "remark-gfm": "^3.0.1",
     "webpack": "^5.81.0",
     "webpack-cli": "^5.0.2"
   },

@@ -5,6 +5,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import CreateSpotModal from "../Spots/CreateSpot/CreateSpotModal";
 import './ProfileButton.css';
 import ProfileMenu from './images/menu.png';
 import ProfileImage from './images/profile_button.png';
@@ -79,9 +80,13 @@ function ProfileButton({ user }) {
             </div>
             
             <div className='div-border-bottom'>
-              <p className='profile-menu-p'><NavLink className="user-spots-link" to='/spots/new'
-                onClick={() => setShowMenu(false)}
-              >SpotSpace your home</NavLink></p>
+              <p className='profile-menu-p'>
+              <OpenModalButton
+                  className="user-spots-link create-spot-profile-button"
+                  buttonText='SpotSpace your home'
+                  modalComponent={<CreateSpotModal />}
+              />
+              </p>
               
               <p className='profile-menu-p'><NavLink className="user-spots-link" to="/spots/current"
                   onClick={() => setShowMenu(false)}

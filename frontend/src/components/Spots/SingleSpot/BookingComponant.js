@@ -121,6 +121,8 @@ const BookingComponant = () => {
     
     // Create spot booking
     const createSpotBooking = async () => {
+        if (!startDate) return setError('Please select a check-in date.');
+        if (!endDate) return setError('Please select a checkout date.');
         if (isSameDay(startDate, endDate)) return setError('Check-In and Checkout can not be the same day.');
         if (endDate < startDate) return setError('Checkout must be after Check-In.');
         
@@ -139,13 +141,15 @@ const BookingComponant = () => {
         else setError('Failed to create booking. Please try again.');
     };
     
-    // Disable guests minus buttons
+    // Disable guests min/max buttons
     // param (type) 1: Adults | 2: Children | 3: Infants
-    const isGuestMinusDisabled = (type) => {
+    const isGuestMaxDisabled = () => guests === spot.maxGuests;
+    const isGuestMinDisabled = (type) => {
         if (type === 1) return adults === 1;
         if (type === 2) return children === 0;
         if (type === 3) return infants === 0;
     }
+    
     
     return (
         <div id='singleSpot-middle-div2'>
@@ -185,14 +189,14 @@ const BookingComponant = () => {
                             <Calendar className={getEndCalendarClass()}
                                 onChange={setEndDate}
                                 value={endDate}
-                                minDate={startDate}
+                                minDate={startDate ? startDate : new Date()}
                                 minDetail='decade'
                                 calendarType='US'
                                 tileDisabled={tileDisabled}
                             ></Calendar>
                         </div>
                     </div>
-                                  
+
                     <div id='singleSpot-booking-guests'
                          onClick={(e) => handleShowGuests(e)}
                     >
@@ -220,13 +224,14 @@ const BookingComponant = () => {
                                 <div className='singleSpot-guests-dropdown-type-right'>
                                     <button className='add-sub-button'
                                         onClick={() => getGuestValue(1, -1)}
-                                        disabled={isGuestMinusDisabled(1)}
+                                        disabled={isGuestMinDisabled(1)}
                                     ><i className="fa-solid fa-minus add-sub-i"/></button>
                                         
                                     <p className='singleSpot-guests-p'>{adults}</p>
                                     
                                     <button className='add-sub-button'
                                         onClick={() => getGuestValue(1, 1)}
+                                        disabled={isGuestMaxDisabled(1)}
                                     ><i className="fa-solid fa-plus add-sub-i"/></button>
                                 </div>
                             </div>
@@ -240,13 +245,14 @@ const BookingComponant = () => {
                                 <div className='singleSpot-guests-dropdown-type-right'>
                                     <button className='add-sub-button'
                                         onClick={() => getGuestValue(2, -1)}
-                                        disabled={isGuestMinusDisabled(2)}
+                                        disabled={isGuestMinDisabled(2)}
                                     ><i className="fa-solid fa-minus add-sub-i"/></button>
                                     
                                     <p className='singleSpot-guests-p'>{children}</p>
                                     
                                     <button className='add-sub-button'
                                         onClick={() => getGuestValue(2, 1)}
+                                        disabled={isGuestMaxDisabled(2)}
                                     ><i className="fa-solid fa-minus add-sub-i"/></button>
                                 </div>
                             </div>
@@ -260,13 +266,14 @@ const BookingComponant = () => {
                                 <div className='singleSpot-guests-dropdown-type-right'>
                                     <button className='add-sub-button'
                                         onClick={() => getGuestValue(3, -1)}
-                                        disabled={isGuestMinusDisabled(3)}
+                                        disabled={isGuestMinDisabled(3)}
                                     ><i className="fa-solid fa-minus add-sub-i"/></button>
                                         
                                     <p className='singleSpot-guests-p'>{infants}</p>
                                     
                                     <button className='add-sub-button'
                                         onClick={() => getGuestValue(3, 1)}
+                                        disabled={isGuestMaxDisabled(3)}
                                     ><i className="fa-solid fa-minus add-sub-i"/></button>
                                 </div>
                             </div>

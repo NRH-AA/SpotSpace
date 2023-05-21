@@ -18,10 +18,9 @@ const SingleSpot = () => {
     const spot = useSelector(state => state.spots.singleSpot);
     const userState = useSelector(state => state.session.user);
     
-    // We don't have the spot data or it is the wrong spot data.
     // Update the store with the correct spot data.
     useEffect(() => {
-        if (!spot || spot.id !== parseInt(spotId)) dispatch(getSpot(parseInt(spotId)));
+        dispatch(getSpot(parseInt(spotId)));
     }, []);
     
     // We don't have the spot data or it is the wrong spot data. Don't render the componant.
@@ -32,9 +31,7 @@ const SingleSpot = () => {
       text += `⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews !== 1 ? 'Reviews' : 'Review'}`;
       text += ` ·  ${spot.state}, ${spot.city}, ${spot.country}`
       
-      return (<>
-        <p>{text}</p>
-      </>)
+      return <p>{text}</p>
     };
     
     return (

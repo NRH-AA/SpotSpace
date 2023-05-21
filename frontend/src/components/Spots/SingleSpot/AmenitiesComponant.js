@@ -5,8 +5,7 @@ const AmenitiesComponant = () => {
     
     const items = ['amenity1', 'amenity2', 'amenity3', 'amenity4', 'amenity5', 'amenity6'];
     
-    return (
-    <div id='singleSpot-middle-amenities'>
+    return <div id='singleSpot-middle-amenities'>
         <div id='singleSpot-amenities-title'>
         <h2>Spot Type</h2>
         {spot?.Owner?.profilePicture && <img id='singleSpot-anemities-title-img'
@@ -15,14 +14,15 @@ const AmenitiesComponant = () => {
             title={`${spot?.Owner?.firstName}'s picture`}
         />}
         </div>
-        <div id='singleSpot-amenities-items'>
-            {items.map((el, i) => <div key={i} className='singleSpot-amenities-item'>
-            <p>{el}</p>
-            
-            </div>)}
-        </div>
+        {spot?.amenities ? 
+            <div id='singleSpot-amenities-items'>
+                {items.map((el, i) => <div key={i} className='singleSpot-amenities-item'>
+                <p>{el}</p>
+                
+                </div>)}
+            </div>
+        : null}
     </div>
-    )
-}
+};
 
 export default AmenitiesComponant;

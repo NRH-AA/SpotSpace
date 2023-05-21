@@ -7,8 +7,8 @@
 }
 
 #create-spot-inner-div {
-    height: 800px;
-    width: 900px;
+    height: 450px;
+    width: 600px;
     padding-left: 5px;
     margin: auto;
     overflow-y: auto;
@@ -70,12 +70,7 @@
     box-shadow: 0px 0px 4px 1px rgb(102, 102, 102);
 }
 
-#title-div {
-    width: 80%;
-    border-bottom: 2px solid black;
-}
-
-#price-div {
+.input-div {
     width: 80%;
     border-bottom: 2px solid black;
 }
@@ -85,6 +80,58 @@
     width: 358px;
     margin-bottom: 10px;
 }
+
+#amenity-input {
+    margin-top: 20px;
+    width: 320px;
+    margin-bottom: 10px;
+}
+
+.createSpot-margin-p {
+    margin-bottom: 0px;
+}
+.createSpot-margin-p > span {
+    font-size: 12px;
+}
+.createSpot-margin-p-small {
+    font-size: 12px;
+    margin-bottom: 0px;
+}
+
+#createSpot-amenities-div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    gap: 2px;
+}
+
+.createSpot-amenity-div {
+    flex: 23%;
+    width: auto;
+    max-width: 150px;
+    height: 25px;
+    border: 1px solid rgb(179, 179, 179);
+    border-radius: 10px;
+}
+
+.createSpot-amenity-p {
+    margin: auto;
+    text-align: center;
+    margin-top: 5px;
+    color: rgb(94, 94, 94);
+}
+
+#createSpot-add-amenity-button {
+    margin-left: 10px;
+}
+
+#createSpot-remove-amenity-button {
+    margin-left: 5px;
+    background: linear-gradient(rgb(240, 0, 0), rgb(175, 0, 0));
+}
+
 
 #images-div {
     width: 100%;

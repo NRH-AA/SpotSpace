@@ -21,7 +21,7 @@ const SingleSpot = () => {
     // Update the store with the correct spot data.
     useEffect(() => {
         dispatch(getSpot(parseInt(spotId)));
-    }, []);
+    }, [dispatch, spotId]);
     
     // We don't have the spot data or it is the wrong spot data. Don't render the componant.
     if (!spot || spot.id !== parseInt(spotId)) return null;
@@ -51,6 +51,7 @@ const SingleSpot = () => {
                     
                     <div id='singleSpot-middle-about-div'>
                       <p>About this spot</p>
+                      <MarkDownComponant text={spot?.description}/>
                     </div>
                     
                 </div>

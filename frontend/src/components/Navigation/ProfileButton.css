@@ -69,6 +69,13 @@
 .user-spots-link {
     text-decoration: none;
     color: black;
+    font-size: 14px;
+    border: none;
+    background: none;
+}
+
+.create-spot-profile-button {
+    margin-left: -7px;
 }
 
 .profile-dropdown-button {

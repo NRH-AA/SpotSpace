@@ -1,8 +1,8 @@
 #singleSpot-booking-container {
     width: 80%;
-    height: 500px;
     margin: auto;
     margin-top: 20px;
+    padding-bottom: 10px;
     border: 1px solid rgb(194, 194, 194);
     box-shadow: 0px 0px 4px 4px rgb(228, 228, 228);
     border-radius: 15px;
@@ -102,7 +102,8 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 2px;
+    gap: 5px;
+    margin-right: 5px;
 }
 
 .singleSpot-guest-arrow {
@@ -111,9 +112,23 @@
 }
 
 .add-sub-button {
-    font-size: 30px;
-    pointer-events: initial;
+    font-size: 18px;
+    padding-top: 3px;
+    height: 30px;
+    border-radius: 30px;
+    border: 1px solid rgb(151, 151, 151);
+    background-color: white;
+    color: rgb(151, 151, 151);
     cursor: pointer;
+}
+.add-sub-button:hover {
+    border: 1px solid black;
+    color: rgb(48, 48, 48);
+}
+.add-sub-button:disabled {
+    border: 1px solid rgb(214, 214, 214);
+    color: rgb(212, 212, 212);
+    cursor: not-allowed;
 }
 
 .singleSpot-small-p {
@@ -125,6 +140,8 @@
 .singleSpot-guests-p {
     font-size: 20px;
     font-weight: 500;
+    margin-left: -5px;
+    margin-right: 5px;
 }
 
 .singleSpot-date-string {
@@ -140,7 +157,7 @@
 
 #booking-create-button {
     width: 75%;
-    height: 50px;
+    height: 45px;
     margin-top: 20px;
     font-size: 16px;
 }

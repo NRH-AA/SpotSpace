@@ -71,6 +71,19 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: ''
     },
+    cleaningFee: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    maxGuests: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
+    amenities: {
+      type: DataTypes.TEXT
+    },
   }, {
     sequelize,
     modelName: 'Spot',

@@ -93,11 +93,11 @@ const BookingComponant = () => {
     
     const handleShowGuests = (e) => {
         if (e.type === 'mouseleave') {
-          if (String(e.target.className).includes('add-sub-button')) return;
+          if (String(e.target.className).includes('add-sub-i')) return;
         };
         
         if (e.type === 'click') {
-          if (String(e.target.className).includes('add-sub-button')) return;
+          if (String(e.target.className).includes('add-sub-i')) return;
         };
         
         setShowGuests(!showGuests);
@@ -138,6 +138,14 @@ const BookingComponant = () => {
         }
         else setError('Failed to create booking. Please try again.');
     };
+    
+    // Disable guests minus buttons
+    // param (type) 1: Adults | 2: Children | 3: Infants
+    const isGuestMinusDisabled = (type) => {
+        if (type === 1) return adults === 1;
+        if (type === 2) return children === 0;
+        if (type === 3) return infants === 0;
+    }
     
     return (
         <div id='singleSpot-middle-div2'>
@@ -210,14 +218,16 @@ const BookingComponant = () => {
                                 </div>
                                     
                                 <div className='singleSpot-guests-dropdown-type-right'>
-                                    <i className="fa fa-minus-circle add-sub-button"
+                                    <button className='add-sub-button'
                                         onClick={() => getGuestValue(1, -1)}
-                                    />
+                                        disabled={isGuestMinusDisabled(1)}
+                                    ><i className="fa-solid fa-minus add-sub-i"/></button>
                                         
                                     <p className='singleSpot-guests-p'>{adults}</p>
-                                    <i className="fa fa-plus-circle add-sub-button"
+                                    
+                                    <button className='add-sub-button'
                                         onClick={() => getGuestValue(1, 1)}
-                                    />
+                                    ><i className="fa-solid fa-plus add-sub-i"/></button>
                                 </div>
                             </div>
                                   
@@ -228,14 +238,16 @@ const BookingComponant = () => {
                                 </div>
                                     
                                 <div className='singleSpot-guests-dropdown-type-right'>
-                                    <i className="fa fa-minus-circle add-sub-button"
+                                    <button className='add-sub-button'
                                         onClick={() => getGuestValue(2, -1)}
-                                    />
-                                        
+                                        disabled={isGuestMinusDisabled(2)}
+                                    ><i className="fa-solid fa-minus add-sub-i"/></button>
+                                    
                                     <p className='singleSpot-guests-p'>{children}</p>
-                                    <i className="fa fa-plus-circle add-sub-button"
+                                    
+                                    <button className='add-sub-button'
                                         onClick={() => getGuestValue(2, 1)}
-                                    />
+                                    ><i className="fa-solid fa-minus add-sub-i"/></button>
                                 </div>
                             </div>
                                   
@@ -246,14 +258,16 @@ const BookingComponant = () => {
                                 </div>
                                     
                                 <div className='singleSpot-guests-dropdown-type-right'>
-                                    <i className="fa fa-minus-circle add-sub-button"
+                                    <button className='add-sub-button'
                                         onClick={() => getGuestValue(3, -1)}
-                                    />
+                                        disabled={isGuestMinusDisabled(3)}
+                                    ><i className="fa-solid fa-minus add-sub-i"/></button>
                                         
                                     <p className='singleSpot-guests-p'>{infants}</p>
-                                    <i className="fa fa-plus-circle add-sub-button"
+                                    
+                                    <button className='add-sub-button'
                                         onClick={() => getGuestValue(3, 1)}
-                                    />
+                                    ><i className="fa-solid fa-minus add-sub-i"/></button>
                                 </div>
                             </div>
                                   

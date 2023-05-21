@@ -34,7 +34,9 @@ const CreateSpotModal = () => {
     const [price, setPrice] = useState('');
     const [maxGuests, setMaxGuests] = useState(1);
     const [cleaningFee, setCleaningFee] = useState(0);
+    const [amenity, setAmenity] = useState('');
     const [amenities, setAmenities] = useState('');
+    const [amenityError, setAmenityError] = useState(null);
     
     const [image1, setImage1] = useState({});
     const [image2, setImage2] = useState({});
@@ -256,7 +258,65 @@ const CreateSpotModal = () => {
             setCity(userCity);
             setZipcode(userZipCode);
         }
-    }, [fullAddress])
+    }, [fullAddress]);
+    
+    const addAmenity = () => {
+        if (amenity.length < 3 || amenity.length > 100) return setAmenityError('Amenity must have 3-100 characters');
+        
+        let amenityString = amenity;
+        if (amenity.endsWith(',')) {
+            amenityString = amenityString.slice(0, amenityString.length - 1);
+        }
+        
+        amenityString = amenityString.split(' ').join('');
+        
+        const amenitiesCount = amenities.split(',').length;
+        const newAmenitiesCount = amenityString.split(',').length;
+        
+        if (amenitiesCount + newAmenitiesCount > 10) return setAmenityError('You may only add 10 amenities.');
+        
+        const amenityArr = amenityString.split(',');
+        for (let i = 0; i < amenityArr.length; i++) {
+            if (amenityArr[i].length > 20) return setAmenityError('Each amenity may only be 20 characters.');
+            if (amenities.includes(amenityArr[i])) return setAmenityError('Amenities must be unique.');
+        };
+        
+        for (let i = 0; i < amenityArr.length; i++) {
+            for (let j = i + 1; j < amenityArr.length; j++) {
+                if (amenityArr[i] === amenityArr[j]) return setAmenityError('Amenities must be unique.');
+            } 
+        }
+        
+        if (amenities.length === 0) {
+            setAmenities(amenityString);
+            setAmenityError(null);
+            return setAmenity('');
+        }
+        setAmenities(amenities + ',' + amenityString);
+        setAmenityError(null);
+        return setAmenity('');
+    }
+    
+    const removeAmenity = () => {
+        if (amenity.includes(',')) return setAmenityError('You may not remove multiple amenities.');
+        
+        let index = -1;
+        let hasComma = true;
+        index = amenities.indexOf(amenity + ',');
+        
+        if (index === -1) {
+            hasComma = false; 
+            index = amenities.indexOf(amenity);
+        }
+        if (index === -1) return setAmenityError('Amenity does not exist.');
+        
+        setAmenityError(null);
+        let length = amenity.length;
+        if (hasComma) length += 1;
+        
+        const newAmenities = amenities.slice(0, index) + amenities.slice(index + length, amenities.length);
+        setAmenities(newAmenities);
+    }
     
     return (
         <div className="create-spot-wrapper">
@@ -359,7 +419,7 @@ const CreateSpotModal = () => {
                     </div>
                 </div>
                 
-                <div id="title-div">
+                <div className="input-div">
                     <h3>Create a title for your spot</h3>
                     <p className="desc-p">Catch guests' attention with a spot title that highlights what
                         makes your place special.
@@ -374,7 +434,7 @@ const CreateSpotModal = () => {
                     </div>
                 </div>
                 
-                <div id="price-div">
+                <div className="input-div">
                     {formErrors.price && <><span className="main-error-li">{formErrors.price}</span><br></br></>}
                     <span>$ </span>
                     <input id="price-input" type="number" value={price}
@@ -386,8 +446,65 @@ const CreateSpotModal = () => {
                     />
                 </div>
                 
+                <div className="input-div">
+                    <p className='createSpot-margin-p'>Guest Limit <span>(Includes Adults, Children, Infants)</span></p>
+                    <input id="price-input" type="number" value={maxGuests}
+                        className="main-input-style create-spot-input create-spot-input2"
+                        min={1}
+                        max={20}
+                        onChange={(e) => setMaxGuests(e.target.value)}
+                    />
+                </div>
                 
-                <h3>Show off your space with some images</h3>
+                <div className="input-div">
+                    <p className='createSpot-margin-p'>Cleaning Fee </p>
+                    $ <input id="price-input" type="number" value={cleaningFee}
+                        className="main-input-style create-spot-input"
+                        min={0}
+                        max={200}
+                        onChange={(e) => setCleaningFee(e.target.value)}
+                    />
+                </div>
+                
+                <div className="input-div">
+                    <p className='createSpot-margin-p'>Amenities <span>(What does your spot have to offer?)</span></p>
+                    <p className='createSpot-margin-p-small'>*You can add multiple amenities using a comma seperation*</p>
+                    <p className='createSpot-margin-p-small'>*10 Amenities Max*</p>
+                    
+                    <div id='createSpot-amenities-div'>
+                    {(amenities?.length > 0) && 
+                        amenities.split(',').map((el, i) => 
+                        <div key={i} className='createSpot-amenity-div'>
+                            <p className='createSpot-amenity-p'>{el}</p>
+                        </div>)
+                    }
+                    </div>
+                    
+                    {amenityError ?
+                        <p style={{color: 'red'}} className='createSpot-margin-p'>{amenityError}</p>
+                    : null}
+                    
+                    <input id="amenity-input" type="text" value={amenity}
+                        className="main-input-style create-spot-input"
+                        placeholder='Ex: Pets Allowed, 6 Rooms, Room Service, Indoor Pool'
+                        minLength={3}
+                        maxLength={100}
+                        onChange={(e) => setAmenity(e.target.value)}
+                    />
+                    
+                    <button id='createSpot-add-amenity-button' className='main-button-style'
+                        type='button'
+                        onClick={addAmenity}
+                    >Add</button>
+                    
+                    <button id='createSpot-remove-amenity-button' className='main-button-style'
+                        type='button'
+                        onClick={removeAmenity}
+                    >Remove</button>
+                </div>
+                
+                
+                <p>Show off your space with some images</p>
                 {formErrors.image1 && <><span className='main-error-li'>* Preview image required.</span><br></br></>}
                 <div id="images-div">
                     {image1.url ? <div className='images-inner-div'>

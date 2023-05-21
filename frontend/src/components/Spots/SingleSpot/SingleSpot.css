@@ -78,6 +78,9 @@
     padding-bottom: 20px;
     border-bottom: 1px solid grey;
 }
+#singleSpot-middle-about-div > p + p {
+    font-weight: 500;
+}
 
 
 

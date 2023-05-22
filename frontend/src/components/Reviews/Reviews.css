@@ -56,6 +56,13 @@
     background: none;
     border: none;
     font-size: 22px;
+    cursor: pointer;
+}
+.reviews-button:hover {
+    color: rgb(0, 221, 0);
+}
+.reviews-delete-button:hover {
+    color: rgb(235, 0, 0);
 }
 
 .review-star-img {

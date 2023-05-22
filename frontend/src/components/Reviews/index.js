@@ -121,7 +121,7 @@ const ReviewsComponent = ({ spotId }) => {
                                 />
                                 <OpenModalButton
                                     spotId={el.id}
-                                    className="reviews-button"
+                                    className="reviews-button reviews-delete-button"
                                     buttonText={<i className="fa fa-trash singleSpot-delete-trash"/>}
                                     modalComponent={<DeleteReviewModal spotId={spotId}/>}
                                 />

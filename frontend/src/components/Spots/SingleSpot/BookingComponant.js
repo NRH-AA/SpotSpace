@@ -305,7 +305,7 @@ const BookingComponant = () => {
                     </div>
                     <div className='booking-costs-item-div'>
                         <p className='booking-costs-p'>Cleaning fee</p>
-                        <p className='booking-costs-p2'>${spot?.cleaningFee}</p>
+                        <p className='booking-costs-p2'>${days > 0 ? spot?.cleaningFee : 0}</p>
                     </div>
                     <div className='booking-costs-item-div'>
                         <p className='booking-costs-p'>SpotSpace service fee</p>
@@ -315,9 +315,9 @@ const BookingComponant = () => {
                 
                 <div id='booking-total-cost-div'>
                     <p>Total before taxes</p>
-                    <p>{`$${(spot?.price * days) + spot?.cleaningFee + (days > 0 ? 20 : 0)}`}</p>
+                    <p>{`$${(spot?.price * days) + (days > 0 ? spot?.cleaningFee : 0) + (days > 0 ? 20 : 0)}`}</p>
                 </div>
-                        
+
             </div>
         </div>
     )

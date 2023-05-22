@@ -93,12 +93,21 @@ const BookingComponant = () => {
     }
     
     const handleShowGuests = (e) => {
+        const targetClassName = String(e?.target?.className);
+        const targetId = String(e?.target?.id);
         if (e.type === 'mouseleave') {
-          if (String(e.target.className).includes('add-sub-i')) return;
+            if (targetClassName.includes('add-sub-i')) return;
+            if (targetClassName.includes('add-sub-button')) return;
+            if (targetId.includes('add-sub-button')) return;
+            if (targetClassName.includes('singleSpot-guests-p')) return;
         };
         
         if (e.type === 'click') {
-          if (String(e.target.className).includes('add-sub-i')) return;
+            if (targetClassName.includes('add-sub-i')) return;
+            if (targetClassName.includes('add-sub-button')) return;
+            if (targetId.includes('add-sub-button')) return;
+            if (targetClassName.includes('singleSpot-guests-p')) return;
+            if (targetId.includes('singleSpot-guests-dropdown')) return;
         };
         
         setShowGuests(!showGuests);

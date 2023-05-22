@@ -1,18 +1,17 @@
 import { useSelector } from 'react-redux';
+import DefaultProfilePicture from '../../../images/default_profile_picture.jpg';
 
 const AmenitiesComponant = () => {
     const spot = useSelector(state => state.spots.singleSpot);
     
-    const items = ['amenity1', 'amenity2', 'amenity3', 'amenity4', 'amenity5', 'amenity6'];
-    
     return <div id='singleSpot-middle-amenities'>
         <div id='singleSpot-amenities-title'>
         <h2>Spot Type</h2>
-        {spot?.Owner?.profilePicture && <img id='singleSpot-anemities-title-img'
-            src={spot?.Owner?.profilePicture} 
+        <img id='singleSpot-anemities-title-img'
+            src={spot?.Owner?.profilePicture ? spot?.Owner?.profilePicture : DefaultProfilePicture} 
             alt={spot?.Owner?.firstName}
             title={`${spot?.Owner?.firstName}'s picture`}
-        />}
+        />
         </div>
         {spot?.amenities ? 
             <div id='singleSpot-amenities-items'>

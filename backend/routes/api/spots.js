@@ -398,7 +398,7 @@ router.get('/:spotId/reviews', async (req, res) => {
     for (let review of reviews) {
         const reviewJson = review.toJSON();
         reviewJson.User = await User.findByPk(review.userId, {
-            attributes: ['id', 'firstName', 'lastName']
+            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
         });
         reviewsJsons.push(reviewJson);
     };

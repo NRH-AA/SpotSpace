@@ -8,6 +8,7 @@ import DeleteReviewModal from "./DeleteReview";
 import UpdateReviewModal from "./UpdateReview";
 import './Reviews.css';
 import Star from './images/star.png';
+import DefaultProfilePicture from '../../images/default_profile_picture.jpg';
 
 const ReviewsComponent = ({ spotId }) => {
     const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const ReviewsComponent = ({ spotId }) => {
             }
         }
         return true;
-    }
+    };
     
     return (
         <div id="reviews-wrapper">  
@@ -89,17 +90,24 @@ const ReviewsComponent = ({ spotId }) => {
                 <div key={el.id}>
                     <div id="reviews-stars-div">
                         <div id='reviews-stars-flex'>
-                            <p className="reviews-name-p">
-                                {el.User?.firstName}
-                            </p>
+                            <img className='reviews-user-img'
+                                src={el.User?.profilePicture ? el.User?.profilePicture : DefaultProfilePicture}
+                                alt={el.User?.firstName}
+                            />
                             
-                            <div className='reviews-star-date-div'>
-                                {el.stars && getStars(el.stars)}
-                                <span className="reviews-date-p">
-                                    <ul>
-                                        <li>{formatDate(el.updatedAt)}</li>
-                                    </ul>
-                                </span>
+                            <div>
+                                <p className="reviews-name-p">
+                                    {el.User?.firstName}
+                                </p>
+                                
+                                <div className='reviews-star-date-div'>
+                                    {el.stars && getStars(el.stars)}
+                                    <span className="reviews-date-p">
+                                        <ul>
+                                            <li>{formatDate(el.updatedAt)}</li>
+                                        </ul>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         
@@ -113,7 +121,7 @@ const ReviewsComponent = ({ spotId }) => {
                                 />
                                 <OpenModalButton
                                     spotId={el.id}
-                                    className="reviews-button"
+                                    className="reviews-button reviews-delete-button"
                                     buttonText={<i className="fa fa-trash singleSpot-delete-trash"/>}
                                     modalComponent={<DeleteReviewModal spotId={spotId}/>}
                                 />
@@ -122,7 +130,7 @@ const ReviewsComponent = ({ spotId }) => {
                         
                     </div>
                 
-                    <p className="reviews-review-p" key={el.id}>{el.review}</p>
+                    <p className="reviews-review-p">{el.review}</p>
                     
                 </div>
             )})}

@@ -71,9 +71,12 @@
     border: 1px solid rgb(202, 202, 202);
 }
 
+.singleSpot-amenity-item-p {
+    margin-top: 25%;
+}
+
 #singleSpot-middle-about-div {
     width: 100%;
-    min-height: 200px;
     margin: auto;
     padding-bottom: 20px;
     border-bottom: 1px solid grey;

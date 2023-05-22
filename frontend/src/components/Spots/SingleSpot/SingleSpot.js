@@ -28,7 +28,8 @@ const SingleSpot = () => {
     
     const detailsText = () => {
       let text = '';
-      text += `⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews !== 1 ? 'Reviews' : 'Review'}`;
+      if (spot.numReviews === 0) text += `⭐ New Spot`
+      else text += `⭐${spot.avgStarRating} · ${spot.numReviews} ${spot.numReviews !== 1 ? 'Reviews' : 'Review'}`;
       text += ` ·  ${spot.state}, ${spot.city}, ${spot.country}`
       
       return <p>{text}</p>

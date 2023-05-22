@@ -17,7 +17,7 @@ const AmenitiesComponant = () => {
         {spot?.amenities ? 
             <div id='singleSpot-amenities-items'>
                 {spot?.amenities.split(',').map((el, i) => <div key={i} className='singleSpot-amenities-item'>
-                <p>{el}</p>
+                <p className='singleSpot-amenity-item-p'>{el}</p>
                 </div>)}
             </div>
         : null}

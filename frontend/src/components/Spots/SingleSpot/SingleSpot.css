@@ -76,6 +76,18 @@
     margin-top: 25%;
 }
 
+#singleSpot-additional-amenities-container {
+    width: 100%;
+    margin: auto;
+    padding-bottom: 20px;
+    border-bottom: 1px solid grey;
+}
+
+.singleSpot-amenities-list-item {
+    font-weight: 500;
+    
+}
+
 #singleSpot-middle-about-div {
     width: 100%;
     margin: auto;

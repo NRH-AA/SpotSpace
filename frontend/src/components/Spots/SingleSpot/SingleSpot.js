@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getSpot } from "../../../store/spots";
 import SingleSpotImagesComponant from "./SingleSpotImages";
-import AmenitiesComponant from "./AmenitiesComponant";
+import { AmenitiesComponant, AdditionalAmenitiesComponant } from "./AmenitiesComponant";
 import BookingComponant from "./BookingComponant";
 import ReviewsComponent from "../../Reviews";
 import OpenModalButton from "../../OpenModalButton";
@@ -55,6 +55,7 @@ const SingleSpot = () => {
                       <MarkDownComponant text={spot?.description}/>
                     </div>
                     
+                    <AdditionalAmenitiesComponant />
                 </div>
                 
                 {(spot?.Owner?.id !== userState?.id) &&

@@ -21,6 +21,8 @@ const CreateSpotModal = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     
+    const sessionUser = useSelector(state => state.session.user);
+    
     const [country, setCountry] = useState('');
     const [fullAddress, setFullAddress] = useState('');
     const [address, setAddress] = useState('');
@@ -317,11 +319,17 @@ const CreateSpotModal = () => {
     return (
         <div className="create-spot-wrapper">
             <div id='create-spot-inner-div'>
-            <h2><u>Create a new Spot</u></h2>
-            <h3>Where's your place located?</h3>
-            <p id="where-p">Guests will only get your exact address once they booked a reservation.</p>
+            <h2 id='create-spot-h2'><u>Create a new SpotSpace</u></h2>
             
-            <button className="main-button-style create-spot-button" onClick={createDemoSpot}>Demo Create</button>
+            {(sessionUser && sessionUser.username === 'Demo') &&
+                <button className="main-button-style create-spot-button" 
+                    onClick={createDemoSpot}
+                >Create Demo Spot</button>
+            }
+            
+            
+            <h3 id='create-spot-h3'>Where's your place located?</h3>
+            <p id="where-p">Guests will only get your exact address once they booked a reservation.</p>
             
             <div>
                 <ul>

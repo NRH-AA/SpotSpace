@@ -8,6 +8,7 @@ import SpotComponent from './components/Spots';
 import SingleSpot from './components/Spots/SingleSpot/SingleSpot';
 import UserSpotsComponent from './components/Spots/UserSpots';
 import UserReviews from './components/Reviews/UserReviews';
+import CreateSpotModal from './components/Spots/CreateSpot/CreateSpotModal';
 
 function App() {
   const dispatch = useDispatch();
@@ -30,12 +31,20 @@ function App() {
             <UserSpotsComponent />
           </Route>
           
+          <Route path="/spots/new">
+            <CreateSpotModal />
+          </Route>
+          
           <Route path="/spots/:spotId">
             <SingleSpot />
           </Route>
           
           <Route path="/reviews/current">
             <UserReviews />
+          </Route>
+          
+          <Route path='/'>
+            <SpotComponent />
           </Route>
           
           

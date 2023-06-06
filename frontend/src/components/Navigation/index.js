@@ -28,11 +28,9 @@ function Navigation({ isLoaded }){
             
             <div className="topbar-profile">
               {sessionUser && (
-                  <OpenModalButton
-                    className="create-spot"
-                    buttonText='SpotSpace your home'
-                    modalComponent={<CreateSpotModal />}
-                  />
+                  <NavLink className='create-spot'
+                    to='/spots/new'
+                  >SpotSpace your home</NavLink>
               )}
               
               {isLoaded && (

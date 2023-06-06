@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useModal } from "../../../context/Modal";
 import * as spotActions from '../../../store/spots';
 import GoogleMapComponent from '../../GoogleMaps';
 import { csrfFetch } from '../../../store/csrf';
@@ -21,7 +20,6 @@ if (process.env.NODE_ENV !== 'production') {
 const CreateSpotModal = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { closeModal } = useModal();
     
     const [country, setCountry] = useState('');
     const [fullAddress, setFullAddress] = useState('');
@@ -125,7 +123,6 @@ const CreateSpotModal = () => {
             if (data && data.errors) return setErrors(data.errors);
         });
         
-        closeModal();
         return history.push(`/spots/current`);
     };
     
@@ -157,7 +154,6 @@ const CreateSpotModal = () => {
             if (data && data.errors) return setErrors(data.errors);
         });
         
-        closeModal();
         return history.push(`/spots/current`);
     }
     
@@ -617,7 +613,6 @@ const CreateSpotModal = () => {
                 </div>
                 
                 <div id="create-spot-button-div">
-                    <button className="main-button-style create-spot-button" type="button" onClick={closeModal}>Cancel</button>
                     <button className="main-button-style create-spot-button" type="submit"
                         
                     >Create</button>

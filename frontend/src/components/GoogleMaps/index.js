@@ -47,6 +47,7 @@ const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
                 }}
             >
             </Marker>
+            
       </GoogleMap>
     
     : null

@@ -1,17 +1,20 @@
 .create-spot-wrapper {
-    width: auto;
-    margin: auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 15px;
+    width: 100vw;
+    padding-top: 20px;
 }
 
 #create-spot-inner-div {
     height: 450px;
-    width: 600px;
-    padding-left: 5px;
+    width: 80%;
     margin: auto;
-    overflow-y: auto;
+}
+
+#create-spot-h2 {
+    text-align: center;
+}
+
+#create-spot-h3 {
+    margin-top: 40px;
 }
 
 #where-p {
@@ -21,7 +24,7 @@
 }
 
 .create-spot-button {
-    width: 25%;
+    width: 200px;
     height: 25px;
 }
 
@@ -35,6 +38,7 @@
     flex-direction: column;
     width: 65%;
     margin-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 .create-spot-input {

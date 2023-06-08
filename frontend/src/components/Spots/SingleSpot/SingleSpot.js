@@ -6,6 +6,7 @@ import SingleSpotImagesComponant from "./SingleSpotImages";
 import { AmenitiesComponant, AdditionalAmenitiesComponant } from "./AmenitiesComponant";
 import BookingComponant from "./BookingComponant";
 import ReviewsComponent from "../../Reviews";
+import Navigation from "../../Navigation";
 import OpenModalButton from "../../OpenModalButton";
 import DeleteSpotModal from "../../DeleteSpotModal";
 import UpdateSpotModal from "../../UpdateSpotModal";
@@ -35,7 +36,8 @@ const SingleSpot = () => {
       return <p>{text}</p>
     };
     
-    return (
+    return (<>
+        <Navigation isLoaded={true}/>
         <div id="singleSpot-wrapper">
           <div id='singleSpot-main-div'>
           
@@ -69,7 +71,7 @@ const SingleSpot = () => {
             
           </div>
         </div>
-    );
+    </>);
 };
 
 export default SingleSpot;

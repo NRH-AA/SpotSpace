@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
 
 import * as sessionActions from "./store/session";
-import Navigation from "./components/Navigation";
 import SpotComponent from './components/Spots';
 import SingleSpot from './components/Spots/SingleSpot/SingleSpot';
 import UserSpotsComponent from './components/Spots/UserSpots';
@@ -20,7 +19,6 @@ function App() {
   
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
           <Route exact path="/">
@@ -52,6 +50,6 @@ function App() {
       )}
     </>
   );
-}
+};
 
 export default App;

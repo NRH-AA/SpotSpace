@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getUserSpots } from '../../store/spots';
 import OpenModalButton from "../OpenModalButton";
+import Navigation from "../Navigation";
 import DeleteSpotModal from "../DeleteSpotModal";
 import UpdateSpotModal from "../UpdateSpotModal";
 import './Spots.css';
@@ -25,6 +26,7 @@ const UserSpotsComponent = () => {
     
     return (
         <>
+        <Navigation isLoaded={true}/>
         <h2 style={{marginLeft: 20}}>Manage Spots</h2>
         <p style={{marginLeft: 20, fontSize: 18}}>{userSpots?.length === 0 ? 'You have no spots yet' : ''}</p>
         <div id="allSpots-wrapper">

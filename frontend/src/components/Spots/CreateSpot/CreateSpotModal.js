@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as spotActions from '../../../store/spots';
-import GoogleMapComponent from '../../GoogleMaps';
 import { csrfFetch } from '../../../store/csrf';
+import GoogleMapComponent from '../../GoogleMaps';
+import CreateSpotNightSlider from './xSlider';
 // import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import Geocode from "react-geocode";
 import './CreateSpotModal.css';
@@ -35,6 +36,7 @@ const CreateSpotModal = () => {
     const [price, setPrice] = useState('');
     const [maxGuests, setMaxGuests] = useState(1);
     const [cleaningFee, setCleaningFee] = useState(0);
+    const [nights, setNights] = useState(1);
     const [amenity, setAmenity] = useState('');
     const [amenities, setAmenities] = useState('');
     const [amenityError, setAmenityError] = useState(null);
@@ -332,8 +334,7 @@ const CreateSpotModal = () => {
             </div>
             
             <div id='create-spot-earnings-div'>
-                <p style={{fontSize: "34px", marginBottom: "0px", color: "#00e200"}}>SpotSpace it.</p>
-                <p style={{fontSize: "38px", marginTop: "5px"}}>You could earn</p>
+                <CreateSpotNightSlider />
             </div>
             
             

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getAllSpots } from '../../store/spots';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+import Navigation from "../Navigation";
 import './Spots.css';
 
 const SpotComponent = () => {
@@ -41,7 +42,8 @@ const SpotComponent = () => {
     
     if (!spotsState) return null;
     
-    return (
+    return (<>
+        <Navigation isLoaded={true}/>
         <div id="allSpots-wrapper">
             {spotsState?.map((spot, i) => 
             <Link key={i} className={"spotLink"} to={"/spots/" + spot.id}>
@@ -58,7 +60,7 @@ const SpotComponent = () => {
             </Link>
             )}
         </div>
-    );
+    </>);
 };
 
 export default SpotComponent;

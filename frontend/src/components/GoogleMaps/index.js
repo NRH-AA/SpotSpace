@@ -1,9 +1,7 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 
-const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
-    const dispatch = useDispatch();
+const GoogleMapComponent = ({latt, lngt, heightt, widtht, marginTop}) => {
     const [lat, setLat] = useState(latt || -3.745);
     const [lng, setLng] = useState(lngt || -38.523);
     const [height, setHeight] = useState(heightt || 400);
@@ -12,12 +10,15 @@ const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
     
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API
+        //googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API
+        googleMapsApiKey: ''
     });
     
     const containerStyle = {
         height: height,
-        width: width
+        width: width,
+        borderRadius: '15px',
+        marginTop: marginTop || '0px'
     };
     
     const onLoad = useCallback(map => {

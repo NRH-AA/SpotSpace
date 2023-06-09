@@ -337,6 +337,27 @@ const CreateSpotModal = () => {
                 <CreateSpotNightSlider />
             </div>
             
+            <div id='create-spot-gmaps-div'>
+                <div id='create-spot-type-div'>
+                    <i className="fa-solid fa-magnifying-glass create-spot-magnifying-glass"/>
+                    <div>
+                        <p className='create-spot-type-p1'>Location</p>
+                        <p className='create-spot-type-p'>Type * Guests</p>
+                    </div>
+                </div>
+                <GoogleMapComponent heightt='400px' widtht='100%' marginTop='20px'/>
+            </div>
+            
+            <p 
+            style={{
+                marginTop: '60px',
+                marginLeft: "30px",
+                fontSize: "28px"
+            }}
+            >SpotSpace it easily with SpotSpace Setup</p>
+            <img src='https://a0.muscache.com/im/pictures/65214d06-ffb4-4b70-93c0-01d368e76649.jpg?'/>
+            
+            
             
         </div>
     );

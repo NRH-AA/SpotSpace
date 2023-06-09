@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Slider from 'react-input-slider';
 
 const CreateSpotNightSlider = () => {
-    const [nights, setNights] = useState(1);
-    const defaultAmount = 124;
+    const [nights, setNights] = useState(7);
+    const defaultAmount = 240;
     
     return (<>
         <p style={{fontSize: "34px", marginBottom: "0px", color: "#00e200"}}>SpotSpace it.</p>
@@ -20,7 +20,7 @@ const CreateSpotNightSlider = () => {
             styles={{
                 track: {
                     backgroundColor: '#c5c5c5',
-                    width: "95%",
+                    width: "99%",
                     height: "4px"
                 },
                 active: {
@@ -36,6 +36,13 @@ const CreateSpotNightSlider = () => {
                 }
             }}
         />
+        
+        <p style={{
+            marginTop: "30px",
+            fontSize: "14px", 
+            cursor: "not-allowed",
+            color: "#797979"
+            }}><u>Learn how we estimate your earnings</u></p>
     </>)
 };
 

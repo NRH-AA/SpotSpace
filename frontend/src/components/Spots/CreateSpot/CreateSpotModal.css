@@ -1,5 +1,5 @@
 #create-spot-wrapper {
-    width: 100vw;
+    width: 90vw;
     max-width: 1200px;
     margin: auto;
     height: auto;
@@ -30,7 +30,7 @@
 
 
 #create-spot-earnings-div {
-    width: 95%;
+    width: 100%;
     height: 400px;
     margin: auto;
     margin-top: 100px;
@@ -38,7 +38,7 @@
 }
 
 #create-spot-gmaps-div {
-    width: 95%;
+    width: 100%;
     height: 500px;
     margin: auto;
 }
@@ -46,12 +46,38 @@
 #create-spot-type-div {
     width: 100%;
     height: 60px;
+    margin: auto;
     border: 1px solid grey;
     border-radius: 50px;
     cursor: pointer;
     display: flex;
     align-items: center;
 }
+
+#create-spot-info-text-div {
+    width: 98%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.cs-info-text-h3 {
+    font-size: 18px;
+}
+.cs-info-text-p {
+    font-weight: 500;
+    margin-top: -10px;
+    color: grey;
+}
+
+#cs-info-aircover {
+    width: 100%;
+    margin-top: 80px;
+}
+
+
+
+
+
 
 .create-spot-type-p1 {
     margin-left: 15px;

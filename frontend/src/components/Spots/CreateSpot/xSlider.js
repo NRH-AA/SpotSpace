@@ -20,7 +20,7 @@ const CreateSpotNightSlider = () => {
             styles={{
                 track: {
                     backgroundColor: '#c5c5c5',
-                    width: "99%",
+                    width: "95%",
                     height: "4px"
                 },
                 active: {

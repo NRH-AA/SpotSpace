@@ -1,7 +1,7 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { useState, useCallback } from 'react';
 
-const GoogleMapComponent = ({latt, lngt, heightt, widtht, marginTop}) => {
+const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
     const [lat, setLat] = useState(latt || -3.745);
     const [lng, setLng] = useState(lngt || -38.523);
     const [height, setHeight] = useState(heightt || 400);
@@ -18,7 +18,7 @@ const GoogleMapComponent = ({latt, lngt, heightt, widtht, marginTop}) => {
         height: height,
         width: width,
         borderRadius: '15px',
-        marginTop: marginTop || '0px'
+        margin: 'auto'
     };
     
     const onLoad = useCallback(map => {

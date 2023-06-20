@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ProfileButton from './ProfileButton';
-import OpenModalButton from "../OpenModalButton";
-import CreateSpotModal from '../Spots/CreateSpot/CreateSpotModal';
+// import OpenModalButton from "../OpenModalButton";
+// import CreateSpotModal from '../Spots/CreateSpot/CreateSpotModal';
 import './Navigation.css';
 import Logo from './images/logo.png';
 

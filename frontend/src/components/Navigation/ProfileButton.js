@@ -5,7 +5,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-import CreateSpotModal from "../Spots/CreateSpot/CreateSpotModal";
+import CreateSpotModal from "../Spots/CreateSpot/CreateSpotInfo";
 import './ProfileButton.css';
 import ProfileMenu from './images/menu.png';
 import ProfileImage from './images/profile_button.png';

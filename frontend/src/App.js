@@ -7,7 +7,7 @@ import SpotComponent from './components/Spots';
 import SingleSpot from './components/Spots/SingleSpot/SingleSpot';
 import UserSpotsComponent from './components/Spots/UserSpots';
 import UserReviews from './components/Reviews/UserReviews';
-import CreateSpotModal from './components/Spots/CreateSpot/CreateSpotModal';
+import CreateSpotModal from './components/Spots/CreateSpot/CreateSpotInfo';
 
 function App() {
   const dispatch = useDispatch();

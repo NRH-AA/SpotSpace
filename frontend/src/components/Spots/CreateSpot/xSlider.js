@@ -9,7 +9,7 @@ const CreateSpotNightSlider = () => {
         <p style={{fontSize: "34px", marginBottom: "0px", color: "#00e200"}}>SpotSpace it.</p>
         <p style={{fontSize: "38px", marginTop: "5px", marginBottom: "0px"}}>You could earn</p>
         <p style={{fontSize: "65px", marginTop: "20px", marginBottom: "0px"}}>${defaultAmount * nights}</p>
-        <p style={{paddingBottom: "25px", marginTop: "20px", fontWeight: "500"}}><b><u>{nights === 1 ? '1 night' : `${nights} nights`}</u></b> at an estimated {defaultAmount} a night</p>
+        <p style={{paddingBottom: "25px", marginTop: "20px", fontWeight: "500"}}><b><u>{nights === 1 ? '1 night' : `${nights} nights`}</u></b> at an estimated ${defaultAmount} a night</p>
         <Slider
             asix="x"
             x={nights}

@@ -1,6 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import GoogleMapComponent from '../../GoogleMaps';
 import CreateSpotNightSlider from './xSlider';
+import CreateSpotComponent from './CreateSpotComponent';
 import './CreateSpotInfo.css';
 import Logo from '../../Navigation/images/logo.png';
 
@@ -8,32 +9,32 @@ const CreateSpotInfo = () => {
     const history = useHistory();
     
     return (
-        <div id="create-spot-wrapper">
-            <div id='create-spot-nav'>
+        <div id="cs-info-wrapper">
+            <div id='cs-info-nav'>
                 <img 
                     style={{height: '55px', width: '65px', marginLeft: '0px'}}
                     className="logoImg" 
                     src={Logo} alt="logo"
                     onClick={() => history.push('/')}
                 />
-                <div id='create-spot-nav-div'>
+                <div id='cs-info-nav-div'>
                     <p style={{fontSize: "14.5px"}}>Ready to SpotSpace it?</p>
-                    <button className='main-button-style create-spot-setup-button'
+                    <button className='main-button-style cs-info-setup-button'
                         
                     >SpotSpace Setup</button>
                 </div>
             </div>
             
-            <div id='create-spot-earnings-div'>
+            <div id='cs-info-earnings-div'>
                 <CreateSpotNightSlider />
             </div>
             
-            <div id='create-spot-gmaps-div'>
-                <div id='create-spot-type-div'>
-                    <i className="fa-solid fa-magnifying-glass create-spot-magnifying-glass"/>
+            <div id='cs-info-gmaps-div'>
+                <div id='cs-info-type-div'>
+                    <i className="fa-solid fa-magnifying-glass cs-info-magnifying-glass"/>
                     <div>
-                        <p className='create-spot-type-p1'>Location</p>
-                        <p className='create-spot-type-p'>Type * Guests</p>
+                        <p className='cs-info-type-p1'>Location</p>
+                        <p className='cs-info-type-p'>Type * Guests</p>
                     </div>
                 </div>
                 <br></br>
@@ -55,7 +56,7 @@ const CreateSpotInfo = () => {
             </div>
             
             
-            <div id='create-spot-info-text-div'>
+            <div id='cs-info-text-div'>
                 <div style={{width: '95%'}}>
                     <h3 className='cs-info-text-h3'>One-to-one guidance from a Superhost</h3>
                     <p className='cs-info-text-p'>We’ll match you with a Superhost in your area, who’ll guide you from your first question to your first guest—by phone, video call, or chat.</p>

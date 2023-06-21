@@ -5,6 +5,41 @@ import './SpotType.css';
 const SpotTypeComponent = () => {
     const history = useHistory();
     
+    const spotTypes = [
+        {text: "House", img: ''},
+        {text: "Apartment", img: ''},
+        {text: "Barn", img: ''},
+        {text: "Bed & Breakfast", img: ''},
+        {text: "Boat", img: ''},
+        {text: "Cabin", img: ''},
+        {text: "Camper/RV", img: ''},
+        {text: "Casa particular", img: ''},
+        {text: "Castle", img: ''},
+        {text: "Cave", img: ''},
+        {text: "Container", img: ''},
+        {text: "Cycladic home", img: ''},
+        {text: "Dammuso", img: ''},
+        {text: "Dome", img: ''},
+        {text: "Earth home", img: ''},
+        {text: "Farm", img: ''},
+        {text: "Guesthouse", img: ''},
+        {text: "Hotel", img: ''},
+        {text: "Houseboat", img: ''},
+        {text: "Kezhan", img: ''},
+        {text: "Minsu", img: ''},
+        {text: "Riad", img: ''},
+        {text: "Ryokan", img: ''},
+        {text: "Shepherd's hut", img: ''},
+        {text: "Tent", img: ''},
+        {text: "Tiny home", img: ''},
+        {text: "Tower", img: ''},
+        {text: "Treehouse", img: ''},
+        {text: "Trullo", img: ''},
+        {text: "Windmill", img: ''},
+        {text: "Yurt", img: ''}
+    ]
+    
+    
     return (
         <div id="cs-type-wrapper">
             <div id='cs-type-nav'>
@@ -29,32 +64,11 @@ const SpotTypeComponent = () => {
                 <p className='cs-type-center-p'>Which of these best describes your space?</p>
                 
                 <div id='cs-type-items-div'>
-                    <div className='cs-type-items-item'>
+                    {spotTypes.map((el, i) => <div key={i} className='cs-type-items-item'>
+                        <p>{el.text}</p>
                         
-                    </div>
-                    <div className='cs-type-items-item'>
-                        
-                    </div>
-                    <div className='cs-type-items-item'>
-                        
-                    </div>
-                    <div className='cs-type-items-item'>
-                        
-                    </div>
-                    <div className='cs-type-items-item'>
-                        
-                    </div>
-                    <div className='cs-type-items-item'>
-                        
-                    </div>
-                    <div className='cs-type-items-item'>
-                        
-                    </div>
-                    <div className='cs-type-items-item'>
-                        
-                    </div>
-                    
-                    
+                    </div>)}
+                
                 </div>
             </div>
             

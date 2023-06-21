@@ -1,0 +1,53 @@
+#cs-type-wrapper {
+    width: 95vw;
+    max-width: 95vw;
+    margin: auto;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#cs-type-nav {
+    height: 60px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cs-type-nav-button {
+    height: 35px;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+#cs-type-center-div {
+    width: 650px;
+    margin: auto;
+}
+
+.cs-type-center-p {
+    width: 550px;
+    font-size: 32px;
+    font-weight: 550;
+}
+
+#cs-type-items-div {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.cs-type-items-item {
+    width: 200px;
+    height: 100px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    transition: border 50ms, width 50ms, height 50ms;
+}
+.cs-type-items-item:hover {
+    border: 3px solid rgb(56, 56, 56);
+    width: 196px;
+    height: 96px;
+}

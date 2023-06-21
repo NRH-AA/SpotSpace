@@ -8,6 +8,7 @@ import SingleSpot from './components/Spots/SingleSpot/SingleSpot';
 import UserSpotsComponent from './components/Spots/UserSpots';
 import UserReviews from './components/Reviews/UserReviews';
 import CreateSpotModal from './components/Spots/CreateSpot/CreateSpotInfo';
+import SpotTypeComponent from './components/Spots/CreateSpot/SpotType';
 
 function App() {
   const dispatch = useDispatch();
@@ -23,6 +24,10 @@ function App() {
         <Switch>
           <Route exact path="/">
             <SpotComponent />
+          </Route>
+          
+          <Route exact path="/become-a-host/a100">
+            <SpotTypeComponent />
           </Route>
           
           <Route path="/spots/current">

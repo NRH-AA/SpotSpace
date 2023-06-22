@@ -6,37 +6,37 @@ const SpotTypeComponent = () => {
     const history = useHistory();
     
     const spotTypes = [
-        {text: "House", img: ''},
-        {text: "Apartment", img: ''},
-        {text: "Barn", img: ''},
-        {text: "Bed & Breakfast", img: ''},
-        {text: "Boat", img: ''},
-        {text: "Cabin", img: ''},
-        {text: "Camper/RV", img: ''},
-        {text: "Casa particular", img: ''},
-        {text: "Castle", img: ''},
-        {text: "Cave", img: ''},
-        {text: "Container", img: ''},
-        {text: "Cycladic home", img: ''},
-        {text: "Dammuso", img: ''},
-        {text: "Dome", img: ''},
-        {text: "Earth home", img: ''},
-        {text: "Farm", img: ''},
-        {text: "Guesthouse", img: ''},
-        {text: "Hotel", img: ''},
-        {text: "Houseboat", img: ''},
-        {text: "Kezhan", img: ''},
-        {text: "Minsu", img: ''},
-        {text: "Riad", img: ''},
-        {text: "Ryokan", img: ''},
-        {text: "Shepherd's hut", img: ''},
-        {text: "Tent", img: ''},
-        {text: "Tiny home", img: ''},
-        {text: "Tower", img: ''},
-        {text: "Treehouse", img: ''},
-        {text: "Trullo", img: ''},
-        {text: "Windmill", img: ''},
-        {text: "Yurt", img: ''}
+        {text: "House", icon: 'fa-solid fa-house cs-type-house'},
+        {text: "Apartment", icon: ''},
+        {text: "Barn", icon: ''},
+        {text: "Bed & Breakfast", icon: ''},
+        {text: "Boat", icon: ''},
+        {text: "Cabin", icon: ''},
+        {text: "Camper/RV", icon: ''},
+        {text: "Casa particular", icon: ''},
+        {text: "Castle", icon: ''},
+        {text: "Cave", icon: ''},
+        {text: "Container", icon: ''},
+        {text: "Cycladic home", icon: ''},
+        {text: "Dammuso", icon: ''},
+        {text: "Dome", icon: ''},
+        {text: "Earth home", icon: ''},
+        {text: "Farm", icon: ''},
+        {text: "Guesthouse", icon: ''},
+        {text: "Hotel", icon: ''},
+        {text: "Houseboat", icon: ''},
+        {text: "Kezhan", icon: ''},
+        {text: "Minsu", icon: ''},
+        {text: "Riad", icon: ''},
+        {text: "Ryokan", icon: ''},
+        {text: "Shepherd's hut", icon: ''},
+        {text: "Tent", icon: ''},
+        {text: "Tiny home", icon: ''},
+        {text: "Tower", icon: ''},
+        {text: "Treehouse", icon: ''},
+        {text: "Trullo", icon: ''},
+        {text: "Windmill", icon: ''},
+        {text: "Yurt", icon: ''}
     ]
     
     
@@ -65,8 +65,10 @@ const SpotTypeComponent = () => {
                 
                 <div id='cs-type-items-div'>
                     {spotTypes.map((el, i) => <div key={i} className='cs-type-items-item'>
-                        <p>{el.text}</p>
-                        
+                        <div className='cs-types-type-div'>
+                            <i className={el.icon}/>
+                            <p className='cs-types-type-p'>{el.text}</p>
+                        </div>
                     </div>)}
                 
                 </div>

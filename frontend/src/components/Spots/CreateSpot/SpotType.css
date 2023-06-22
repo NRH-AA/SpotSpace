@@ -1,4 +1,4 @@
-#cs-type-wrapper {
+#cs-wrapper {
     width: 100vw;
     max-width: 100vw;
     margin: auto;
@@ -7,7 +7,7 @@
     padding-bottom: 20px;
 }
 
-#cs-type-nav {
+#cs-nav {
     height: 60px;
     margin: auto;
     margin-left: 20px;
@@ -17,7 +17,12 @@
     align-items: center;
 }
 
-.cs-type-nav-button {
+#cs-nav-div {
+    display: flex;
+    gap: 20px;
+}
+
+.cs-nav-button {
     height: 35px;
     border-radius: 20px;
     font-size: 16px;
@@ -66,7 +71,7 @@
     margin-top: 20px;
 }
 
-#cs-type-footer {
+#cs-footer {
     width: 100vw;
     height: 80px;
     position: absolute;

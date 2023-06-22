@@ -74,6 +74,9 @@ const SpotTypeComponent = () => {
                 </div>
             </div>
             
+            <div id='cs-type-footer'>
+                
+            </div>
             
             
         </div>

@@ -1,6 +1,10 @@
+import { useState } from "react";
+import ProgressBar from "@ramonak/react-progress-bar";
 import './SpotType.css';
 
-const SpotTypeComponent = () => {
+const SpotTypeComponent = ({completed}) => {
+    const [selection, setSelection] = useState('');
+    
     const spotTypes = [
         {text: "House", icon: 'fa-solid fa-house cs-type-icon'},
         {text: "Apartment", icon: 'fa-solid fa-city cs-type-icon'},
@@ -35,13 +39,18 @@ const SpotTypeComponent = () => {
         {text: "Yurt", icon: 'fa-solid fa-house cs-type-icon'}
     ]
     
+    const selectionOnClick = (item) => selection === item.text ? setSelection('') : setSelection(item.text);
     
     return (
+        <>
         <div id='cs-type-center-div'>
             <p className='cs-type-center-p'>Which of these best describes your space?</p>
                 
             <div id='cs-type-items-div'>
-                {spotTypes.map((el, i) => <div key={i} className='cs-type-items-item'>
+                {spotTypes.map((el, i) => <div key={i} 
+                    className={el.text === selection ? 'cs-type-items-item-selected' : 'cs-type-items-item'}
+                    onClick={() => selectionOnClick(el)}
+                >
                     <div className='cs-types-type-div'>
                         <i className={el.icon}/>
                         <p className='cs-types-type-p'>{el.text}</p>
@@ -49,7 +58,28 @@ const SpotTypeComponent = () => {
                 </div>)}
                 
             </div>
+            
         </div>
+        
+        <div id='cs-footer'>
+            <ProgressBar completed={completed}
+                customLabel=' '
+                height='5px'
+            />
+                
+            <div id='cs-footer-button-div'>
+                <button id='cs-footer-back-button'
+                    
+                >Back</button>
+                    
+                <button id='cs-footer-next-button' className='main-button-style'
+                    disabled={!selection}
+                >Next</button>
+            </div>
+            
+        </div>
+        
+        </>
     );
 };
 

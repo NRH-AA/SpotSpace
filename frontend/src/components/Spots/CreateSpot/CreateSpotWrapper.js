@@ -1,5 +1,4 @@
 import { useHistory, useParams } from 'react-router-dom';
-import ProgressBar from "@ramonak/react-progress-bar";
 import SpotTypeComponent from './SpotType';
 import Logo from '../../Navigation/images/logo.png';
 import './SpotType.css';
@@ -7,7 +6,7 @@ import './SpotType.css';
 const CreateSpotWrapper = () => {
     const history = useHistory();
     const { progress } = useParams();
-    
+    const progressInt = parseInt(progress);
     
     return (
         <div id="cs-wrapper">
@@ -29,12 +28,7 @@ const CreateSpotWrapper = () => {
                 </div>
             </div>
             
-            {progress == 0 && <SpotTypeComponent />}
-            
-            
-            <div id='cs-footer'>
-                <ProgressBar completed={progress} />
-            </div>
+            {progressInt === 0 && <SpotTypeComponent completed={progress} />}
             
         </div>
     );

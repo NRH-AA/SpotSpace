@@ -4,6 +4,7 @@ import './SpotType.css';
 
 const SpotTypeComponent = ({completed}) => {
     const [selection, setSelection] = useState('');
+    const [progress, setProgress] = useState(0);
     
     const spotTypes = [
         {text: "House", icon: 'fa-solid fa-house cs-type-icon'},
@@ -39,7 +40,15 @@ const SpotTypeComponent = ({completed}) => {
         {text: "Yurt", icon: 'fa-solid fa-house cs-type-icon'}
     ]
     
-    const selectionOnClick = (item) => selection === item.text ? setSelection('') : setSelection(item.text);
+    const selectionOnClick = (item) => {
+        if (selection === item.text) {
+            setSelection('');
+            return setProgress(0);
+        }
+        
+        setSelection(item.text);
+        setProgress(5);
+    };
     
     return (
         <>
@@ -62,7 +71,7 @@ const SpotTypeComponent = ({completed}) => {
         </div>
         
         <div id='cs-footer'>
-            <ProgressBar completed={completed}
+            <ProgressBar completed={progress ? progress : completed}
                 customLabel=' '
                 height='5px'
             />

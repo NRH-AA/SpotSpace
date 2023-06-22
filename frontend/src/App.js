@@ -8,7 +8,7 @@ import SingleSpot from './components/Spots/SingleSpot/SingleSpot';
 import UserSpotsComponent from './components/Spots/UserSpots';
 import UserReviews from './components/Reviews/UserReviews';
 import CreateSpotModal from './components/Spots/CreateSpot/CreateSpotInfo';
-import SpotTypeComponent from './components/Spots/CreateSpot/SpotType';
+import CreateSpotWrapper from './components/Spots/CreateSpot/CreateSpotWrapper';
 
 function App() {
   const dispatch = useDispatch();
@@ -26,8 +26,8 @@ function App() {
             <SpotComponent />
           </Route>
           
-          <Route exact path="/become-a-host/a100">
-            <SpotTypeComponent />
+          <Route path="/become-a-host/:progress">
+            <CreateSpotWrapper />
           </Route>
           
           <Route path="/spots/current">

@@ -26,6 +26,7 @@
     height: 35px;
     border-radius: 20px;
     font-size: 16px;
+    cursor: not-allowed;
 }
 
 #cs-type-center-div {
@@ -58,6 +59,14 @@
     border: 1px solid rgb(19, 19, 19);
     box-shadow: 0px 0px 2px 1px rgb(19, 19, 19);
 }
+.cs-type-items-item-selected {
+    width: 200px;
+    height: 100px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid rgb(19, 19, 19);
+    box-shadow: 0px 0px 2px 1px rgb(19, 19, 19);
+}
 
 .cs-types-type-div {
     margin-left: 15px;
@@ -73,8 +82,32 @@
 
 #cs-footer {
     width: 100vw;
-    height: 80px;
-    position: absolute;
-    margin: auto;
-    bottom: 0px;
+    height: 60px;
+    margin-top: 100px;
+}
+
+.cs-progressbar {
+    height: 20px;
+}
+
+#cs-footer-button-div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#cs-footer-back-button {
+    border: none;
+    background: none;
+    font-size: 18px;
+    margin-left: 25px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#cs-footer-next-button {
+    height: 50px;
+    width: 100px;
 }

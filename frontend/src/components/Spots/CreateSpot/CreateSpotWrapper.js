@@ -29,6 +29,7 @@ const CreateSpotWrapper = () => {
             </div>
             
             {progressInt === 0 && <SpotTypeComponent completed={progress} />}
+            {progressInt === 5 && <SpotTypeComponent completed={progress} />}
             
         </div>
     );

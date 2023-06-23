@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import ProgressBar from "@ramonak/react-progress-bar";
 import './SpotType.css';
 
 const SpotTypeComponent = ({completed}) => {
+    const history = useHistory();
     const [selection, setSelection] = useState('');
     const [progress, setProgress] = useState(0);
     
@@ -73,6 +75,7 @@ const SpotTypeComponent = ({completed}) => {
         <div id='cs-footer'>
             <ProgressBar completed={progress ? progress : completed}
                 customLabel=' '
+                bgColor='#00f000'
                 height='5px'
             />
                 
@@ -83,6 +86,7 @@ const SpotTypeComponent = ({completed}) => {
                     
                 <button id='cs-footer-next-button' className='main-button-style'
                     disabled={!selection}
+                    onClick={() => history.push(`/become-a-host/${progress}/${selection}`)}
                 >Next</button>
             </div>
             

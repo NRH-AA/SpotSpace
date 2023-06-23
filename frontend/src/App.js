@@ -26,7 +26,7 @@ function App() {
             <SpotComponent />
           </Route>
           
-          <Route exact path="/become-a-host/:progress">
+          <Route path="/become-a-host/:progress">
             <CreateSpotWrapper />
           </Route>
           

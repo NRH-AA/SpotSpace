@@ -81,7 +81,7 @@ const SpotTypeComponent = ({completed}) => {
                 
             <div id='cs-footer-button-div'>
                 <button id='cs-footer-back-button'
-                    
+                    onClick={() => history.push('/spots/new')}
                 >Back</button>
                     
                 <button id='cs-footer-next-button' className='main-button-style'

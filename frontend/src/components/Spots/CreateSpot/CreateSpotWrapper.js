@@ -1,5 +1,6 @@
 import { useHistory, useParams } from 'react-router-dom';
 import SpotTypeComponent from './SpotType';
+import SpaceTypeComponent from './SpaceType';
 import Logo from '../../Navigation/images/logo.png';
 import './SpotType.css';
 
@@ -29,7 +30,7 @@ const CreateSpotWrapper = () => {
             </div>
             
             {progressInt === 0 && <SpotTypeComponent completed={progress} />}
-            {progressInt === 5 && <SpotTypeComponent completed={progress} />}
+            {progressInt === 5 && <SpaceTypeComponent completed={progress} />}
             
         </div>
     );

@@ -1,0 +1,16 @@
+#cs-space-type-center-div {
+    width: 70%;
+    margin: auto;
+    margin-top: 50%;
+}
+
+.cs-space-type-center-p {
+    width: 600px;
+    font-size: 32px;
+    font-weight: 550;
+}
+
+#cs-space-type-options-div {
+    display: flex;
+    flex-direction: column;
+}

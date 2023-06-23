@@ -13,4 +13,36 @@
 #cs-space-type-options-div {
     display: flex;
     flex-direction: column;
+    gap: 15px;
+}
+
+.cs-space-type-item {
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 15px;
+    text-indent: 30px;
+    height: 110px;
+    width: 90%;
+    cursor: pointer;
+}
+.cs-space-type-item:hover {
+    border: 2px solid rgb(77, 77, 77);
+    height: 109px;
+}
+.cs-space-type-item-selected {
+    border: 2px solid rgb(77, 77, 77);
+    border-radius: 15px;
+    text-indent: 30px;
+    height: 109px;
+    width: 90%;
+    cursor: pointer;
+}
+
+.cs-space-type-title {
+    font-size: 18px;
+    margin-top: 30px;
+}
+.cs-space-type-desc {
+    margin-top: -5px;
+    color: rgb(138, 138, 138);
+    font-weight: 500;
 }

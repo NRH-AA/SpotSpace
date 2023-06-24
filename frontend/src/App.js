@@ -26,6 +26,14 @@ function App() {
             <SpotComponent />
           </Route>
           
+          <Route path="/become-a-host/:progress/:spotType/:spaceType">
+            <CreateSpotWrapper />
+          </Route>
+          
+          <Route path="/become-a-host/:progress/:spotType">
+            <CreateSpotWrapper />
+          </Route>
+          
           <Route path="/become-a-host/:progress">
             <CreateSpotWrapper />
           </Route>

@@ -1,7 +1,6 @@
 #cs-space-type-center-div {
     width: 70%;
     margin: auto;
-    margin-top: 50%;
 }
 
 .cs-space-type-center-p {
@@ -11,6 +10,7 @@
 }
 
 #cs-space-type-options-div {
+    height: 78vh;
     display: flex;
     flex-direction: column;
     gap: 15px;

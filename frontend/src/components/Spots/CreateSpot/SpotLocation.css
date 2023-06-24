@@ -1,0 +1,26 @@
+.cs-location-center-p {
+    font-size: 30px;
+    text-align: center;
+}
+.cs-location-cetner-p2 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: -20px;
+    text-align: center;
+    color: rgb(104, 104, 104);
+}
+
+#cs-spot-location-gmap-input {
+    position: absolute;
+    top: 200px;
+    left: 30%;
+    height: 25px;
+    width: 40%;
+    outline: none;
+    font-weight: 700;
+    font-size: 16px;
+}
+#cs-spot-location-gmap-input::placeholder {
+    font-weight: 700;
+    font-size: 16px;
+}

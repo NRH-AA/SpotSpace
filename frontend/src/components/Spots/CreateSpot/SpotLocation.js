@@ -7,17 +7,17 @@ import './SpotLocation.css';
 const SpotLocationComponent = ({ completed }) => {
     const history = useHistory();
     const { progress, spotType, spaceType } = useParams();
-    const [selection, setselection] = useState('');
+    const [selection, setSelection] = useState('');
     const [newProgress, setNewProgress] = useState(completed);
     
-    const selectionOnClick = (item) => {
-        if (selection === item.key) {
-            setselection('');
-            return setNewProgress(5);
+    const selectionOnChange = (val) => {
+        if (val === '') {
+            setSelection('');
+            return setNewProgress(10);
         }
         
-        setselection(item.key);
-        setNewProgress(10);
+        setSelection(val);
+        setNewProgress(25);
     };
     
     return (
@@ -31,6 +31,8 @@ const SpotLocationComponent = ({ completed }) => {
                 <input id='cs-spot-location-gmap-input'
                     type='text' 
                     placeholder='Enter your address'
+                    value={selection}
+                    onChange={(e) => selectionOnChange(e.target.value)}
                 />
             </div>
             

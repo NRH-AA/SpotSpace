@@ -20,7 +20,7 @@ const CreateSpotInfo = () => {
                 <div id='cs-info-nav-div'>
                     <p style={{fontSize: "14.5px"}}>Ready to SpotSpace it?</p>
                     <button className='main-button-style cs-info-setup-button'
-                        onClick={() => history.push('/become-a-host/0')}
+                        onClick={() => history.push('/become-a-host/spotType')}
                     >SpotSpace Setup</button>
                 </div>
             </div>

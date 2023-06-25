@@ -7,8 +7,7 @@ import './SpotType.css';
 
 const CreateSpotWrapper = () => {
     const history = useHistory();
-    const { progress } = useParams();
-    const progressInt = parseInt(progress);
+    const { page } = useParams();
     
     return (
         <div id="cs-wrapper">
@@ -30,9 +29,9 @@ const CreateSpotWrapper = () => {
                 </div>
             </div>
             
-            {progressInt === 0 && <SpotTypeComponent completed={progress} />}
-            {progressInt === 5 && <SpaceTypeComponent completed={progress} />}
-            {progressInt === 10 && <SpotLocationComponent completed={progress} />}
+            {page === 'spotType' && <SpotTypeComponent />}
+            {page === 'spaceType' && <SpaceTypeComponent />}
+            {page === 'location' && <SpotLocationComponent />}
             
         </div>
     );

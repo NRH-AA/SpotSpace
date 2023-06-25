@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCSData } from '../../../store/session';
 import ProgressBar from "@ramonak/react-progress-bar";
 import './SpaceType.css';
 
-const SpaceTypeComponent = ({ completed }) => {
+const SpaceTypeComponent = () => {
     const history = useHistory();
-    const { progress, spotType } = useParams();
-    const [selection, setselection] = useState('');
-    const [newProgress, setNewProgress] = useState(completed);
+    const dispatch = useDispatch();
+    const createSpotInfo = useSelector(state => state.session.createSpot);
+    const [selection, setSelection] = useState(createSpotInfo.spaceType || '');
     
     
     const spaceTypeOptions = [
@@ -18,12 +20,12 @@ const SpaceTypeComponent = ({ completed }) => {
     
     const selectionOnClick = (item) => {
         if (selection === item.key) {
-            setselection('');
-            return setNewProgress(5);
+            setSelection('');
+            return dispatch(updateCSData({spaceType: '', progress: 5}));
         }
         
-        setselection(item.key);
-        setNewProgress(10);
+        setSelection(item.key);
+        return dispatch(updateCSData({spaceType: item.key, progress: 15}));
     };
     
     return (
@@ -32,7 +34,8 @@ const SpaceTypeComponent = ({ completed }) => {
             <p className='cs-space-type-center-p'>What type of place will guests have?</p>
             
             <div id='cs-space-type-options-div'>
-                {spaceTypeOptions.map((el, i) => <div key={i} className={selection === el.key ? 'cs-space-type-item-selected' : 'cs-space-type-item'}
+                {spaceTypeOptions.map((el, i) => 
+                <div key={i} className={createSpotInfo.spaceType === el.key ? 'cs-space-type-item-selected' : 'cs-space-type-item'}
                     onClick={() => selectionOnClick(el)}
                 >
                     <p className='cs-space-type-title'>{el.title}</p>
@@ -43,7 +46,7 @@ const SpaceTypeComponent = ({ completed }) => {
         </div>
         
         <div id='cs-footer'>
-            <ProgressBar completed={progress === newProgress ? progress : newProgress}
+            <ProgressBar completed={createSpotInfo.progress <= 15 ? createSpotInfo.progress : 15}
                 customLabel=' '
                 bgColor='#00f000'
                 height='5px'
@@ -51,12 +54,12 @@ const SpaceTypeComponent = ({ completed }) => {
                 
             <div id='cs-footer-button-div'>
                 <button id='cs-footer-back-button'
-                    onClick={() => history.push(`/become-a-host/0`)}
+                    onClick={() => history.push(`/become-a-host/spotType`)}
                 >Back</button>
                     
                 <button id='cs-footer-next-button' className='main-button-style'
                     disabled={!selection}
-                    onClick={() => history.push(`/become-a-host/${newProgress}/${spotType}/${selection}`)}
+                    onClick={() => history.push(`/become-a-host/location`)}
                 >Next</button>
             </div>
             

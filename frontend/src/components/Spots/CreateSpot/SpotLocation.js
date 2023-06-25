@@ -1,23 +1,25 @@
 import { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCSData } from '../../../store/session';
 import ProgressBar from "@ramonak/react-progress-bar";
 import GoogleMapComponent from '../../GoogleMaps';
 import './SpotLocation.css';
 
-const SpotLocationComponent = ({ completed }) => {
+const SpotLocationComponent = () => {
     const history = useHistory();
-    const { progress, spotType, spaceType } = useParams();
+    const dispatch = useDispatch();
+    const createSpotInfo = useSelector(state => state.session.createSpot);
     const [selection, setSelection] = useState('');
-    const [newProgress, setNewProgress] = useState(completed);
     
     const selectionOnChange = (val) => {
         if (val === '') {
             setSelection('');
-            return setNewProgress(10);
+            return dispatch(updateCSData({location: '', progress: 15}));
         }
         
         setSelection(val);
-        setNewProgress(25);
+        return dispatch(updateCSData({location: val, progress: 30}));
     };
     
     return (
@@ -39,7 +41,7 @@ const SpotLocationComponent = ({ completed }) => {
         </div>
         
         <div id='cs-footer'>
-            <ProgressBar completed={progress === newProgress ? progress : newProgress}
+            <ProgressBar completed={createSpotInfo.progress <= 30 ? createSpotInfo.progress : 30}
                 customLabel=' '
                 bgColor='#00f000'
                 height='5px'
@@ -47,12 +49,12 @@ const SpotLocationComponent = ({ completed }) => {
                 
             <div id='cs-footer-button-div'>
                 <button id='cs-footer-back-button'
-                    onClick={() => history.push(`/become-a-host/0`)}
+                    onClick={() => history.push(`/become-a-host/spaceType`)}
                 >Back</button>
                     
                 <button id='cs-footer-next-button' className='main-button-style'
                     disabled={!selection}
-                    onClick={() => history.push(`/become-a-host/${newProgress}/${spotType}/${selection}`)}
+                    onClick={() => history.push(`/become-a-host/todo`)}
                 >Next</button>
             </div>
             

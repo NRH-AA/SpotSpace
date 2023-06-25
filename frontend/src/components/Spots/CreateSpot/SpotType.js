@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { updateCSData } from "../../../store/session";
 import ProgressBar from "@ramonak/react-progress-bar";
 import './SpotType.css';
 
-const SpotTypeComponent = ({completed}) => {
+const SpotTypeComponent = () => {
     const history = useHistory();
-    const [selection, setSelection] = useState('');
-    const [progress, setProgress] = useState(0);
+    const dispatch = useDispatch();
+    const createSpotInfo = useSelector(state => state.session.createSpot);
+    const [selection, setSelection] = useState(createSpotInfo.spotType || '');
     
     const spotTypes = [
         {text: "House", icon: 'fa-solid fa-house cs-type-icon'},
@@ -43,14 +46,19 @@ const SpotTypeComponent = ({completed}) => {
     ]
     
     const selectionOnClick = (item) => {
-        if (selection === item.text) {
+        if (selection === item.text)  {
             setSelection('');
-            return setProgress(0);
-        }
-        
+            return dispatch(updateCSData({spotType: '', progress: 0}));
+        };
         setSelection(item.text);
-        setProgress(5);
+        return dispatch(updateCSData({spotType: item.text, progress: 5}));
     };
+    
+    useEffect(() => {
+        if (!createSpotInfo) dispatch(updateCSData({progress: 0}));
+    }, [createSpotInfo])
+    
+    if (!createSpotInfo) return null;
     
     return (
         <>
@@ -59,7 +67,7 @@ const SpotTypeComponent = ({completed}) => {
                 
             <div id='cs-type-items-div'>
                 {spotTypes.map((el, i) => <div key={i} 
-                    className={el.text === selection ? 'cs-type-items-item-selected' : 'cs-type-items-item'}
+                    className={el.text === createSpotInfo.spotType ? 'cs-type-items-item-selected' : 'cs-type-items-item'}
                     onClick={() => selectionOnClick(el)}
                 >
                     <div className='cs-types-type-div'>
@@ -73,7 +81,7 @@ const SpotTypeComponent = ({completed}) => {
         </div>
         
         <div id='cs-footer'>
-            <ProgressBar completed={progress ? progress : completed}
+            <ProgressBar completed={createSpotInfo.progress <= 5 ? createSpotInfo.progress : 5}
                 customLabel=' '
                 bgColor='#00f000'
                 height='5px'
@@ -86,7 +94,7 @@ const SpotTypeComponent = ({completed}) => {
                     
                 <button id='cs-footer-next-button' className='main-button-style'
                     disabled={!selection}
-                    onClick={() => history.push(`/become-a-host/${progress}/${selection}`)}
+                    onClick={() => history.push(`/become-a-host/spaceType`)}
                 >Next</button>
             </div>
             

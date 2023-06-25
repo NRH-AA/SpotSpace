@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf';
 
 const SESSION_LOGIN = 'session/LOGIN';
 const SESSION_LOGOUT = 'session/LOGOUT';
+const UPDATE_CS_DATA = 'session/UPDATE_CS_DATA';
 
 
 // Actions
@@ -12,6 +13,11 @@ const sessionLogin = (user) => ({
 
 export const sessionLogout = () => ({
     type: SESSION_LOGOUT
+});
+
+export const updateCSData = (data) => ({
+    type: UPDATE_CS_DATA,
+    data
 });
 
 
@@ -63,7 +69,7 @@ export const logout = () => async (dispatch) => {
 export const getUserState = (state) => state.session.user;
 
 // Selectors
-const initialState = { user: null }
+const initialState = { user: null, createSpot: null }
 const sessionReducer = (state = initialState, action) => {
     const newState = { ...state }
     switch (action.type) {
@@ -75,6 +81,10 @@ const sessionReducer = (state = initialState, action) => {
         newState.user = null;
         return newState;
       
+    case UPDATE_CS_DATA:
+        newState.createSpot = {...newState.createSpot, ...action.data};
+        return newState;
+        
     default:
         return state;
     }

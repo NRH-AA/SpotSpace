@@ -1,17 +1,25 @@
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { useState, useCallback } from 'react';
+import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 
-const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
-    const [lat, setLat] = useState(latt || -3.745);
-    const [lng, setLng] = useState(lngt || -38.523);
+const libraries = ['places'];
+
+const GoogleMapComponent = ({heightt, widtht}) => {
     const [height, setHeight] = useState(heightt || 400);
     const [width, setWidth] = useState(widtht || 400);
     const [map, setMap] = useState(null);
+    const [marker, setMarker] = useState(null);
+    const [selected, setSelected] = useState(null);
     
+    
+    const lat = 43.2103050066574;
+    const lng = -123.34474119991873;
+    const [center, setCenter] = useState({lat, lng})
+
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        //googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API
-        googleMapsApiKey: ''
+        //googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
+        googleMapsApiKey: '',
+        libraries
     });
     
     const containerStyle = {
@@ -24,34 +32,53 @@ const GoogleMapComponent = ({latt, lngt, heightt, widtht}) => {
     const onLoad = useCallback(map => {
         const bounds = new window.google.maps.LatLngBounds({lat, lng});
         map.fitBounds(bounds);
-        map.setZoom(10);
+        map.setZoom(15);
         setMap(map);
-    }, [])
+    }, []);
     
     const onUnmount = useCallback(map => {
         setMap(null);
-    }, [])
+    }, []);
     
-    return isLoaded ? 
+    
+    const onMapClick = useCallback((event) => {
+        const newMarker = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+        }
+        
+        setMarker(newMarker); 
+        setSelected(newMarker);
+        setCenter({lat: event.latLng.lat(), lng: event.latLng.lng()});
+    }, []);
+    
+    return isLoaded ? <>
         <GoogleMap
             mapContainerStyle={containerStyle}
-            center={{lat, lng}}
-            zoom={10}
+            center={center}
+            zoom={15}
             onLoad={onLoad}
             onUnmount={onUnmount}
+            onClick={onMapClick}
         >
+        
+        {marker && 
             <Marker 
-                key="marker_1"
-                position={{
-                    lat: lat,
-                    lng: lng
-                }}
-            >
-            </Marker>
-            
+                position={{lat: marker.lat, lng: marker.lng}}
+            />
+        }
+        
+        {selected ? (<InfoWindow position={{lat: selected.lat, lng: selected.lng}}
+            onCloseClick={() => setSelected(null)}
+        >
+            <div>
+                <h2>Spot Selected</h2>
+            </div>
+        </InfoWindow>) : null}
+        
       </GoogleMap>
     
-    : null
+    </>: null
 };
 
 export default GoogleMapComponent;

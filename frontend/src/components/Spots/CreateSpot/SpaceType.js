@@ -28,6 +28,8 @@ const SpaceTypeComponent = () => {
         return dispatch(updateCSData({spaceType: item.key, progress: 15}));
     };
     
+    if (!createSpotInfo) return history.push('/become-a-host/spotType');
+    
     return (
         <>
         <div id='cs-space-type-center-div'>

@@ -9,7 +9,7 @@ const SpotTypeComponent = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const createSpotInfo = useSelector(state => state.session.createSpot);
-    const [selection, setSelection] = useState(createSpotInfo.spotType || '');
+    const [selection, setSelection] = useState(createSpotInfo && createSpotInfo.spotType || '');
     
     const spotTypes = [
         {text: "House", icon: 'fa-solid fa-house cs-type-icon'},

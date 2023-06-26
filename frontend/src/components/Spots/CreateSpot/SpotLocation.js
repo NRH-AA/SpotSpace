@@ -22,6 +22,8 @@ const SpotLocationComponent = () => {
         return dispatch(updateCSData({location: val, progress: 30}));
     };
     
+    if (!createSpotInfo) return history.push('/become-a-host/spotType');
+    
     return (
         <>
         <div id='cs-space-type-center-div'>
@@ -30,14 +32,8 @@ const SpotLocationComponent = () => {
             
             <div style={{height:'70vh', width: '70vw', marginTop: '100px', position: 'relative'}}>
                 <GoogleMapComponent heightt='80%' widtht='70%'/>
-                <input id='cs-spot-location-gmap-input'
-                    type='text' 
-                    placeholder='Enter your address'
-                    value={selection}
-                    onChange={(e) => selectionOnChange(e.target.value)}
-                />
             </div>
-            
+
         </div>
         
         <div id='cs-footer'>

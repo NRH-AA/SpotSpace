@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
 
 import * as sessionActions from "./store/session";
-import SpotComponent from './components/Spots';
+import SpotsComponent from './components/Spots';
 import SingleSpot from './components/Spots/SingleSpot/SingleSpot';
 import UserSpotsComponent from './components/Spots/UserSpots';
 import UserReviews from './components/Reviews/UserReviews';
@@ -23,7 +23,7 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path="/">
-            <SpotComponent />
+            <SpotsComponent />
           </Route>
           
           <Route path="/become-a-host/:page">
@@ -47,7 +47,7 @@ function App() {
           </Route>
           
           <Route path='/'>
-            <SpotComponent />
+            <SpotsComponent />
           </Route>
           
           

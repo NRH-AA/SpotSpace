@@ -4,6 +4,7 @@ import { getAllSpots } from '../../store/spots';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import Navigation from "../Navigation";
 import SpotComponent from "./SpotComponent";
+import SpotTypesComponent from "./SpotTypesComponent";
 import './Spots.css';
 
 const SpotsComponent = () => {
@@ -15,14 +16,6 @@ const SpotsComponent = () => {
     useEffect(() => {
         if (!spotsState) dispatch(getAllSpots({offset}));
     }, [dispatch, spotsState, offset]);
-    
-    // const getStateAbb = (state) => {
-    //     const split = state.split(' ');
-    //     if (split[1]) {
-    //         return `${split[0][0]}${split[1][0]}`.toUpperCase();
-    //     }
-    //     return state.slice(0, 2).toUpperCase();
-    // }
     
     const handleScroll = async () => {
         if (isUpdating) return;
@@ -44,11 +37,17 @@ const SpotsComponent = () => {
     
     return (<>
         <Navigation isLoaded={true}/>
+        
+        <div id='allSpots-main-wrapper'>
 
-        <div id="allSpots-wrapper">
-            {spotsState?.map((spot, i) =>
-                <SpotComponent key={i} spot={spot}/>
-            )}
+            <SpotTypesComponent />
+
+            <div id="allSpots-wrapper">
+                {spotsState?.map((spot, i) =>
+                    <SpotComponent key={i} spot={spot}/>
+                )}
+            </div>
+
         </div>
     </>);
 };

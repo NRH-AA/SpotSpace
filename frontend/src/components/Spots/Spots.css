@@ -1,3 +1,7 @@
+#allSpots-main-wrapper {
+    width: 98%;
+    margin: auto;
+}
 
 #allSpots-wrapper {
     display: flex;
@@ -35,6 +39,28 @@
     display: flex;
     gap: 10px;
 }
+
+
+
+
+#spottypes-wrapper {
+    width: 100%;
+    height: 50px;
+    background-color: red;
+    display: flex;
+}
+
+#spottypes-types {
+    width: 75%;
+    background-color: black;
+}
+
+#spottypes-filters {
+    width: 25%;
+    background-color: yellow;
+}
+
+
 
 @media (max-width: 799px) {
     #allSpots-wrapper {

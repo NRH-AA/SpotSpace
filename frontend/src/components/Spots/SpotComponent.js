@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom";
-
+import { Link, useHistory } from "react-router-dom";
 import "./SpotComponent.css";
 
 const SpotComponent = ({spot}) => {
+    const history = useHistory();
+
+    const ClickedSpotDiv = (spotId) => history.push(`/spots/${spotId}`);
+
     return (
-        <Link className="spotLink" to={"/spots/" + spot.id}>
+        <div className="spotLink"
+            onClick={() => ClickedSpotDiv(spot.id)}
+        >
             <img className="allSpots-img" src={spot.previewImage} alt={spot.name}></img>
                     
             <div className="allSpots-info-div">
@@ -15,7 +20,7 @@ const SpotComponent = ({spot}) => {
             <div className="allSpots-price-div">   
                 <p className="allSpots-p"><b>${spot.price}</b> Night</p>
             </div>
-        </Link>
+        </div>
     );
 };
 

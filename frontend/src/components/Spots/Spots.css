@@ -47,19 +47,16 @@
     height: 60px;
     margin-top: 25px;
     display: flex;
+    gap: 15px;
 }
 
 #spottypes-types {
-    width: 70%;
+    width: 85%;
     margin-left: 70px;
     display: flex;
     gap: 20px;
     overflow-x: hidden;
     overflow-y: hidden;
-}
-
-#spottypes-filters {
-    width: 30%;
 }
 
 .spottypes-types-element {

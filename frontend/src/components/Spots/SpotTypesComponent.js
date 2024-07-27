@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import VineyardsIcon from './images/Vineyards.png';
 import BeachIcon from './images/Beach.png';
@@ -128,22 +128,55 @@ const SpotTypes = [
 
 const SpotTypesComponent = () => {
     const [optionStart, setOptionStart] = useState(0);
-    const [optionEnd, setOptionEnd] = useState(12);
+    const [optionEnd, setOptionEnd] = useState(optionStart + Math.floor(window.innerWidth / 137));
+    const [options, setOptions] = useState([]);
+
+    useEffect(() => {
+        const optionArray = []
+        for (let i = optionStart; i <= optionEnd; i++) {
+            if (SpotTypes[i] !== undefined) {
+                optionArray.push(SpotTypes[i]);
+            }
+        };
+
+        setOptions(optionArray);
+    }, [optionStart, optionEnd]);
+
+    const updateOptions = () => {
+        const newSize = window.innerWidth / 137;
+        if (newSize < optionEnd || newSize > optionEnd) {
+            setOptionEnd(optionStart + Math.floor(window.innerWidth / 137));
+        };
+    };
+
+    window.addEventListener('resize', updateOptions);
+
+    const nextOptionStart = (e) => {
+        e.preventDefault();
+
+        if (optionEnd >= SpotTypes.length) {
+            setOptionStart(0);
+            setOptionEnd(Math.floor(window.innerWidth / 137));
+        } else {
+            setOptionStart(optionEnd);
+            setOptionEnd(optionEnd + Math.floor(window.innerWidth / 137));
+        };
+    };
 
     return (
         <div id='spottypes-wrapper'>
             <div id='spottypes-types'>
-                {SpotTypes.map((el, i) => 
-                    <div class="spottypes-types-element" key={i}>
+                {options.map((el, i) =>
+                    <div className="spottypes-types-element" key={i}>
                         <img src={el.img} alt={el.title}/>
                         <p>{el.title}</p>
                     </div>
                 )}
             </div>
 
-            <div id='spottypes-filters'>
-
-            </div>
+            <button
+                onClick={(e) => nextOptionStart(e)}
+            >Next</button>
 
         </div>
     )

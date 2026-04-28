@@ -1,12 +1,12 @@
 import * as spotActions from "../../store/spots";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './DeleteSpot.css';
 
 const DeleteSpotModal = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { closeModal, modalSpot } = useModal();
     
     const handleDelete = (e) => {
@@ -14,7 +14,7 @@ const DeleteSpotModal = () => {
         
         if (modalSpot) dispatch(spotActions.deleteSpot(modalSpot));
         closeModal();
-        return history.push('/spots/current');
+        return navigate('/spots/current');
     };
     
     return (

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { useModal } from "../../context/Modal";
 import { createReview } from '../../store/reviews';
@@ -7,7 +7,7 @@ import Star from './images/star.png';
 
 const CreateReviewModal = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { closeModal, modalSpot } = useModal();
     const [stars, setStars] = useState([]);
     const [hoverStars, setHoverStars] = useState([]);
@@ -62,7 +62,7 @@ const CreateReviewModal = () => {
         });
         
         closeModal();
-        return history.push(`/spots/${modalSpot}`);
+        return navigate(`/spots/${modalSpot}`);
     }
     
     return (

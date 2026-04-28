@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import GoogleMapComponent from '../../GoogleMaps';
 import CreateSpotNightSlider from './xSlider';
 import CreateSpotComponent from './CreateSpotComponent';
@@ -6,7 +6,7 @@ import './CreateSpotInfo.css';
 import Logo from '../../Navigation/images/logo.png';
 
 const CreateSpotInfo = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     
     return (
         <div id="cs-info-wrapper">
@@ -15,12 +15,12 @@ const CreateSpotInfo = () => {
                     style={{height: '55px', width: '65px', marginLeft: '0px'}}
                     className="logoImg" 
                     src={Logo} alt="logo"
-                    onClick={() => history.push('/')}
+                    onClick={() => navigate('/')}
                 />
                 <div id='cs-info-nav-div'>
                     <p style={{fontSize: "14.5px"}}>Ready to SpotSpace it?</p>
                     <button className='main-button-style cs-info-setup-button'
-                        onClick={() => history.push('/become-a-host/spotType')}
+                        onClick={() => navigate('/become-a-host/spotType')}
                     >SpotSpace Setup</button>
                 </div>
             </div>

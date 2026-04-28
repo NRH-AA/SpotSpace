@@ -1,6 +1,6 @@
 import { updateSpot } from "../../store/spots";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { useModal } from "../../context/Modal";
 import './UpdateSpot.css';
@@ -8,7 +8,7 @@ import './UpdateSpot.css';
 
 const UpdateSpotModal = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const spotState = useSelector(state => state.spots.userSpots);
     const spotStateSingle = useSelector(state => state.spots.singleSpot);
     const { closeModal, modalSpot } = useModal();
@@ -90,7 +90,7 @@ const UpdateSpotModal = () => {
         });
         
         closeModal();
-        return history.push(`/spots/${modalSpot}`);
+        return navigate(`/spots/${modalSpot}`);
     };
     
     return (

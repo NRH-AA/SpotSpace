@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
 import { updateCSData } from "../../../store/session";
 import ProgressBar from "@ramonak/react-progress-bar";
 import './SpotType.css';
 
 const SpotTypeComponent = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const createSpotInfo = useSelector(state => state.session.createSpot);
     const [selection, setSelection] = useState(createSpotInfo && createSpotInfo.spotType || '');
@@ -89,12 +89,12 @@ const SpotTypeComponent = () => {
                 
             <div id='cs-footer-button-div'>
                 <button id='cs-footer-back-button'
-                    onClick={() => history.push('/spots/new')}
+                    onClick={() => navigate('/spots/new')}
                 >Back</button>
                     
                 <button id='cs-footer-next-button' className='main-button-style'
                     disabled={!selection}
-                    onClick={() => history.push(`/become-a-host/spaceType`)}
+                    onClick={() => navigate(`/become-a-host/spaceType`)}
                 >Next</button>
             </div>
             

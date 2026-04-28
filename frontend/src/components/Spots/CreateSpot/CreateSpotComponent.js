@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as spotActions from '../../../store/spots';
 import { csrfFetch } from '../../../store/csrf';
 import GoogleMapComponent from '../../GoogleMaps';
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const CreateSpotComponent = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     
     const sessionUser = useSelector(state => state.session.user);
     
@@ -124,7 +124,7 @@ const CreateSpotComponent = () => {
             if (data && data.errors) return setErrors(data.errors);
         });
         
-        return history.push(`/spots/current`);
+        return navigate(`/spots/current`);
     };
     
     const createDemoSpot = async (e) => {
@@ -155,7 +155,7 @@ const CreateSpotComponent = () => {
             if (data && data.errors) return setErrors(data.errors);
         });
         
-        return history.push(`/spots/current`);
+        return navigate(`/spots/current`);
     }
     
     

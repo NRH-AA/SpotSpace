@@ -1,10 +1,10 @@
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./SpotComponent.css";
 
 const SpotComponent = ({spot}) => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
-    const ClickedSpotDiv = (spotId) => history.push(`/spots/${spotId}`);
+    const ClickedSpotDiv = (spotId) => navigate(`/spots/${spotId}`);
 
     return (
         <div className="spotLink"

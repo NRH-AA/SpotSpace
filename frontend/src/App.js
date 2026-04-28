@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
 
@@ -21,37 +21,14 @@ function App() {
   return (
     <>
       {isLoaded && (
-        <Switch>
-          <Route exact path="/">
-            <SpotsComponent />
-          </Route>
-          
-          <Route path="/become-a-host/:page">
-            <CreateSpotWrapper />
-          </Route>
-          
-          <Route path="/spots/current">
-            <UserSpotsComponent />
-          </Route>
-          
-          <Route path="/spots/new">
-            <CreateSpotModal />
-          </Route>
-          
-          <Route path="/spots/:spotId">
-            <SingleSpot />
-          </Route>
-          
-          <Route path="/reviews/current">
-            <UserReviews />
-          </Route>
-          
-          <Route path='/'>
-            <SpotsComponent />
-          </Route>
-          
-          
-        </Switch>
+        <Routes>
+          <Route path="/" element={<SpotsComponent />} />
+          <Route path="/become-a-host/:page" element={<CreateSpotWrapper />} />
+          <Route path="/spots/current" element={<UserSpotsComponent />} />
+          <Route path="/spots/new" element={<CreateSpotModal />} />
+          <Route path="/spots/:spotId" element={<SingleSpot />} />
+          <Route path="/reviews/current" element={<UserReviews />} />
+        </Routes>
       )}
     </>
   );

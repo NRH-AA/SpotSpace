@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
@@ -12,7 +12,7 @@ import ProfileImage from './images/profile_button.png';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
@@ -39,7 +39,7 @@ function ProfileButton({ user }) {
     e.preventDefault();
     setShowMenu(false);
     dispatch(sessionActions.logout());
-    return history.push("/");
+    return navigate("/");
   };
   
   const showFeatureComingSoon = () => {

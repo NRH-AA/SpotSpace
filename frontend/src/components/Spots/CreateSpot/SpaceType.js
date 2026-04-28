@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCSData } from '../../../store/session';
 import ProgressBar from "@ramonak/react-progress-bar";
 import './SpaceType.css';
 
 const SpaceTypeComponent = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const createSpotInfo = useSelector(state => state.session.createSpot);
     const [selection, setSelection] = useState(createSpotInfo.spaceType || '');
@@ -28,7 +28,7 @@ const SpaceTypeComponent = () => {
         return dispatch(updateCSData({spaceType: item.key, progress: 15}));
     };
     
-    if (!createSpotInfo) return history.push('/become-a-host/spotType');
+    if (!createSpotInfo) return navigate('/become-a-host/spotType');
     
     return (
         <div id='cs-space-type-container'>
@@ -57,12 +57,12 @@ const SpaceTypeComponent = () => {
                 <div>
                     <div id='cs-footer-button-div'>
                         <button id='cs-footer-back-button'
-                            onClick={() => history.push(`/become-a-host/spotType`)}
+                            onClick={() => navigate(`/become-a-host/spotType`)}
                         >Back</button>
                             
                         <button id='cs-footer-next-button' className='main-button-style'
                             disabled={!selection}
-                            onClick={() => history.push(`/become-a-host/location`)}
+                            onClick={() => navigate(`/become-a-host/location`)}
                         >Next</button>
                     </div>
                 </div>

@@ -23,6 +23,10 @@
     "url": "https://github.com/NRH-AA/API-Project/issues"
   },
   "homepage": "https://github.com/NRH-AA/API-Project#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
     "@react-google-maps/api": "^2.18.1",
     "react-google-maps": "^9.4.5"
